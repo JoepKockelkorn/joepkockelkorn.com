@@ -19,7 +19,7 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
-      # TODO: install deployctl
+      - run: deno install --allow-read --allow-write --allow-env --allow-net --allow-run --no-check -r -f https://deno.land/x/deploy/deployctl.ts
       # TODO: move above to reusable workflow
       - run: deno lint
 
