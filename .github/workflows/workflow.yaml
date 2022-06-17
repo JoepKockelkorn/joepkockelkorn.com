@@ -11,16 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-      - run: npm ci
-      - uses: denoland/setup-deno@v1
-        with:
-          deno-version: v1.x
-      - run: deno install --allow-read --allow-write --allow-env --allow-net --allow-run --no-check -r -f https://deno.land/x/deploy/deployctl.ts
-      # TODO: move above to reusable workflow
+      - uses: ./.github/workflows/setup.yml
       - run: deno lint
 
   # build:
