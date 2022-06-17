@@ -57,6 +57,7 @@ jobs:
             public
 
   deploy:
+    if: ${{ !contains(github.event.head_commit.message, '[skip deploy]') }}
     runs-on: ubuntu-latest
     needs: [build]
     steps:
@@ -69,12 +70,12 @@ jobs:
         with:
           name: my-artifact
       - name: Preview deployment
-        if: ${{ github.event_name == 'pull_request' && !contains(github.event.head_commit.message, '[skip deploy]') }}
+        if: ${{ github.event_name == 'pull_request' }}
         env:
           DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
         run: deployctl deploy --include=build,public --project=joepkockelkorn ./build/index.js
       - name: Production deployment
-        if: ${{ github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[skip deploy]') }}
+        if: ${{ github.event_name != 'pull_request' }}
         env:
           DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
         run: deployctl deploy --prod --include=build,public --project=joepkockelkorn ./build/index.js
