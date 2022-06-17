@@ -1,0 +1,19 @@
+{
+  "fmt": {
+    "files": {
+      "exclude": ["node_modules", "build", "public/build"]
+    },
+    "options": {
+      "singleQuote": true,
+      "useTabs": false,
+      "proseWrap": "always",
+      "indentWidth": 2,
+      "lineWidth": 140
+    }
+  },
+  "lint": {
+    "files": {
+      "exclude": ["node_modules", "build", "public/build"]
+    }
+  }
+}
