@@ -8,7 +8,6 @@
     "dev:remix": "remix watch",
     "build": "remix build",
     "start": "cross-env NODE_ENV=production deno run --unstable --allow-net --allow-read --allow-env ./build/index.js",
-    "deploy": "deployctl deploy --prod --include=build,public --project=joepkockelkorn ./build/index.js",
     "format": "deno fmt",
     "lint": "deno lint"
   },

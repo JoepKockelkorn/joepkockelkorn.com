@@ -61,10 +61,6 @@ jobs:
     needs: [build]
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
@@ -72,6 +68,13 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: my-artifact
-      - env:
+      - name: Preview deployment
+        if: ${ github.event_name == 'pull_request' && !contains(github.event.head_commit.message, '[skip deploy]') }
+        env:
           DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
-        run: npm run deploy
+        run: deployctl deploy --include=build,public --project=joepkockelkorn ./build/index.js
+      - name: Production deployment
+        if: ${ github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[skip deploy]') }
+        env:
+          DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
+        run: deployctl deploy --prod --include=build,public --project=joepkockelkorn ./build/index.js
