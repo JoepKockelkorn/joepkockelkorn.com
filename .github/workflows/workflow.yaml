@@ -69,12 +69,12 @@ jobs:
         with:
           name: my-artifact
       - name: Preview deployment
-        if: ${ github.event_name == 'pull_request' && !contains(github.event.head_commit.message, '[skip deploy]') }
+        if: ${{ github.event_name == 'pull_request' && !contains(github.event.head_commit.message, '[skip deploy]') }}
         env:
           DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
         run: deployctl deploy --include=build,public --project=joepkockelkorn ./build/index.js
       - name: Production deployment
-        if: ${ github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[skip deploy]') }
+        if: ${{ github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[skip deploy]') }}
         env:
           DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
         run: deployctl deploy --prod --include=build,public --project=joepkockelkorn ./build/index.js
