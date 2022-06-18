@@ -70,10 +70,30 @@ jobs:
         with:
           name: my-artifact
       - name: Preview deployment
+        id: deployment
         if: ${{ github.event_name == 'pull_request' }}
         env:
           DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
-        run: deployctl deploy --include=build,public --project=joepkockelkorn ./build/index.js
+        run: |
+          DEPLOY_OUTPUT=$(deployctl deploy --include=build,public --project=joepkockelkorn ./build/index.js)
+          echo "DEPLOY_OUTPUT<<EOF" >> $GITHUB_ENV
+          echo "$DEPLOY_OUTPUT" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+      - name: Capture preview url
+        id: capture_preview_url
+        if: ${{ github.event_name == 'pull_request' }}
+        env:
+          DEPLOY_OUTPUT: ${{ env.DEPLOY_OUTPUT }}
+        run: |
+          URL=$(echo "${{ env.DEPLOY_OUTPUT }}" | egrep -o "https:\/\/joepkockelkorn-.*\.deno\.dev")
+          echo "::set-output name=url::$URL"
+      - name: Post preview url comment on PR
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            [Preview is deployed here](${{ steps.capture_preview_url.outputs.url }})
       - name: Production deployment
         if: ${{ github.event_name != 'pull_request' }}
         env:
