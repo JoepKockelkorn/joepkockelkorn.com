@@ -87,9 +87,13 @@ jobs:
         run: |
           URL=$(echo "${{ env.DEPLOY_OUTPUT }}" | egrep -o "https:\/\/joepkockelkorn-.*\.deno\.dev")
           echo "::set-output name=url::$URL"
-      - name: Echo preview url temp
+      - name: Post preview url comment on PR
         if: ${{ github.event_name == 'pull_request' }}
-        run: echo "${{ steps.capture_preview_url.outputs.url }}"
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            [Preview is deployed here](${{ steps.capture_preview_url.outputs.url }})
       - name: Production deployment
         if: ${{ github.event_name != 'pull_request' }}
         env:
