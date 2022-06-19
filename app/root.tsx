@@ -12,16 +12,18 @@ export const meta: MetaFunction = () => ({
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: styles },
+  { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Mulish:100|Reem+Kufi&display=swap' },
+  { rel: 'stylesheet', href: 'https://use.fontawesome.com/releases/v5.4.1/css/all.css' },
 ];
 
 export default function App() {
   return (
-    <html lang='en'>
+    <html lang='en' className='h-full flex flex-col'>
       <head>
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className='h-full'>
         <Outlet />
         <ScrollRestoration />
         <Scripts />
