@@ -6,7 +6,7 @@ import styles from './styles.css';
 
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
-  title: 'New Remix App',
+  title: 'Joep Kockelkorn | Full Stack Dev',
   viewport: 'width=device-width,initial-scale=1',
 });
 
