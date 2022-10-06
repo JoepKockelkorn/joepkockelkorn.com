@@ -15,5 +15,8 @@
     "files": {
       "exclude": ["node_modules", "build", "public/build"]
     }
+  },
+  "compilerOptions": {
+    "lib": ["dom", "ES2020"]
   }
 }
