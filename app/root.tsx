@@ -1,6 +1,7 @@
 import type { LinksFunction, MetaFunction } from '@remix-run/deno';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import * as React from 'react';
+import { useShouldHydrate } from 'remix-utils';
 
 import styles from './styles.css';
 
@@ -17,6 +18,7 @@ export const links: LinksFunction = () => [
 ];
 
 export default function App() {
+  const shouldHydrate = useShouldHydrate();
   return (
     <html lang='en' className='h-full flex flex-col'>
       <head>
@@ -26,7 +28,7 @@ export default function App() {
       <body className='h-full'>
         <Outlet />
         <ScrollRestoration />
-        <Scripts />
+        {shouldHydrate && <Scripts />}
         <LiveReload />
       </body>
     </html>
