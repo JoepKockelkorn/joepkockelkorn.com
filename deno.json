@@ -17,6 +17,6 @@
     }
   },
   "compilerOptions": {
-    "lib": ["dom", "ES2020", "deno.ns"]
+    "lib": ["dom", "dom.iterable", "dom.asynciterable", "deno.ns", "deno.unstable"]
   }
 }
