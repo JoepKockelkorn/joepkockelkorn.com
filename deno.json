@@ -17,6 +17,6 @@
     }
   },
   "compilerOptions": {
-    "lib": ["dom", "ES2020"]
+    "lib": ["dom", "ES2020", "deno.ns"]
   }
 }
