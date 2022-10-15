@@ -3,6 +3,7 @@ import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@re
 import * as React from 'react';
 import { useShouldHydrate } from 'remix-utils';
 
+import fonts from './fonts.css';
 import styles from './styles.css';
 
 export const meta: MetaFunction = () => ({
@@ -13,7 +14,7 @@ export const meta: MetaFunction = () => ({
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: styles },
-  { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Mulish:100|Reem+Kufi&display=swap' },
+  { rel: 'stylesheet', href: fonts },
   { rel: 'stylesheet', href: 'https://use.fontawesome.com/releases/v5.4.1/css/all.css' },
 ];
 
