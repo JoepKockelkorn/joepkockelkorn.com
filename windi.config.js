@@ -2,8 +2,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        reem: ['Reem Kufi', 'sans-serif'],
-        sans: ['Mulish', 'sans-serif'],
+        sans: ['Mukta', 'sans-serif'],
+        mono: ['DankMono', 'monospace'],
       },
     },
   },
