@@ -13,8 +13,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
+          node-version-file: ".nvmrc"
+          cache: "npm"
       - run: npm ci
       - uses: denoland/setup-deno@v1
         with:
@@ -27,8 +27,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
+          node-version-file: ".nvmrc"
+          cache: "npm"
       - run: npm ci
       - uses: denoland/setup-deno@v1
         with:
@@ -42,8 +42,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
+          node-version-file: ".nvmrc"
+          cache: "npm"
       - run: npm ci
       - uses: denoland/setup-deno@v1
         with:
@@ -86,14 +86,14 @@ jobs:
           DEPLOY_OUTPUT: ${{ env.DEPLOY_OUTPUT }}
         run: |
           URL=$(echo "${{ env.DEPLOY_OUTPUT }}" | egrep -o "https:\/\/joepkockelkorn-.*\.deno\.dev")
-          echo "::set-output name=url::$URL"
+          echo "DEPLOYMENT_URL=$URL" >> $GITHUB_OUTPUT
       - name: Post preview url comment on PR
         if: ${{ github.event_name == 'pull_request' }}
         uses: peter-evans/create-or-update-comment@v2
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            [Preview is deployed here](${{ steps.capture_preview_url.outputs.url }})
+            [Preview is deployed here](${{ steps.capture_preview_url.outputs.DEPLOYMENT_URL }})
       - name: Production deployment
         if: ${{ github.event_name != 'pull_request' }}
         env:
