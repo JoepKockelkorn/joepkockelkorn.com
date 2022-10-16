@@ -1,4 +1,4 @@
-import { calculate, ifNoneMatch } from 'https://deno.land/x/oak@v10.6.0/etag.ts';
+import { calculate } from 'https://deno.land/x/oak@v10.6.0/etag.ts';
 
 export async function etag({ request, response }: { request: Request; response: Response }): Promise<Response> {
   const { headers } = response;
@@ -22,18 +22,18 @@ export async function etag({ request, response }: { request: Request; response: 
   const clonedResponse = response.clone();
   const text = await clonedResponse.text();
 
-  const etagHash = await calculate(text, { weak: true });
-  headers.set('ETag', etagHash);
-  const isMatch = await testEtagMatch({ request, text });
+  const etag = await calculate(text, { weak: true });
+  headers.set('ETag', etag);
+  const isMatch = testEtagMatch({ request, newEtag: etag });
 
   return isMatch ? new Response(null, { status: 304, headers }) : response;
 }
 
-function testEtagMatch({ request, text }: { request: Request; text: string }): Promise<boolean> {
-  const ifNoneMatchValue = request.headers.get('if-none-match');
-  if (ifNoneMatchValue === null) {
-    return Promise.resolve(false);
+function testEtagMatch({ request, newEtag }: { request: Request; newEtag: string }): boolean {
+  const oldEtag = request.headers.get('if-none-match');
+  if (oldEtag === null) {
+    return false;
   }
 
-  return ifNoneMatch(ifNoneMatchValue, text);
+  return oldEtag === newEtag;
 }
