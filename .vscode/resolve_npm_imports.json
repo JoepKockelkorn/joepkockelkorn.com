@@ -13,7 +13,6 @@
     "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
     "react-dom/server": "https://esm.sh/react-dom@18.2.0/server",
     "remix-utils": "https://esm.sh/remix-utils@4.0.0",
-    "windicss": "https://esm.sh/windicss@3.5.6",
-    "windicss/helpers": "https://esm.sh/windicss@3.5.6/helpers"
+    "tailwindcss": "https://esm.sh/tailwindcss@3.2.4"
   }
 }

@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useShouldHydrate } from 'remix-utils';
 
 import fonts from './fonts.css';
-import styles from './styles.css';
+import styles from './styles.output.css';
 
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
