@@ -4,7 +4,7 @@ export default function Index() {
   return (
     <main className='flex flex-col min-h-full justify-center text-center py-0 px-8 bg-gray-100 text-gray-800'>
       <div className='font-semibold text-5xl'>
-        Hello, I'm Joep Kockelkorn!
+        Hello, I'm Joep Kockelkorn! <span className='inline-block animate-wiggle'>👋</span>
       </div>
       <div className='font-mono text-3xl mt-4 mx-0'>
         Full Stack Dev && Front-end fanatic

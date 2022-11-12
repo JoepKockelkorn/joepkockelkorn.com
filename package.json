@@ -5,16 +5,16 @@
     "deno": "deno",
     "dev": "remix build && run-p dev:*",
     "dev:deno": "cross-env NODE_ENV=development deno run --unstable --watch --allow-net --allow-read --allow-env ./build/index.js",
-    "dev:windi": "npm run css -- --dev",
+    "dev:css": "npm run css -- --watch",
     "dev:remix": "remix watch",
     "build": "run-s build:*",
-    "build:windi": "npm run css -- --minify",
+    "build:css": "npm run css -- --minify",
     "build:remix": "remix build",
     "start": "cross-env NODE_ENV=production deno run --unstable --allow-net --allow-read --allow-env ./build/index.js",
     "format": "deno fmt",
     "lint": "deno lint",
-    "css": "windicss './app/**/*.tsx' -to ./app/styles.css -f windi.config.js",
-    "postinstall": "touch ./app/styles.css"
+    "css": "tailwindcss -i ./app/styles.css -o ./app/styles.output.css",
+    "postinstall": "touch ./app/styles.output.css"
   },
   "dependencies": {
     "@remix-run/deno": "1.7.5",
@@ -27,7 +27,7 @@
     "@remix-run/dev": "1.7.5",
     "cross-env": "^7.0.3",
     "npm-run-all": "^4.1.5",
-    "windicss": "^3.5.6"
+    "tailwindcss": "^3.2.4"
   },
   "engines": {
     "node": ">=14"
