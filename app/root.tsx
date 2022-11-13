@@ -27,6 +27,7 @@ export default function App() {
         <Links />
       </head>
       <body className='h-full'>
+        {/* <Header /> */}
         <Outlet />
         <ScrollRestoration />
         {shouldHydrate && <Scripts />}

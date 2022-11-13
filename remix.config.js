@@ -7,7 +7,7 @@ module.exports = {
 
   If live reload seems slow, try to decrease the dev server broadcast delay.
   */
-  devServerBroadcastDelay: 300,
+  devServerBroadcastDelay: 600,
   ignoredRouteFiles: ['**/.*'],
   // appDirectory: "app",
   // assetsBuildDirectory: "public/build",
