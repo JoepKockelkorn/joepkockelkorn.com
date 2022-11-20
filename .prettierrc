@@ -1,0 +1,7 @@
+{
+    "singleQuote": true,
+    "useTabs": false,
+    "proseWrap": "always",
+    "indentWidth": 2,
+    "lineWidth": 140
+}
