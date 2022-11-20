@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 export default function Index() {
   return (
     <main className='flex flex-col min-h-full justify-center text-center py-0 px-8 bg-gray-100 text-gray-800'>

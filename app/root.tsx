@@ -1,6 +1,5 @@
-import type { LinksFunction, MetaFunction } from '@remix-run/deno';
+import type { LinksFunction, MetaFunction } from "@remix-run/cloudflare";
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
-import * as React from 'react';
 import { useShouldHydrate } from 'remix-utils';
 
 import fonts from './fonts.css';
