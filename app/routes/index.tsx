@@ -11,28 +11,28 @@ export default function Index() {
         <a
           className='flex items-center justify-center h-16 w-16 hover:text-orange-400 group'
           target='_blank'
-          href='https://twitter.com/joepkockelkorn'
+          href='https://twitter.com/joepkockelkorn' rel="noreferrer"
         >
           <i className='transform transition-all group-hover:scale-125 text-5xl p-2 fab fa-twitter'></i>
         </a>
         <a
           className='flex items-center justify-center h-16 w-16 hover:text-orange-400 group'
           target='_blank'
-          href='https://www.linkedin.com/in/joepkockelkorn'
+          href='https://www.linkedin.com/in/joepkockelkorn' rel="noreferrer"
         >
           <i className='transform transition-all group-hover:scale-125 text-5xl p-2 fab fa-linkedin'></i>
         </a>
         <a
           className='flex items-center justify-center h-16 w-16 hover:text-orange-400 group'
           target='_blank'
-          href='https://github.com/joepkockelkorn'
+          href='https://github.com/joepkockelkorn' rel="noreferrer"
         >
           <i className='transform transition-all group-hover:scale-125 text-5xl p-2 fab fa-github'></i>
         </a>
         <a
           className='flex items-center justify-center h-16 w-16 hover:text-orange-400 group'
           target='_blank'
-          href='https://stackoverflow.com/users/5475829/joep-kockelkorn'
+          href='https://stackoverflow.com/users/5475829/joep-kockelkorn' rel="noreferrer"
         >
           <i className='transform transition-all group-hover:scale-125 text-5xl p-2 fab fa-stack-overflow'></i>
         </a>
