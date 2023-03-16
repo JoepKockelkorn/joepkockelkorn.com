@@ -4,15 +4,11 @@
   "scripts": {
     "dev": "remix build && run-p dev:*",
     "dev:wrangler": "cross-env NODE_ENV=development wrangler pages dev ./public",
-    "dev:css": "npm run css -- --watch",
     "dev:remix": "remix watch",
     "build": "run-s build:*",
-    "build:css": "npm run css -- --minify",
     "build:remix": "remix build",
     "start": "cross-env NODE_ENV=production npm run dev:wrangler",
-    "css": "tailwindcss -i ./app/styles.css -o ./app/styles.output.css",
-    "lint": "eslint . --ext .js --ext .tsx --ext .ts -c .eslintrc.js --ignore-path .gitignore",
-    "postinstall": "touch ./app/styles.output.css"
+    "lint": "eslint . --ext .js --ext .tsx --ext .ts -c .eslintrc.js --ignore-path .gitignore"
   },
   "dependencies": {
     "@remix-run/cloudflare": "^1.14.3",
