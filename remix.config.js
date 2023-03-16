@@ -3,6 +3,9 @@ module.exports = {
   server: './server.js',
   devServerBroadcastDelay: 1000,
   ignoredRouteFiles: ['**/.*'],
+  future: {
+    unstable_tailwind: true,
+  },
   // appDirectory: "app",
   // assetsBuildDirectory: "public/build",
   // serverBuildPath: "functions/[[path]].js",
