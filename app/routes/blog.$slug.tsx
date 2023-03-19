@@ -1,20 +1,30 @@
 import { json, LoaderArgs } from '@remix-run/cloudflare';
 import { useLoaderData } from '@remix-run/react';
 import invariant from 'tiny-invariant';
+import { fetchBlogPost } from '~/utils/github.server';
 
-export function loader({ params }: LoaderArgs) {
+export async function loader({ params }: LoaderArgs) {
   invariant(params.slug, 'Slug is required');
 
   /** TODO:
-   * 1. Fetch blog post from github using octokit rest (see Kent C. Dodds' blog example: https://github.com/kentcdodds/kentcdodds.com/blob/main/app/utils/github.server.ts)
+   * 1. Fetch blog post from github (done)
    * 2. Convert markdown to html + frontmatter with https://github.com/micromark/micromark
    * 3. Build UI
    */
 
-  return json({ slug: params.slug });
+  const markdown = await fetchBlogPost(params.slug);
+
+  return json({ slug: params.slug, markdown });
 }
 
 export default function Component() {
-  const { slug } = useLoaderData<typeof loader>();
-  return <div>My blog post: {slug}</div>;
+  const { slug, markdown } = useLoaderData<typeof loader>();
+  return (
+    <>
+      <div>My blog post: {slug}</div>
+      <code>
+        <pre>{markdown}</pre>
+      </code>
+    </>
+  );
 }
