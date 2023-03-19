@@ -1,6 +1,6 @@
 export function headers() {
   return {
-    'Cache-Control': 'max-age=300, s-maxage=3600',
+    'Cache-Control': 'public, max-age=300, s-maxage=3600, must-revalidate',
   };
 }
 
