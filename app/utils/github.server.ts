@@ -1,3 +1,6 @@
+import { marked } from 'marked';
+import parseMarkdown from 'front-matter';
+
 export async function fetchBlogPost(slug: string) {
   const url = `https://raw.githubusercontent.com/joepkockelkorn/joepkockelkorn.com/main/content/blog/${encodeURIComponent(
     slug
@@ -7,5 +10,13 @@ export async function fetchBlogPost(slug: string) {
   if (res.status === 404) {
     return null;
   }
-  return res.text();
+
+  const rawMarkdown = await res.text();
+  const { body, attributes } = parseMarkdown(rawMarkdown);
+
+  console.log({ attributes });
+
+  const html = marked(body);
+
+  return html;
 }
