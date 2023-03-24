@@ -11,9 +11,10 @@ export async function loader({ params }: LoaderArgs) {
    * 2. Convert markdown to html (done)
    * 3. Build UI
    *   1. Navigation? Do I have that already? (done)
-   *   1. Error handling
+   *   1. Error handling: 404, unexpected (done)
    *   1. Syntax highlighting (https://github.com/unjs/shiki-es)
    *   1. ...
+   * 4. Add blog overview route
    */
 
   const html = (await fetchBlogPost(params.slug)) ?? 'Whoops!';

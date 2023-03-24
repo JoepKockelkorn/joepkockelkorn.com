@@ -1,12 +1,16 @@
 import type { LinksFunction, MetaFunction } from '@remix-run/cloudflare';
 import {
+  isRouteErrorResponse,
+  Link,
   Links,
   LiveReload,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useRouteError,
 } from '@remix-run/react';
+import { PropsWithChildren } from 'react';
 import { useShouldHydrate } from 'remix-utils';
 import { Header } from './components/Header';
 
@@ -28,8 +32,10 @@ export const links: LinksFunction = () => [
   },
 ];
 
-export default function App() {
-  const shouldHydrate = useShouldHydrate();
+type WebsiteProps = PropsWithChildren & {
+  shouldHydrate?: boolean;
+};
+export function Website({ children, shouldHydrate = false }: WebsiteProps) {
   return (
     <html lang="en" className="h-full flex flex-col">
       <head>
@@ -57,14 +63,44 @@ export default function App() {
       <body className="h-full py-0 px-4 md:px-6 xl:px-8 bg-gray-100 text-gray-800">
         <div className="max-w-3xl mx-auto h-full flex flex-col">
           <Header />
-          <main className="flex-grow flex-shrink">
-            <Outlet />
-          </main>
+          <main className="flex-grow flex-shrink">{children}</main>
         </div>
         <ScrollRestoration />
         {shouldHydrate && <Scripts />}
         <LiveReload />
       </body>
     </html>
+  );
+}
+
+export default function App() {
+  const shouldHydrate = useShouldHydrate();
+  return (
+    <Website shouldHydrate={shouldHydrate}>
+      <Outlet />
+    </Website>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  console.error(error);
+  const isNotFound =
+    isRouteErrorResponse(error) &&
+    error.status === 404 &&
+    error.data === 'Not found';
+
+  return (
+    <Website shouldHydrate={true}>
+      <div className="flex flex-col items-start gap-4">
+        <h1 className="text-3xl">
+          Whoops,{' '}
+          {isNotFound ? 'page not found... 🔍' : 'something went wrong... 🧨'}
+        </h1>
+        <Link to="/" className="inline-block link">
+          Return to home
+        </Link>
+      </div>
+    </Website>
   );
 }
