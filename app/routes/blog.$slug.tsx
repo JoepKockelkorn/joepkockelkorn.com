@@ -10,7 +10,7 @@ export async function loader({ params }: LoaderArgs) {
    * 1. Fetch blog post from github (done)
    * 2. Convert markdown to html (done)
    * 3. Build UI
-   *   1. Navigation? Do I have that already?
+   *   1. Navigation? Do I have that already? (done)
    *   1. Error handling
    *   1. Syntax highlighting (https://github.com/unjs/shiki-es)
    *   1. ...

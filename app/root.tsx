@@ -8,6 +8,7 @@ import {
   ScrollRestoration,
 } from '@remix-run/react';
 import { useShouldHydrate } from 'remix-utils';
+import { Header } from './components/Header';
 
 import fonts from './fonts.css';
 import styles from './styles.css';
@@ -53,9 +54,13 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="h-full">
-        {/* <Header /> */}
-        <Outlet />
+      <body className="h-full py-0 px-4 md:px-6 xl:px-8 bg-gray-100 text-gray-800">
+        <div className="max-w-3xl mx-auto h-full flex flex-col">
+          <Header />
+          <main className="flex-grow flex-shrink">
+            <Outlet />
+          </main>
+        </div>
         <ScrollRestoration />
         {shouldHydrate && <Scripts />}
         <LiveReload />
