@@ -13,7 +13,7 @@ export async function loader({ params }: LoaderArgs) {
    *   1. Navigation? Do I have that already? (done)
    *   1. Error handling: 404, unexpected (done)
    *   1. Syntax highlighting (https://github.com/unjs/shiki-es)
-   *   1. ...
+   *   1. Caching
    * 4. Add blog overview route
    */
 
