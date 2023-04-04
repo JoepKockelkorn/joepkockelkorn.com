@@ -63,7 +63,7 @@ export function Website({ children, shouldHydrate = false }: WebsiteProps) {
       <body className="h-full py-0 px-4 md:px-6 xl:px-8 bg-gray-100 text-gray-800">
         <div className="max-w-3xl mx-auto h-full flex flex-col">
           <Header />
-          <main className="flex-grow flex-shrink">{children}</main>
+          <main className="mt-4 flex-grow flex-shrink">{children}</main>
         </div>
         <ScrollRestoration />
         {shouldHydrate && <Scripts />}

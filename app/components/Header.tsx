@@ -1,9 +1,8 @@
 import { NavLink } from '@remix-run/react';
-import * as React from 'react';
 
 export function Header() {
   return (
-    <header className="sticky w-full flex justify-end">
+    <header className="sticky top-0 w-full flex justify-end border-b bg-gray-100">
       <nav>
         <ol className="flex">
           <li className="flex">
@@ -25,7 +24,9 @@ function MyNavLink({ to, text }: MyNavLinkProps) {
   return (
     <NavLink
       className={({ isActive }) =>
-        `text-lg p-4 group -outline-offset-2 ${isActive ? 'font-bold' : ''}`
+        `text-lg p-4 group -outline-offset-2 ${
+          isActive ? 'text-orange-400' : ''
+        }`
       }
       to={to}
       end
