@@ -12,10 +12,7 @@ export async function fetchBlogPost(slug: string) {
   }
 
   const rawMarkdown = await res.text();
-  const { body, attributes } = parseMarkdown(rawMarkdown);
-
-  console.log({ attributes });
-
+  const { body, attributes: _attr } = parseMarkdown(rawMarkdown);
   const html = marked(body);
 
   return html;
