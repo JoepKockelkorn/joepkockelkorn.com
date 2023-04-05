@@ -22,9 +22,10 @@ export async function loader({ params }: LoaderArgs) {
    *   - Navigation (done)
    *   - Error handling: 404, unexpected (done)
    *   - Syntax highlighting (done)
-   * 4. Style blog page
-   * 5. Add blog overview route
-   * 6. Caching?
+   * 4. Add postcss
+   * 5. Style blog page
+   * 6. Add blog overview route
+   * 7. Caching?
    */
 
   const html = (await fetchBlogPost(params.slug)) ?? 'Whoops!';
@@ -46,8 +47,13 @@ export default function Component() {
 
   return (
     <>
-      <div>My blog post: {slug}</div>
-      <div dangerouslySetInnerHTML={{ __html: html }} />
+      <h1 className="font-bold from-orange-700 to-orange-400 bg-gradient-to-r [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] text-6xl my-8">
+        {slug}
+      </h1>
+      <article
+        className="prose pb-[100px] prose-pre:bg-[#011627] max-w-none"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
     </>
   );
 }

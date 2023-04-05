@@ -60,10 +60,14 @@ export function Website({ children, shouldHydrate = false }: WebsiteProps) {
         <Meta />
         <Links />
       </head>
-      <body className="h-full py-0 px-4 md:px-6 xl:px-8 bg-gray-100 text-gray-800">
-        <div className="max-w-3xl mx-auto h-full flex flex-col">
+      <body className="h-full py-0 bg-gray-100 text-gray-800">
+        <div className="h-full flex flex-col">
           <Header />
-          <main className="mt-4 flex-grow flex-shrink">{children}</main>
+          <main className="overflow-auto isolate flex-grow flex-shrink">
+            <div className="h-full px-4 md:px-6 xl:px-8 max-w-3xl mx-auto flex flex-col">
+              {children}
+            </div>
+          </main>
         </div>
         <ScrollRestoration />
         {shouldHydrate && <Scripts />}

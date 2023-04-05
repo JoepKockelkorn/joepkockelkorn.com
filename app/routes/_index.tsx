@@ -6,7 +6,7 @@ export function headers() {
 
 export default function Index() {
   return (
-    <div className="flex flex-col h-full self-center justify-center text-center">
+    <div className="flex flex-col flex-grow self-center justify-center text-center">
       <div className="font-semibold text-5xl">
         Hello, I'm Joep Kockelkorn!{' '}
         <span className="inline-block animate-wiggle">👋</span>

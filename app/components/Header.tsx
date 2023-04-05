@@ -2,8 +2,8 @@ import { NavLink } from '@remix-run/react';
 
 export function Header() {
   return (
-    <header className="sticky top-0 w-full flex justify-end border-b bg-gray-100">
-      <nav>
+    <header className="w-full border-b bg-gray-100">
+      <nav className="w-full max-w-3xl mx-auto flex justify-end">
         <ol className="flex">
           <li className="flex">
             <MyNavLink to="/" text="Home" />
