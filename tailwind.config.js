@@ -18,5 +18,14 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [
+    /** @type {import('tailwindcss/types/config').PluginCreator} */
+    ({ matchUtilities, theme }) => {
+      matchUtilities(
+        { 'text-fill': (value) => ({ '-webkit-text-fill-color': value }) },
+        { values: theme('colors') }
+      );
+    },
+    require('@tailwindcss/typography'),
+  ],
 };

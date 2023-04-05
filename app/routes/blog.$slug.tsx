@@ -16,16 +16,20 @@ export async function loader({ params }: LoaderArgs) {
   invariant(params.slug, 'Slug is required');
 
   /** TODO:
-   * 1. Fetch blog post from github (done)
-   * 2. Convert markdown to html (done)
-   * 3. Build UI
+   * - Fetch blog post from github (done)
+   * - Convert markdown to html (done)
+   * - Build UI
    *   - Navigation (done)
    *   - Error handling: 404, unexpected (done)
    *   - Syntax highlighting (done)
-   * 4. Add postcss
-   * 5. Style blog page
-   * 6. Add blog overview route
-   * 7. Caching?
+   * - Add postcss (done)
+   * - Add dark mode
+   * - Add metadata
+   * - Style blog page
+   * - Add blog overview route
+   * - SEO stuff
+   * - RSS?
+   * - Move to Vercel for stale-while-revalidate?
    */
 
   const html = (await fetchBlogPost(params.slug)) ?? 'Whoops!';
@@ -47,7 +51,7 @@ export default function Component() {
 
   return (
     <>
-      <h1 className="font-bold from-orange-700 to-orange-400 bg-gradient-to-r [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] text-6xl my-8">
+      <h1 className="font-bold from-orange-700 to-orange-400 bg-gradient-to-r bg-clip-text text-6xl my-8 text-fill-transparent">
         {slug}
       </h1>
       <article
