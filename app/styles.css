@@ -2,8 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --color-primary-200: 254 215 170;
+    --color-primary-400: 251 146 60;
+    --color-primary-700: 194 65 12;
+    --color-text: 31 41 55;
+    --color-background: 243 244 246;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-text: 255 255 255;
+      --color-background: 31 41 55;
+    }
+  }
+}
+
 @layer components {
   .link {
-    @apply relative after:absolute after:w-full after:h-[2px] after:bottom-[2px] after:left-0 after:origin-bottom-left after:transition-transform after:ease-out after:bg-orange-400 after:scale-x-0 hover:after:scale-x-100 focus-visible:after:scale-x-100 after:will-change-transform underline underline-offset-4;
+    @apply relative after:absolute after:w-full after:h-[2px] after:bottom-[2px] after:left-0 after:origin-bottom-left after:transition-transform after:ease-out after:bg-primary-400 after:scale-x-0 hover:after:scale-x-100 focus-visible:after:scale-x-100 after:will-change-transform underline underline-offset-4;
   }
 }

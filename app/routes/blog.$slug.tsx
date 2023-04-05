@@ -28,6 +28,7 @@ export async function loader({ params }: LoaderArgs) {
    * - Style blog page
    * - Add blog overview route
    * - SEO stuff
+   * - Add dark mode switcher?
    * - RSS?
    * - Move to Vercel for stale-while-revalidate?
    */
@@ -51,11 +52,11 @@ export default function Component() {
 
   return (
     <>
-      <h1 className="font-bold from-orange-700 to-orange-400 bg-gradient-to-r bg-clip-text text-6xl my-8 text-fill-transparent">
+      <h1 className="font-bold from-primary-700 to-primary-400 dark:to-primary-200 to-pr bg-gradient-to-r bg-clip-text text-6xl my-8 text-fill-transparent">
         {slug}
       </h1>
       <article
-        className="prose pb-[100px] prose-pre:bg-[#011627] max-w-none"
+        className="prose dark:prose-invert pb-[100px] prose-pre:bg-[#011627] max-w-none"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </>

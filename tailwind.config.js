@@ -3,6 +3,19 @@ module.exports = {
   content: ['./app/**/*.tsx'],
   theme: {
     extend: {
+      colors: {
+        primary: {
+          200: 'rgb(var(--color-primary-200) / <alpha-value>)',
+          400: 'rgb(var(--color-primary-400) / <alpha-value>)',
+          700: 'rgb(var(--color-primary-700) / <alpha-value>)',
+        },
+        background: {
+          DEFAULT: 'rgb(var(--color-background) / <alpha-value>)',
+        },
+        text: {
+          DEFAULT: 'rgb(var(--color-text) / <alpha-value>)',
+        },
+      },
       fontFamily: {
         sans: ['Mukta', 'sans-serif'],
         mono: ['DankMono', 'monospace'],

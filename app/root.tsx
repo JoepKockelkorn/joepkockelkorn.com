@@ -60,7 +60,7 @@ export function Website({ children, shouldHydrate = false }: WebsiteProps) {
         <Meta />
         <Links />
       </head>
-      <body className="h-full py-0 bg-gray-100 text-gray-800">
+      <body className="h-full py-0 bg-background text-text">
         <div className="h-full flex flex-col">
           <Header />
           <main className="overflow-auto isolate flex-grow flex-shrink">
