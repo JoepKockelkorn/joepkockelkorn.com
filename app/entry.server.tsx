@@ -3,12 +3,19 @@ import { RemixServer } from '@remix-run/react';
 import { renderToString } from 'react-dom/server';
 import { etag } from 'remix-etag';
 
-export default function handleRequest(
+import { routes as otherRoutes } from './other-routes.server';
+
+export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
   remixContext: EntryContext
 ) {
+  for (const handler of otherRoutes) {
+    const otherRouteResponse = await handler(request, remixContext);
+    if (otherRouteResponse) return otherRouteResponse;
+  }
+
   const markup = renderToString(
     <RemixServer context={remixContext} url={request.url} />
   );

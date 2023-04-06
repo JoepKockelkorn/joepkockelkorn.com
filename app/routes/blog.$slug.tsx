@@ -6,13 +6,31 @@ import {
 } from '@vercel/remix';
 import { useLoaderData } from '@remix-run/react';
 import invariant from 'tiny-invariant';
-import { convertMarkdownToHtml, fetchBlogPost } from '~/utils/github.server';
+import {
+  convertMarkdownToHtml,
+  fetchBlogPost,
+  fetchBlogPosts,
+} from '~/utils/github.server';
 import highlightStyles from 'highlight.js/styles/night-owl.css';
 import { getParentMeta } from '~/utils/meta';
 import { cacheHeader } from 'pretty-cache-header';
 import { isNil } from 'remeda';
+import type { SitemapHandle } from '~/utils/sitemap.server';
+import type { HydrateHandle } from '~/utils/hydrate.server';
+import { getDomainUrl } from '~/utils/domain.server';
 
-export const handle = { hydrate: true };
+export const handle: SitemapHandle & HydrateHandle = {
+  hydrate: true,
+  getSitemapEntries: async () => {
+    const blogPosts = await fetchBlogPosts();
+    return blogPosts
+      .filter((post) => !post.meta.draft)
+      .map(({ slug }) => ({
+        route: `/blog/${slug}`,
+        priority: 0.6,
+      }));
+  },
+};
 
 export const headers: HeadersFunction = () => {
   return {
@@ -28,14 +46,19 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data, matches }) => {
   if (isNil(data)) return [];
   const {
     meta: { title, description, draft },
+    host,
   } = data;
   const { parentMetaTitle, parentMetaOther } = getParentMeta(matches);
+
+  const ogImageUrl = new URL(`${host}/og-image`);
+  ogImageUrl.searchParams.set('title', title);
 
   return [
     ...parentMetaOther,
     ...(draft ? [{ name: 'robots', content: 'noindex' }] : []),
     { title: `${parentMetaTitle} | ${title}` },
     { property: 'og:title', content: title },
+    { property: 'og:image', content: ogImageUrl.toString() },
     { name: 'description', content: description },
   ];
 };
@@ -52,9 +75,12 @@ export async function loader({ params, request }: LoaderArgs) {
     blogPost.bodyMarkdown
   );
 
+  const host = getDomainUrl(request);
+
   return json({
     html,
     meta: blogPost.meta,
+    host,
   });
 }
 

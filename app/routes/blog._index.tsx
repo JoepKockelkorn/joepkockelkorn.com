@@ -3,6 +3,11 @@ import { Link, useLoaderData } from '@remix-run/react';
 import { cacheHeader } from 'pretty-cache-header';
 import { omit, sortBy } from 'remeda';
 import { fetchBlogPosts } from '~/utils/github.server';
+import { SitemapHandle } from '~/utils/sitemap.server';
+
+export const handle: SitemapHandle = {
+  getSitemapEntries: () => [{ route: '/blog', priority: 0.7 }],
+};
 
 export const headers: HeadersFunction = () => {
   return {
