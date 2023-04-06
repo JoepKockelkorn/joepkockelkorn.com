@@ -3,6 +3,19 @@ module.exports = {
   content: ['./app/**/*.tsx'],
   theme: {
     extend: {
+      colors: {
+        primary: {
+          200: 'rgb(var(--color-primary-200) / <alpha-value>)',
+          400: 'rgb(var(--color-primary-400) / <alpha-value>)',
+          700: 'rgb(var(--color-primary-700) / <alpha-value>)',
+        },
+        background: {
+          DEFAULT: 'rgb(var(--color-background) / <alpha-value>)',
+        },
+        text: {
+          DEFAULT: 'rgb(var(--color-text) / <alpha-value>)',
+        },
+      },
       fontFamily: {
         sans: ['Mukta', 'sans-serif'],
         mono: ['DankMono', 'monospace'],
@@ -18,5 +31,22 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    /** @type {import('tailwindcss/types/config').PluginCreator} */
+    ({ matchUtilities, addUtilities, theme }) => {
+      matchUtilities(
+        { 'text-fill': (value) => ({ '-webkit-text-fill-color': value }) },
+        { values: theme('colors') }
+      );
+      addUtilities({
+        '.hyphens': { hyphens: 'auto' },
+        '.word-break': { 'word-break': 'break-word' },
+        '.text-gradient': {
+          '@apply from-primary-700 to-primary-400 dark:to-primary-200 bg-gradient-to-r bg-clip-text text-fill-transparent':
+            {},
+        },
+      });
+    },
+    require('@tailwindcss/typography'),
+  ],
 };

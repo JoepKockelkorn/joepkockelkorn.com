@@ -1,13 +1,13 @@
 import { NavLink } from '@remix-run/react';
-import * as React from 'react';
 
 export function Header() {
   return (
-    <header className='fixed w-full flex justify-end'>
-      <nav>
-        <ol className='flex'>
-          <li className='flex'>
-            <MyNavLink to='/' text='Home' />
+    <header className="w-full border-b dark:border-b-gray-700 bg-background">
+      <nav className="w-full max-w-3xl mx-auto flex justify-end">
+        <ol className="flex">
+          <li className="flex">
+            <MyNavLink to="/" text="Home" end />
+            {/* <MyNavLink to="/blog" text="Blog" /> */}
           </li>
         </ol>
       </nav>
@@ -18,16 +18,13 @@ export function Header() {
 interface MyNavLinkProps {
   to: string;
   text: string;
+  end?: boolean;
 }
 
-function MyNavLink({ to, text }: MyNavLinkProps) {
+function MyNavLink({ to, text, end }: MyNavLinkProps) {
   return (
-    <NavLink
-      className={({ isActive }) => `text-lg p-4 group -outline-offset-2 ${isActive ? 'italic' : ''}`}
-      to={to}
-      end
-    >
-      <span className='relative after:absolute after:w-full after:h-[2px] after:bottom-0 after:left-0 after:origin-bottom-left after:transition-transform after:ease-out after:bg-current after:scale-x-0 group-hover:after:scale-x-100 after:will-change-transform'>
+    <NavLink className="text-lg p-4 group -outline-offset-2" to={to} end={end}>
+      <span className="relative after:absolute after:w-full after:h-[2px] after:bottom-0 after:left-0 after:origin-bottom-left after:transition-transform after:ease-out after:bg-primary-400 after:scale-x-0 group-hover:after:scale-x-100 group-focus-visible:after:scale-x-100 after:will-change-transform group-aria-[current]:after:scale-x-100">
         {text}
       </span>
     </NavLink>
