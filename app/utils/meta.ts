@@ -1,4 +1,4 @@
-import { V2_MetaFunction, V2_HtmlMetaDescriptor } from '@remix-run/cloudflare';
+import { V2_MetaFunction, V2_HtmlMetaDescriptor } from '@vercel/remix';
 import { partition } from 'remeda';
 import { z } from 'zod';
 

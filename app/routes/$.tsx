@@ -1,4 +1,4 @@
-import { json, LoaderArgs } from '@remix-run/cloudflare';
+import { json, LoaderArgs } from '@vercel/remix';
 
 export function loader({}: LoaderArgs) {
   throw json('Not found', { status: 404 });

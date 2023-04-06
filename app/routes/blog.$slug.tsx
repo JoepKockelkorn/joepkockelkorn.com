@@ -3,7 +3,7 @@ import {
   json,
   LoaderArgs,
   V2_MetaFunction,
-} from '@remix-run/cloudflare';
+} from '@vercel/remix';
 import { useLoaderData } from '@remix-run/react';
 import invariant from 'tiny-invariant';
 import { convertMarkdownToHtml, fetchBlogPost } from '~/utils/github.server';
@@ -17,8 +17,8 @@ export const headers: HeadersFunction = () => {
   return {
     'Cache-Control': cacheHeader({
       public: true,
-      maxAge: '5 minutes',
-      sMaxage: '30 minutes',
+      sMaxage: '1 minute',
+      staleWhileRevalidate: '1 year',
     }),
   };
 };
