@@ -26,7 +26,7 @@ export const meta: V2_MetaFunction<typeof loader> = ({
 
 export const links = () => [{ rel: 'stylesheet', href: highlightStyles }];
 
-export async function loader({ params }: LoaderArgs) {
+export async function loader({ params, request }: LoaderArgs) {
   invariant(params.slug, 'Slug is required');
 
   /** TODO:
@@ -49,7 +49,7 @@ export async function loader({ params }: LoaderArgs) {
    * - Move to Vercel for stale-while-revalidate?
    */
 
-  const blogPost = await fetchBlogPost(params.slug);
+  const blogPost = await fetchBlogPost(new URL(request.url), params.slug);
   if (blogPost === null) throw new Response('Not found', { status: 404 });
 
   return json({

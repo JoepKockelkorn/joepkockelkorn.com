@@ -14,6 +14,7 @@ const blogPostFrontMatterSchema = z.object({
 type BlogPostFrontMatter = z.infer<typeof blogPostFrontMatterSchema>;
 
 export async function fetchBlogPost(
+  requestUrl: URL,
   slug: string
 ): Promise<{ html: string; meta: BlogPostFrontMatter } | null> {
   const url = `https://raw.githubusercontent.com/joepkockelkorn/joepkockelkorn.com/main/content/blog/${encodeURIComponent(
@@ -28,10 +29,25 @@ export async function fetchBlogPost(
   const rawMarkdown = await res.text();
   const { body, attributes } = parseMarkdown(rawMarkdown);
 
+  const renderer = new marked.Renderer();
+  const linkRenderer = renderer.link;
+  renderer.link = (href, title, text) => {
+    const localLink = href?.startsWith(
+      `${requestUrl.protocol}//${requestUrl.hostname}`
+    );
+    const html = linkRenderer.call(renderer, href, title, text);
+    return localLink
+      ? html
+      : html.replace(
+          /^<a /,
+          `<a target="_blank" rel="noreferrer noopener nofollow" `
+        );
+  };
   const meta = blogPostFrontMatterSchema.parse(attributes);
   hljs.getLanguage('typescript') ||
     hljs.registerLanguage('typescript', typescript);
   const html = marked(body, {
+    renderer,
     highlight: (code) => hljs.highlightAuto(code).value,
   });
 
