@@ -45,29 +45,6 @@ export const links = () => [{ rel: 'stylesheet', href: highlightStyles }];
 export async function loader({ params, request }: LoaderArgs) {
   invariant(params.slug, 'Slug is required');
 
-  /** TODO:
-   * - Fetch blog post from github (done)
-   * - Convert markdown to html (done)
-   * - Build UI
-   *   - Navigation (done)
-   *   - Error handling: 404, unexpected (done)
-   *   - Syntax highlighting (done)
-   * - Add postcss (done)
-   * - Add dark mode (done)
-   * - Add metadata (done)
-   * - Style blog page (done)
-   * - Move highlight.js to server (done)
-   * - Cache blog posts pages (done)
-   * - Add blog overview route (done)
-   * - SEO stuff (sitemap, robots.txt, Google Search Console)
-   * - Check twitter preview
-   *
-   * - Move below items to github issues:
-   * - Add dark mode switcher?
-   * - RSS?
-   * - Move to Vercel for stale-while-revalidate?
-   */
-
   const blogPost = await fetchBlogPost(params.slug);
   if (blogPost === null) throw new Response('Not found', { status: 404 });
   const html = convertMarkdownToHtml(
