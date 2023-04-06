@@ -33,11 +33,14 @@ module.exports = {
   },
   plugins: [
     /** @type {import('tailwindcss/types/config').PluginCreator} */
-    ({ matchUtilities, theme }) => {
+    ({ matchUtilities, addUtilities, theme }) => {
       matchUtilities(
         { 'text-fill': (value) => ({ '-webkit-text-fill-color': value }) },
         { values: theme('colors') }
       );
+      addUtilities({
+        '.hyphens': { hyphens: 'auto' },
+      });
     },
     require('@tailwindcss/typography'),
   ],

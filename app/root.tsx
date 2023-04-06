@@ -1,4 +1,8 @@
-import type { LinksFunction, MetaFunction } from '@remix-run/cloudflare';
+import type {
+  LinksFunction,
+  MetaFunction,
+  V2_MetaFunction,
+} from '@remix-run/cloudflare';
 import {
   isRouteErrorResponse,
   Link,
@@ -17,11 +21,7 @@ import { Header } from './components/Header';
 import fonts from './fonts.css';
 import styles from './styles.css';
 
-export const meta: MetaFunction = () => ({
-  charset: 'utf-8',
-  title: 'Joep Kockelkorn | Full Stack Dev',
-  viewport: 'width=device-width,initial-scale=1',
-});
+export const meta: V2_MetaFunction = () => [{ title: 'Joep Kockelkorn' }];
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: styles },
@@ -37,8 +37,10 @@ type WebsiteProps = PropsWithChildren & {
 };
 export function Website({ children, shouldHydrate = false }: WebsiteProps) {
   return (
-    <html lang="en" className="h-full flex flex-col">
+    <html lang="en" className="h-full flex flex-col hyphens">
       <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link
           rel="apple-touch-icon"
           sizes="180x180"

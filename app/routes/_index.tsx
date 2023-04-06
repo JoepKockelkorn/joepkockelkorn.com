@@ -1,8 +1,17 @@
+import { V2_MetaFunction } from '@remix-run/cloudflare';
+import { getParentMeta } from '~/utils/meta';
+
 export function headers() {
   return {
     'Cache-Control': 'public, max-age=300, s-maxage=3600',
   };
 }
+
+export const meta: V2_MetaFunction = ({ matches }) => {
+  const { parentMetaTitle, parentMetaOther } = getParentMeta(matches);
+
+  return [...parentMetaOther, { title: `${parentMetaTitle} | Home` }];
+};
 
 export default function Index() {
   return (

@@ -1,4 +1,4 @@
-import { json, LoaderArgs } from '@remix-run/cloudflare';
+import { json, LoaderArgs, V2_MetaFunction } from '@remix-run/cloudflare';
 import { useLoaderData } from '@remix-run/react';
 import invariant from 'tiny-invariant';
 import { fetchBlogPost } from '~/utils/github.server';
@@ -7,8 +7,26 @@ import typescript from 'highlight.js/lib/languages/typescript';
 import { useHydrated } from 'remix-utils';
 import { useEffect } from 'react';
 import highlightStyles from 'highlight.js/styles/night-owl.css';
+import { getParentMeta } from '~/utils/meta';
 
 export const handle = { hydrate: true };
+
+export const meta: V2_MetaFunction<typeof loader> = ({
+  data: {
+    meta: { title, description, draft },
+  },
+  matches,
+}) => {
+  const { parentMetaTitle, parentMetaOther } = getParentMeta(matches);
+
+  return [
+    ...parentMetaOther,
+    ...(draft ? [{ name: 'robots', content: 'noindex' }] : []),
+    { title: `${parentMetaTitle} | ${title}` },
+    { property: 'og:title', content: title },
+    { name: 'description', content: description },
+  ];
+};
 
 export const links = () => [{ rel: 'stylesheet', href: highlightStyles }];
 
@@ -23,8 +41,8 @@ export async function loader({ params }: LoaderArgs) {
    *   - Error handling: 404, unexpected (done)
    *   - Syntax highlighting (done)
    * - Add postcss (done)
-   * - Add dark mode
-   * - Add metadata
+   * - Add dark mode (done)
+   * - Add metadata (done)
    * - Style blog page
    * - Add blog overview route
    * - SEO stuff
@@ -33,13 +51,32 @@ export async function loader({ params }: LoaderArgs) {
    * - Move to Vercel for stale-while-revalidate?
    */
 
-  const html = (await fetchBlogPost(params.slug)) ?? 'Whoops!';
+  const blogPost = await fetchBlogPost(params.slug);
+  if (blogPost === null) throw new Response('Not found', { status: 404 });
 
-  return json({ slug: params.slug, html });
+  return json({
+    ...blogPost,
+    meta: {
+      ...blogPost.meta,
+      date: {
+        formatted: Intl.DateTimeFormat('en-US', {
+          dateStyle: 'long',
+          timeZone: 'UTC',
+        }).format(blogPost.meta.date),
+        raw: blogPost.meta.date.toISOString(),
+      },
+    },
+  });
 }
 
 export default function Component() {
-  const { slug, html } = useLoaderData<typeof loader>();
+  const {
+    html,
+    meta: {
+      date: { formatted, raw },
+      title,
+    },
+  } = useLoaderData<typeof loader>();
   const hydrated = useHydrated();
 
   useEffect(() => {
@@ -52,8 +89,11 @@ export default function Component() {
 
   return (
     <>
-      <h1 className="font-bold from-primary-700 to-primary-400 dark:to-primary-200 to-pr bg-gradient-to-r bg-clip-text text-6xl my-8 text-fill-transparent">
-        {slug}
+      <time dateTime={raw} className="mt-4">
+        {formatted}
+      </time>
+      <h1 className="leading-none font-bold from-primary-700 to-primary-400 dark:to-primary-200 to-pr bg-gradient-to-r bg-clip-text text-6xl mt-2 mb-8 text-fill-transparent">
+        {title}
       </h1>
       <article
         className="prose dark:prose-invert pb-[100px] prose-pre:bg-[#011627] max-w-none"
