@@ -92,7 +92,7 @@ export default function Component() {
       <time dateTime={raw} className="mt-4">
         {formatted}
       </time>
-      <h1 className="leading-none font-bold from-primary-700 to-primary-400 dark:to-primary-200 to-pr bg-gradient-to-r bg-clip-text text-6xl mt-2 mb-8 text-fill-transparent">
+      <h1 className="leading-tight font-bold from-primary-700 to-primary-400 dark:to-primary-200 to-pr bg-gradient-to-r bg-clip-text text-6xl mt-2 mb-8 text-fill-transparent">
         {title}
       </h1>
       <article

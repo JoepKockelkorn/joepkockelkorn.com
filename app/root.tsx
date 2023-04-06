@@ -37,7 +37,7 @@ type WebsiteProps = PropsWithChildren & {
 };
 export function Website({ children, shouldHydrate = false }: WebsiteProps) {
   return (
-    <html lang="en" className="h-full flex flex-col hyphens">
+    <html lang="en" className="h-full flex flex-col hyphens word-break">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />

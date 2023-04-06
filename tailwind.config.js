@@ -40,6 +40,7 @@ module.exports = {
       );
       addUtilities({
         '.hyphens': { hyphens: 'auto' },
+        '.word-break': { 'word-break': 'break-word' },
       });
     },
     require('@tailwindcss/typography'),
