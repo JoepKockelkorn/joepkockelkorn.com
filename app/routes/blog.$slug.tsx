@@ -66,6 +66,7 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data, matches }) => {
     { property: 'og:image', content: ogImageUrl.toString() },
     { property: 'twitter:title', content: title },
     { property: 'twitter:description', content: description },
+    { property: 'twitter:image', content: ogImageUrl.toString() },
     { property: 'twitter:card', content: 'summary_large_image' },
     { property: 'twitter:creator', content: '@JoepKockelkorn' },
   ];
