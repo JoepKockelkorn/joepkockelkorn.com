@@ -47,19 +47,27 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data, matches }) => {
   const {
     meta: { title, description, draft },
     host,
+    slug,
   } = data;
   const { parentMetaTitle, parentMetaOther } = getParentMeta(matches);
 
   const ogImageUrl = new URL(`${host}/og-image`);
   ogImageUrl.searchParams.set('title', title);
+  const ogUrl = new URL(`${host}/blog/${slug}`);
 
   return [
     ...parentMetaOther,
     ...(draft ? [{ name: 'robots', content: 'noindex' }] : []),
     { title: `${parentMetaTitle} | ${title}` },
+    { property: 'description', content: description },
+    { property: 'og:url', content: ogUrl.toString() },
     { property: 'og:title', content: title },
+    { property: 'og:description', content: description },
     { property: 'og:image', content: ogImageUrl.toString() },
-    { name: 'description', content: description },
+    { property: 'twitter:title', content: title },
+    { property: 'twitter:description', content: description },
+    { property: 'twitter:card', content: 'summary_large_image' },
+    { property: 'twitter:creator', content: '@JoepKockelkorn' },
   ];
 };
 
@@ -81,6 +89,7 @@ export async function loader({ params, request }: LoaderArgs) {
     html,
     meta: blogPost.meta,
     host,
+    slug: params.slug,
   });
 }
 
