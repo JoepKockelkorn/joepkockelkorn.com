@@ -1,5 +1,5 @@
 import { V2_MetaFunction, V2_HtmlMetaDescriptor } from '@remix-run/cloudflare';
-import { partition } from 'lodash-es';
+import { partition } from 'remeda';
 import { z } from 'zod';
 
 type Matches = Parameters<V2_MetaFunction>[0]['matches'];

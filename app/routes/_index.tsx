@@ -1,11 +1,16 @@
-import { V2_MetaFunction } from '@remix-run/cloudflare';
+import { HeadersFunction, V2_MetaFunction } from '@remix-run/cloudflare';
 import { getParentMeta } from '~/utils/meta';
+import { cacheHeader } from 'pretty-cache-header';
 
-export function headers() {
+export const headers: HeadersFunction = () => {
   return {
-    'Cache-Control': 'public, max-age=300, s-maxage=3600',
+    'Cache-Control': cacheHeader({
+      public: true,
+      maxAge: '5 minutes',
+      sMaxage: '1 hour',
+    }),
   };
-}
+};
 
 export const meta: V2_MetaFunction = ({ matches }) => {
   const { parentMetaTitle, parentMetaOther } = getParentMeta(matches);
@@ -30,7 +35,7 @@ export default function Index() {
           href="https://twitter.com/joepkockelkorn"
           rel="noreferrer"
         >
-          <i className="transform transition-all group-hover:scale-125 text-5xl p-2 fab fa-twitter"></i>
+          <i className="transform motion-safe:transition-all group-hover:scale-125 text-5xl p-2 fab fa-twitter"></i>
         </a>
         <a
           className="flex items-center justify-center h-16 w-16 hover:text-primary-400 focus-visible:text-primary-400 group"
@@ -38,7 +43,7 @@ export default function Index() {
           href="https://www.linkedin.com/in/joepkockelkorn"
           rel="noreferrer"
         >
-          <i className="transform transition-all group-hover:scale-125 text-5xl p-2 fab fa-linkedin"></i>
+          <i className="transform motion-safe:transition-all group-hover:scale-125 text-5xl p-2 fab fa-linkedin"></i>
         </a>
         <a
           className="flex items-center justify-center h-16 w-16 hover:text-primary-400 focus-visible:text-primary-400 group"
@@ -46,7 +51,7 @@ export default function Index() {
           href="https://github.com/joepkockelkorn"
           rel="noreferrer"
         >
-          <i className="transform transition-all group-hover:scale-125 text-5xl p-2 fab fa-github"></i>
+          <i className="transform motion-safe:transition-all group-hover:scale-125 text-5xl p-2 fab fa-github"></i>
         </a>
         <a
           className="flex items-center justify-center h-16 w-16 hover:text-primary-400 focus-visible:text-primary-400 group"
@@ -54,7 +59,7 @@ export default function Index() {
           href="https://stackoverflow.com/users/5475829/joep-kockelkorn"
           rel="noreferrer"
         >
-          <i className="transform transition-all group-hover:scale-125 text-5xl p-2 fab fa-stack-overflow"></i>
+          <i className="transform motion-safe:transition-all group-hover:scale-125 text-5xl p-2 fab fa-stack-overflow"></i>
         </a>
       </div>
     </div>

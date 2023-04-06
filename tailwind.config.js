@@ -41,6 +41,10 @@ module.exports = {
       addUtilities({
         '.hyphens': { hyphens: 'auto' },
         '.word-break': { 'word-break': 'break-word' },
+        '.text-gradient': {
+          '@apply from-primary-700 to-primary-400 dark:to-primary-200 bg-gradient-to-r bg-clip-text text-fill-transparent':
+            {},
+        },
       });
     },
     require('@tailwindcss/typography'),

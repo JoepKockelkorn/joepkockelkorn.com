@@ -3,20 +3,55 @@ import parseMarkdown from 'front-matter';
 import { z } from 'zod';
 import hljs from 'highlight.js/lib/core';
 import typescript from 'highlight.js/lib/languages/typescript';
+import { isTruthy } from 'remeda';
 
 const blogPostFrontMatterSchema = z.object({
   title: z.string(),
-  date: z.coerce.date(),
+  date: z.coerce.date().transform((date) => ({
+    formatted: Intl.DateTimeFormat('en-US', {
+      dateStyle: 'long',
+      timeZone: 'UTC',
+    }).format(date),
+    raw: date.toISOString(),
+  })),
   draft: z.boolean().optional(),
   description: z.string(),
   categories: z.array(z.string()).optional(),
 });
 type BlogPostFrontMatter = z.infer<typeof blogPostFrontMatterSchema>;
 
+type GithubFile = {
+  name: string;
+  download_url: string;
+};
+
+export async function fetchBlogPosts(): Promise<MinimalBlogPost[]> {
+  const url = `https://api.github.com/repos/joepkockelkorn/joepkockelkorn.com/contents/content/blog`;
+  const res = await fetch(url, {
+    headers: { 'User-Agent': 'joepkockelkorn.com' },
+  });
+  const files = await res.json<GithubFile[]>();
+  const posts = await Promise.all(
+    files
+      .filter((file) => file.name.endsWith('.md'))
+      .map((file) => fetchBlogPost(getSlugFromFilename(file.name)))
+  );
+  return posts
+    .filter(isTruthy)
+    .filter(
+      (post) => process.env.NODE_ENV === 'development' || !post.meta.draft
+    );
+}
+
+export type MinimalBlogPost = {
+  slug: string;
+  bodyMarkdown: string;
+  meta: BlogPostFrontMatter;
+};
+
 export async function fetchBlogPost(
-  requestUrl: URL,
   slug: string
-): Promise<{ html: string; meta: BlogPostFrontMatter } | null> {
+): Promise<MinimalBlogPost | null> {
   const url = `https://raw.githubusercontent.com/joepkockelkorn/joepkockelkorn.com/main/content/blog/${encodeURIComponent(
     slug
   )}.md`;
@@ -28,7 +63,12 @@ export async function fetchBlogPost(
 
   const rawMarkdown = await res.text();
   const { body, attributes } = parseMarkdown(rawMarkdown);
+  const meta = blogPostFrontMatterSchema.parse(attributes);
 
+  return { slug, bodyMarkdown: body, meta };
+}
+
+export function convertMarkdownToHtml(requestUrl: URL, markdown: string) {
   const renderer = new marked.Renderer();
   const linkRenderer = renderer.link;
   renderer.link = (href, title, text) => {
@@ -43,13 +83,14 @@ export async function fetchBlogPost(
           `<a target="_blank" rel="noreferrer noopener nofollow" `
         );
   };
-  const meta = blogPostFrontMatterSchema.parse(attributes);
   hljs.getLanguage('typescript') ||
     hljs.registerLanguage('typescript', typescript);
-  const html = marked(body, {
+  return marked(markdown, {
     renderer,
     highlight: (code) => hljs.highlightAuto(code).value,
   });
+}
 
-  return { html, meta };
+function getSlugFromFilename(name: string) {
+  return name.replace(/\.md$/, '');
 }
