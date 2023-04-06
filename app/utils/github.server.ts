@@ -1,6 +1,8 @@
 import { marked } from 'marked';
 import parseMarkdown from 'front-matter';
 import { z } from 'zod';
+import hljs from 'highlight.js/lib/core';
+import typescript from 'highlight.js/lib/languages/typescript';
 
 const blogPostFrontMatterSchema = z.object({
   title: z.string(),
@@ -27,7 +29,11 @@ export async function fetchBlogPost(
   const { body, attributes } = parseMarkdown(rawMarkdown);
 
   const meta = blogPostFrontMatterSchema.parse(attributes);
-  const html = marked(body);
+  hljs.getLanguage('typescript') ||
+    hljs.registerLanguage('typescript', typescript);
+  const html = marked(body, {
+    highlight: (code) => hljs.highlightAuto(code).value,
+  });
 
   return { html, meta };
 }

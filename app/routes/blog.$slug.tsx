@@ -2,10 +2,6 @@ import { json, LoaderArgs, V2_MetaFunction } from '@remix-run/cloudflare';
 import { useLoaderData } from '@remix-run/react';
 import invariant from 'tiny-invariant';
 import { fetchBlogPost } from '~/utils/github.server';
-import hljs from 'highlight.js/lib/core';
-import typescript from 'highlight.js/lib/languages/typescript';
-import { useHydrated } from 'remix-utils';
-import { useEffect } from 'react';
 import highlightStyles from 'highlight.js/styles/night-owl.css';
 import { getParentMeta } from '~/utils/meta';
 
@@ -43,9 +39,11 @@ export async function loader({ params }: LoaderArgs) {
    * - Add postcss (done)
    * - Add dark mode (done)
    * - Add metadata (done)
-   * - Style blog page
+   * - Style blog page (done)
+   * - Move highlight.js to server (done)
    * - Add blog overview route
-   * - SEO stuff
+   * - SEO stuff (sitemap, robots.txt, Google Search Console)
+   * - Cache blog posts pages
    * - Add dark mode switcher?
    * - RSS?
    * - Move to Vercel for stale-while-revalidate?
@@ -77,15 +75,6 @@ export default function Component() {
       title,
     },
   } = useLoaderData<typeof loader>();
-  const hydrated = useHydrated();
-
-  useEffect(() => {
-    if (hydrated) {
-      hljs.getLanguage('typescript') ||
-        hljs.registerLanguage('typescript', typescript);
-      hljs.highlightAll();
-    }
-  }, [hydrated]);
 
   return (
     <>
