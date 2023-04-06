@@ -1,4 +1,4 @@
-import { HeadersFunction, V2_MetaFunction } from '@remix-run/cloudflare';
+import { HeadersFunction, V2_MetaFunction } from '@vercel/remix';
 import { getParentMeta } from '~/utils/meta';
 import { cacheHeader } from 'pretty-cache-header';
 
@@ -6,8 +6,8 @@ export const headers: HeadersFunction = () => {
   return {
     'Cache-Control': cacheHeader({
       public: true,
-      maxAge: '5 minutes',
-      sMaxage: '1 hour',
+      sMaxage: '1 minute',
+      staleWhileRevalidate: '1 year',
     }),
   };
 };

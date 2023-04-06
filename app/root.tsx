@@ -1,8 +1,4 @@
-import type {
-  LinksFunction,
-  MetaFunction,
-  V2_MetaFunction,
-} from '@remix-run/cloudflare';
+import type { LinksFunction, V2_MetaFunction } from '@vercel/remix';
 import {
   isRouteErrorResponse,
   Link,
@@ -98,7 +94,7 @@ export function ErrorBoundary() {
 
   return (
     <Website shouldHydrate={true}>
-      <div className="flex flex-col items-start gap-4">
+      <div className="flex flex-col items-start gap-4 mt-12">
         <h1 className="text-3xl">
           Whoops,{' '}
           {isNotFound ? 'page not found... 🔍' : 'something went wrong... 🧨'}

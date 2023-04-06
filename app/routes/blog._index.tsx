@@ -1,4 +1,4 @@
-import { HeadersFunction, LoaderArgs, json } from '@remix-run/cloudflare';
+import { HeadersFunction, LoaderArgs, json } from '@vercel/remix';
 import { Link, useLoaderData } from '@remix-run/react';
 import { cacheHeader } from 'pretty-cache-header';
 import { omit, sortBy } from 'remeda';
@@ -8,8 +8,8 @@ export const headers: HeadersFunction = () => {
   return {
     'Cache-Control': cacheHeader({
       public: true,
-      maxAge: '5 minutes',
-      sMaxage: '10 minutes',
+      sMaxage: '1 minute',
+      staleWhileRevalidate: '1 year',
     }),
   };
 };
