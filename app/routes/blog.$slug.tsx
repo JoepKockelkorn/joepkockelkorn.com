@@ -60,6 +60,9 @@ export async function loader({ params, request }: LoaderArgs) {
    * - Cache blog posts pages (done)
    * - Add blog overview route (done)
    * - SEO stuff (sitemap, robots.txt, Google Search Console)
+   * - Check twitter preview
+   *
+   * - Move below items to github issues:
    * - Add dark mode switcher?
    * - RSS?
    * - Move to Vercel for stale-while-revalidate?
