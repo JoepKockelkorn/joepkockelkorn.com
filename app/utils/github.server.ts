@@ -30,7 +30,7 @@ export async function fetchBlogPosts(): Promise<MinimalBlogPost[]> {
   const res = await fetch(url, {
     headers: { 'User-Agent': 'joepkockelkorn.com' },
   });
-  const files = await res.json<GithubFile[]>();
+  const files = (await res.json()) as GithubFile[];
   const posts = await Promise.all(
     files
       .filter((file) => file.name.endsWith('.md'))

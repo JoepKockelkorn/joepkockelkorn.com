@@ -6,13 +6,31 @@ import {
 } from '@vercel/remix';
 import { useLoaderData } from '@remix-run/react';
 import invariant from 'tiny-invariant';
-import { convertMarkdownToHtml, fetchBlogPost } from '~/utils/github.server';
+import {
+  convertMarkdownToHtml,
+  fetchBlogPost,
+  fetchBlogPosts,
+} from '~/utils/github.server';
 import highlightStyles from 'highlight.js/styles/night-owl.css';
 import { getParentMeta } from '~/utils/meta';
 import { cacheHeader } from 'pretty-cache-header';
 import { isNil } from 'remeda';
+import type { SitemapHandle } from '~/utils/sitemap.server';
+import type { HydrateHandle } from '~/utils/hydrate.server';
+import { getDomainUrl } from '~/utils/domain.server';
 
-export const handle = { hydrate: true };
+export const handle: SitemapHandle & HydrateHandle = {
+  hydrate: true,
+  getSitemapEntries: async () => {
+    const blogPosts = await fetchBlogPosts();
+    return blogPosts
+      .filter((post) => !post.meta.draft)
+      .map(({ slug }) => ({
+        route: `/blog/${slug}`,
+        priority: 0.6,
+      }));
+  },
+};
 
 export const headers: HeadersFunction = () => {
   return {
@@ -28,15 +46,29 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data, matches }) => {
   if (isNil(data)) return [];
   const {
     meta: { title, description, draft },
+    host,
+    slug,
   } = data;
   const { parentMetaTitle, parentMetaOther } = getParentMeta(matches);
+
+  const ogImageUrl = new URL(`${host}/og-image`);
+  ogImageUrl.searchParams.set('title', title);
+  const ogUrl = new URL(`${host}/blog/${slug}`);
 
   return [
     ...parentMetaOther,
     ...(draft ? [{ name: 'robots', content: 'noindex' }] : []),
     { title: `${parentMetaTitle} | ${title}` },
+    { property: 'description', content: description },
+    { property: 'og:url', content: ogUrl.toString() },
     { property: 'og:title', content: title },
-    { name: 'description', content: description },
+    { property: 'og:description', content: description },
+    { property: 'og:image', content: ogImageUrl.toString() },
+    { property: 'twitter:title', content: title },
+    { property: 'twitter:description', content: description },
+    { property: 'twitter:image', content: ogImageUrl.toString() },
+    { property: 'twitter:card', content: 'summary_large_image' },
+    { property: 'twitter:creator', content: '@JoepKockelkorn' },
   ];
 };
 
@@ -52,9 +84,13 @@ export async function loader({ params, request }: LoaderArgs) {
     blogPost.bodyMarkdown
   );
 
+  const host = getDomainUrl(request);
+
   return json({
     html,
     meta: blogPost.meta,
+    host,
+    slug: params.slug,
   });
 }
 
