@@ -25,13 +25,28 @@ export async function createOGImage(title: string, origin: string) {
         background: 'linear-gradient(135deg, #892f0b 10%, #fb923c 100%)',
         color: 'white',
         fontFamily: 'Mukta',
-        fontSize: 100,
+        fontSize: 70,
         display: 'flex',
+        flexFlow: 'column nowrap',
+        gap: 50,
         alignItems: 'center',
         justifyContent: 'center',
       }}
     >
-      <div>{title}</div>
+      <img
+        src={`${origin}/android-chrome-192x192.png`}
+        width={148}
+        height={148}
+        alt="Joep Kockelkorn"
+      />
+      <div
+        style={{
+          textAlign: 'center',
+          lineHeight: 1,
+        }}
+      >
+        {title}
+      </div>
     </div>,
     options
   );
