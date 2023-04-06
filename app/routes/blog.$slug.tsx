@@ -10,6 +10,7 @@ import { convertMarkdownToHtml, fetchBlogPost } from '~/utils/github.server';
 import highlightStyles from 'highlight.js/styles/night-owl.css';
 import { getParentMeta } from '~/utils/meta';
 import { cacheHeader } from 'pretty-cache-header';
+import { isNil } from 'remeda';
 
 export const handle = { hydrate: true };
 
@@ -23,12 +24,11 @@ export const headers: HeadersFunction = () => {
   };
 };
 
-export const meta: V2_MetaFunction<typeof loader> = ({
-  data: {
+export const meta: V2_MetaFunction<typeof loader> = ({ data, matches }) => {
+  if (isNil(data)) return [];
+  const {
     meta: { title, description, draft },
-  },
-  matches,
-}) => {
+  } = data;
   const { parentMetaTitle, parentMetaOther } = getParentMeta(matches);
 
   return [
