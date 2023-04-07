@@ -16,11 +16,9 @@ import { getParentMeta } from '~/utils/meta';
 import { cacheHeader } from 'pretty-cache-header';
 import { isNil } from 'remeda';
 import type { SitemapHandle } from '~/utils/sitemap.server';
-import type { HydrateHandle } from '~/utils/hydrate.server';
 import { getDomainUrl } from '~/utils/domain.server';
 
-export const handle: SitemapHandle & HydrateHandle = {
-  hydrate: true,
+export const handle: SitemapHandle = {
   getSitemapEntries: async () => {
     const blogPosts = await fetchBlogPosts();
     return blogPosts
