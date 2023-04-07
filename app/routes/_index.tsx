@@ -15,7 +15,15 @@ export const headers: HeadersFunction = () => {
 export const meta: V2_MetaFunction = ({ matches }) => {
   const { parentMetaTitle, parentMetaOther } = getParentMeta(matches);
 
-  return [...parentMetaOther, { title: `${parentMetaTitle} | Home` }];
+  return [
+    ...parentMetaOther,
+    { title: `${parentMetaTitle} | Home` },
+    {
+      name: 'description',
+      content:
+        'Homepage of Joep Kockelkorn, full-stack Developer && front-end fanatic.',
+    },
+  ];
 };
 
 export default function Index() {
