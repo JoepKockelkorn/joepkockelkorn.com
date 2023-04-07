@@ -16,11 +16,9 @@ import { getParentMeta } from '~/utils/meta';
 import { cacheHeader } from 'pretty-cache-header';
 import { isNil } from 'remeda';
 import type { SitemapHandle } from '~/utils/sitemap.server';
-import type { HydrateHandle } from '~/utils/hydrate.server';
 import { getDomainUrl } from '~/utils/domain.server';
 
-export const handle: SitemapHandle & HydrateHandle = {
-  hydrate: true,
+export const handle: SitemapHandle = {
   getSitemapEntries: async () => {
     const blogPosts = await fetchBlogPosts();
     return blogPosts
@@ -59,16 +57,16 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data, matches }) => {
     ...parentMetaOther,
     ...(draft ? [{ name: 'robots', content: 'noindex' }] : []),
     { title: `${parentMetaTitle} | ${title}` },
-    { property: 'description', content: description },
-    { property: 'og:url', content: ogUrl.toString() },
-    { property: 'og:title', content: title },
-    { property: 'og:description', content: description },
-    { property: 'og:image', content: ogImageUrl.toString() },
-    { property: 'twitter:title', content: title },
-    { property: 'twitter:description', content: description },
-    { property: 'twitter:image', content: ogImageUrl.toString() },
-    { property: 'twitter:card', content: 'summary_large_image' },
-    { property: 'twitter:creator', content: '@JoepKockelkorn' },
+    { name: 'description', content: description },
+    { name: 'og:url', content: ogUrl.toString() },
+    { name: 'og:title', content: title },
+    { name: 'og:description', content: description },
+    { name: 'og:image', content: ogImageUrl.toString() },
+    { name: 'twitter:title', content: title },
+    { name: 'twitter:description', content: description },
+    { name: 'twitter:image', content: ogImageUrl.toString() },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:creator', content: '@JoepKockelkorn' },
   ];
 };
 
