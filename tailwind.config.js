@@ -17,8 +17,8 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['Mukta', 'sans-serif'],
-        mono: ['DankMono', 'monospace'],
+        sans: ['Mukta', 'Adjusted Arial Fallback', 'sans-serif'],
+        mono: ['DankMono', 'Adjusted Courier New Fallback', 'monospace'],
       },
       keyframes: {
         wiggle: {
