@@ -83,6 +83,11 @@ export function convertMarkdownToHtml(requestUrl: URL, markdown: string) {
           `<a target="_blank" rel="noreferrer noopener nofollow" `
         );
   };
+  const imageRenderer = renderer.image;
+  renderer.image = (href, title, text) => {
+    const html = imageRenderer.call(renderer, href, title, text);
+    return html.replace(/^<img /, `<img loading="lazy" `);
+  };
   hljs.getLanguage('typescript') ||
     hljs.registerLanguage('typescript', typescript);
   return marked(markdown, {
