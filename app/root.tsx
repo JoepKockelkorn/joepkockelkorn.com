@@ -22,10 +22,6 @@ export const meta: V2_MetaFunction = () => [{ title: 'Joep Kockelkorn' }];
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: styles },
   { rel: 'stylesheet', href: fonts },
-  {
-    rel: 'stylesheet',
-    href: 'https://use.fontawesome.com/releases/v5.4.1/css/all.css',
-  },
 ];
 
 type WebsiteProps = PropsWithChildren & {
