@@ -68,7 +68,7 @@ Hello, `some inline code`, as example.
 
 # Images
 
-![Image](https://ik.imagekit.io/joepkockelkorn/mindspace-studio-UrrYymj6R80-unsplash.jpg?updatedAt=1680620238312)
+![Image](https://ik.imagekit.io/joepkockelkorn/tr:ar-16-9,w-768,f-auto/mindspace-studio-UrrYymj6R80-unsplash.jpg)
 
 # Lists
 
