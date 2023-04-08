@@ -17,8 +17,11 @@ import { cacheHeader } from 'pretty-cache-header';
 import { isNil } from 'remeda';
 import type { SitemapHandle } from '~/utils/sitemap.server';
 import { getDomainUrl } from '~/utils/domain.server';
+import { HydrateHandle } from '~/utils/hydrate.server';
+import { useScrollToAnchor } from '~/hooks/use-scroll-to-anchor';
 
-export const handle: SitemapHandle = {
+export const handle: SitemapHandle & HydrateHandle = {
+  hydrate: true,
   getSitemapEntries: async () => {
     const blogPosts = await fetchBlogPosts();
     return blogPosts
@@ -101,6 +104,7 @@ export default function Component() {
       title,
     },
   } = useLoaderData<typeof loader>();
+  useScrollToAnchor();
 
   return (
     <>
@@ -111,7 +115,7 @@ export default function Component() {
         {title}
       </h1>
       <article
-        className="prose prose-li:my-[0.25em] prose-lg dark:prose-invert pb-[100px] prose-pre:bg-[#011627] max-w-none"
+        className="prose prose-li:my-[0.25em] prose-lg dark:prose-invert pb-[100px] prose-pre:bg-[#011627] prose-h1:leading-[1.4] max-w-none"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </>
