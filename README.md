@@ -2,29 +2,17 @@
 
 Welcome to the repo of my personal website.
 
-## Contributing
-
-### Getting started
+## Getting started
 
 - install node using `.nvmrc`
 - `npm i`
 
-### Development
+## Development
 
 `npm run dev`
 
-This starts your app in development mode, rebuilding assets on file changes.
+This starts the app in development mode, rebuilding assets on file changes.
 
-### Managing dependencies
+## Deployment
 
-- ✅ You should use `npm` to install NPM packages
-  ```sh
-  npm install react
-  ```
-  ```ts
-  import { useState } from 'react';
-  ```
-
-### Deployment
-
-The website will automatically be deployed on cloudflare pages in case of a pull request or commit to main.
+The website will automatically be deployed in case of a pull request or commit to main.
