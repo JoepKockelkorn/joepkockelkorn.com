@@ -57,7 +57,7 @@ export function Website({ children, shouldHydrate = false }: WebsiteProps) {
       <body className="h-full py-0 bg-background text-text">
         <div className="h-full flex flex-col">
           <Header />
-          <main className="overflow-auto isolate flex-grow flex-shrink">
+          <main className="overflow-auto scroll-smooth isolate flex-grow flex-shrink">
             <div className="h-full px-4 md:px-6 xl:px-8 max-w-3xl mx-auto flex flex-col">
               {children}
             </div>
