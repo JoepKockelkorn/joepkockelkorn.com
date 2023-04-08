@@ -89,6 +89,10 @@ export function convertMarkdownToHtml(requestUrl: URL, markdown: string) {
     const html = imageRenderer.call(renderer, href, title, text);
     return html.replace(/^<img /, `<img loading="lazy" `);
   };
+  renderer.heading = (text, level, raw, slugger) => {
+    const id = slugger.slug(raw);
+    return `<h${level} id="${id}"><a href="#${id}" class="header-link">${text}</a></h${level}>\n`;
+  };
   hljs.getLanguage('typescript') ||
     hljs.registerLanguage('typescript', typescript);
   return marked(markdown, {

@@ -95,7 +95,10 @@ export function ErrorBoundary() {
           Whoops,{' '}
           {isNotFound ? 'page not found... 🔍' : 'something went wrong... 🧨'}
         </h1>
-        <Link to="/" className="inline-block link">
+        <Link
+          to="/"
+          className="underline underline-offset-4 hover:text-primary-400"
+        >
           Return to home
         </Link>
       </div>

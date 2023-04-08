@@ -111,7 +111,7 @@ export default function Component() {
         {title}
       </h1>
       <article
-        className="prose prose-li:my-[0.25em] prose-lg dark:prose-invert pb-[100px] prose-pre:bg-[#011627] max-w-none"
+        className="prose prose-li:my-[0.25em] prose-lg dark:prose-invert pb-[100px] prose-pre:bg-[#011627] prose-h1:leading-[1.4] max-w-none"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </>
