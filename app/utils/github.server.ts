@@ -50,9 +50,10 @@ export type MinimalBlogPost = {
 };
 
 export async function fetchBlogPost(
-  slug: string
+  slug: string,
+  ref: string = 'main'
 ): Promise<MinimalBlogPost | null> {
-  const url = `https://raw.githubusercontent.com/joepkockelkorn/joepkockelkorn.com/main/content/blog/${encodeURIComponent(
+  const url = `https://raw.githubusercontent.com/joepkockelkorn/joepkockelkorn.com/${ref}/content/blog/${encodeURIComponent(
     slug
   )}.md`;
   const res = await fetch(url);

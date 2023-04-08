@@ -74,8 +74,9 @@ export const links = () => [{ rel: 'stylesheet', href: highlightStyles }];
 
 export async function loader({ params, request }: LoaderArgs) {
   invariant(params.slug, 'Slug is required');
+  const ref = new URL(request.url).searchParams.get('ref') ?? undefined;
 
-  const blogPost = await fetchBlogPost(params.slug);
+  const blogPost = await fetchBlogPost(params.slug, ref);
   if (blogPost === null) throw new Response('Not found', { status: 404 });
   const html = convertMarkdownToHtml(
     new URL(request.url),
