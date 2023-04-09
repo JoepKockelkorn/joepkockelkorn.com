@@ -96,7 +96,7 @@ provide a type-safe API (yet) using a generic argument, so a typecast will be
 needed to make Typescript happy.
 [There is an ongoing discussion about that](https://github.com/remix-run/react-router/discussions/9854).
 
-Using the retrieved data is that same in React Router as in Remix, using the
+Using the retrieved data is the same in React Router as in Remix, using the
 [`useLoaderData`](https://reactrouter.com/en/main/hooks/use-loader-data) hook:
 
 ```typescript
@@ -111,8 +111,8 @@ export default function Team() {
 We shouldn't underestimate how much the `loader` concept does for separation of
 concerns (and thus maintainability/readability) and preventing
 [those pesky race condition bugs](https://react.dev/learn/you-might-not-need-an-effect#fetching-data)
-when you do data fetching in the component itself. We could consider other
-alternatives like using
+compared to when you do data fetching in the component itself. For React we could consider other
+alternatives like
 [React Query](https://tanstack.com/query/latest/docs/react/overview) (which
 comes with its own additional complexity).
 
@@ -215,13 +215,34 @@ export class HeroDetailComponent implements OnInit {
 }
 ```
 
-#### The broken parts
+#### Tour of Heroes HeroDetailComponent review
 
-TODO
+A couple of things come to mind when looking at both the code and the UX. From a UX perspective, we have:
+- A jumpy experience: when the user navigates the UI changes twice because the old component is being destroyed and the new one is being partly rendered, and then the UI is updated again because the hero is loaded (and the form is rendered).
+- A missing 404 experience. When the user navigates to URL for a hero that does not exist, there is no redirect or 'whoops not found' experience shown.
 
-- no 404 case handled
-- no reactivity
-- loading state/UI implemented differently on each page
+From a code perspective we have:
+- Data fetching logic mixed with other logic in the component.
+- Conditional logic: the hero could not be loaded yet, or the fetching could be done but the hero does not exist.
+- Loading logic in the template. While there is no 'loading' UI shown currently, if there was any, then it would have been duplicated or reimplemented in each component.
 
-- resolvers (no route prevention, guards run first)
-- loading state in the component itself, dealing with conditional logic
+### How to improve
+
+So it's obvious there's a lot to improve, let's explore potential solutions.  
+
+#### Resolvers
+
+In the developer guide for 'Routing and Navigation' there's [an extra tutorial which expands the Tour of Heroes with more advanced routing concepts](https://angular.io/guide/router-tutorial-toh#resolve-pre-fetching-component-data). One of those concepts is the deprecated [`Resolve`](https://angular.io/api/router/Resolve) interface or its newer equivalent, the [`ResolveFn`](https://angular.io/api/router/ResolveFn). I'll call these in general 'resolvers'.
+
+TODO: explain how a resolver solves all problems
+
+TODO: find out the downsides of resolvers and explain why guards are a better choice
+[Rearchitect Router so it's more modular](https://github.com/angular/angular/issues/42953)
+downside: no typesafety on [ActivatedRoute.data](https://angular.io/api/router/Data) without a typecast (same as React Router's loader)
+downside: [cannot return UrlTree](https://github.com/angular/angular/issues/29089) so redirect navigation fires a NavigationCancel event (what are the consequences: loading boolean or keeping track of scroll position on navigation)
+
+#### Guards
+ 
+TODO: Figure out how best to implement the 'save and retrieve state from the guard' part. BehaviourSubject? Something else?
+
+gotcha: guards run in parallel but when used as a loader this shouldn't be an issue because they're highly route-bound
