@@ -3,6 +3,7 @@ import parseMarkdown from 'front-matter';
 import { z } from 'zod';
 import hljs from 'highlight.js/lib/core';
 import typescript from 'highlight.js/lib/languages/typescript';
+import xml from 'highlight.js/lib/languages/xml';
 import { isTruthy } from 'remeda';
 
 const blogPostFrontMatterSchema = z.object({
@@ -95,6 +96,7 @@ export function convertMarkdownToHtml(requestUrl: URL, markdown: string) {
   };
   hljs.getLanguage('typescript') ||
     hljs.registerLanguage('typescript', typescript);
+  hljs.getLanguage('xml') || hljs.registerLanguage('xml', xml);
   return marked(markdown, {
     renderer,
     highlight: (code) => hljs.highlightAuto(code).value,

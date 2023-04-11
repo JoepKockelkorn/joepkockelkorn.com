@@ -372,10 +372,8 @@ typescript to infer the type of the loader using
 Now that the hero in an `Observable<Hero>` instead of `Hero | undefined` we have
 to change the template a bit:
 
-- need to use `async` pipe
-- need to pass hero to `save` method
-
 ```html
+<!-- need to use async pipe 🔽 -->
 <div *ngIf="hero$ | async as hero">
   <h2>{{hero.name | uppercase}} Details</h2>
   <div><span>id: </span>{{hero.id}}</div>
@@ -384,6 +382,7 @@ to change the template a bit:
     <input id="hero-name" [(ngModel)]="hero.name" placeholder="Hero name" />
   </div>
   <button type="button" (click)="goBack()">go back</button>
+  <!--          and pass the hero here 🔽 -->
   <button type="button" (click)="save(hero)">save</button>
 </div>
 ```
