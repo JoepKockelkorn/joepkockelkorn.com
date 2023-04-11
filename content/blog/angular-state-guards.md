@@ -236,12 +236,23 @@ From a code perspective we have:
   if there was any, then it would have been duplicated or reimplemented in each
   component.
 
-### Bringing loaders to Angular
+## Bringing loaders to Angular
 
 So it's obvious there's a lot to improve. Let's explore potential solutions and
-see what might be the closes thing to a `loader` in Angular.
+see what might be the closest thing to a `loader` in Angular.
 
-#### Resolvers
+// TODO: write introduction on guards
+
+These are the possible guard types:
+
+- canActivate
+- canActivateChild
+- canDeactivate
+- canMatch
+- resolve (👋 hey I'm a guard too!)
+- canLoad
+
+### Resolve guard
 
 In the developer guide for 'Routing and Navigation' there's
 [an extra tutorial](https://angular.io/guide/router-tutorial-toh#resolve-pre-fetching-component-data)
@@ -361,8 +372,10 @@ typescript to infer the type of the loader using
 Now that the hero in an `Observable<Hero>` instead of `Hero | undefined` we have
 to change the template a bit:
 
+- need to use `async` pipe
+- need to pass hero to `save` method
+
 ```html
-<!-- need to use async pipe 🔽 -->
 <div *ngIf="hero$ | async as hero">
   <h2>{{hero.name | uppercase}} Details</h2>
   <div><span>id: </span>{{hero.id}}</div>
@@ -371,12 +384,11 @@ to change the template a bit:
     <input id="hero-name" [(ngModel)]="hero.name" placeholder="Hero name" />
   </div>
   <button type="button" (click)="goBack()">go back</button>
-  <!--          and pass the hero here 🔽 -->
   <button type="button" (click)="save(hero)">save</button>
 </div>
 ```
 
-#### What resolvers seem to resolve but don't
+#### What resolve guards seem to solve but don't
 
 After applying the resolver there's a change in UX:
 
@@ -402,18 +414,9 @@ loader (depending on how it's implemented).
 <!-- TODO: find out more downsides of resolvers?
 [Rearchitect Router so it's more modular](https://github.com/angular/angular/issues/42953) -->
 
-### Guards
+### canActivate
 
-TODO: should I move this up?
-
-These are the possible guard types:
-
-- canActivate
-- canActivateChild
-- canDeactivate
-- canMatch
-- resolve (👋 hey I'm a guard too!)
-- canLoad
+### canMatch
 
 TODO: Figure out how best to implement the 'save and retrieve state from the
 guard' part. BehaviourSubject? Something else?
