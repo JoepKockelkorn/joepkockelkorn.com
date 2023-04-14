@@ -298,34 +298,46 @@ Now, which one to pick... These are the possible guard types:
 - canMatch
 - resolve
 
-Let's explain some of them:
+Let's explain them:
 
+- [CanActivateFn](https://angular.io/api/router/CanActivateFn) is called before
+  a route is activated.
+- [CanActivateChildFn](https://angular.io/api/router/CanActivateChildFn) does
+  the same as CanActivateFn but for any of the route's children.
 - [CanDeactivateFn](https://angular.io/api/router/CanDeactivateFn) is called
   whenever a user exits a route, so is unfit for data fetching before
   navigation.
 - [CanLoadFn](https://angular.io/api/router/CanLoadFn) is called before a lazy
   loaded route component or module is loaded.
-- [CanActivateFn](https://angular.io/api/router/CanActivateFn) is called before
-  a route is going to be activated.
-- [CanActivateChildFn](https://angular.io/api/router/CanActivateChildFn) does
-  the same as CanActivateFn but for any of the route's children.
+- [CanMatchFn](https://angular.io/api/router/CanMatchFn) is called before a
+  route is matched.
+- [ResolveFn](https://angular.io/api/router/ResolveFn) is called before a route
+  is activated. But this one is different than `CanActivateFn`, because it's
+  purpose is exclusively for data fetching.
 
-Since in Angular version 14.1 the [CanMatchFn](https://angular.io/api/router/CanMatchFn) was
-added, the `CanLoadFn`, `CanActivateFn` and `CanActivateChildFn` make less sense to be
-used for data fetching, because with `CanMatchFn` you can prevent a route from
-being matched (duh 😉). And routes that are not going to be matched **will not be loaded
-or activated**. So `CanMatchFn` is more powerful than the `CanLoadFn` and `CanActivate(Child)Fn` because it's evaluated even sooner.
+Since in Angular version 14.1 the
+[CanMatchFn](https://angular.io/api/router/CanMatchFn) was added, the
+`CanLoadFn`, `CanActivateFn` and `CanActivateChildFn` seems to be less useful
+for data fetching, because with `CanMatchFn` you can prevent a route from being
+matched at all. And routes that are not going to be matched **will not be loaded
+or activated**. So `CanMatchFn` is more powerful than the `CanLoadFn` and
+`CanActivate(Child)Fn` because it's evaluated sooner. But its downside is that
+the `route` parameter is not yet a fully qualified `ActivatedRouteSnapshot`, so
+getting url params is not easy
+([see explanation](https://github.com/angular/angular/issues/49309#issuecomment-1453863052)).
 
-Let's look at the remaining options resolve and canMatch more in detail and how
-they could be used for data fetching.
+Let's look at the canActivate and resolve guards more in detail and how they
+could be used for data fetching.
 
-### canMatch
+### canActivate
 
-A canMatch guard comes in two forms. The first is the deprecated
-[`CanMatch`](https://angular.io/api/router/CanMatch) interface. The second is it's
-newer equivalent, the [`CanMatchFn`](https://angular.io/api/router/CanMatchFn).
+A canActivate guard comes in two forms. The first is the deprecated
+[`CanActivate`](https://angular.io/api/router/CanActivate) interface. The second
+is it's newer equivalent, the
+[`CanActivateFn`](https://angular.io/api/router/CanActivateFn).
 
-TODO: explain guard syntax (boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree>)
+TODO: explain guard syntax (boolean | UrlTree | Observable<boolean | UrlTree> |
+Promise<boolean | UrlTree>)
 
 TODO: show code example
 
@@ -444,8 +456,8 @@ This typecasting issue is also there in Remix. In Remix we also have to help
 typescript to infer the type of the loader using
 `useLoaderData<typeof loader>()`.
 
-Now that the hero property is an `Observable<Hero>` instead of `Hero | undefined` we have
-to change the template a bit:
+Now that the hero property is an `Observable<Hero>` instead of
+`Hero | undefined` we have to change the template a bit:
 
 ```html
 <!-- need to use async pipe 🔽 -->
@@ -466,24 +478,24 @@ to change the template a bit:
 
 ### General guard data fetching experience
 
-After applying the resolve guard there's a change in UX:
+After applying the resolve or canActivate guard there's a change in UX:
 
 - When we click on a hero from the dashboard we stay on the same page.
 - In the background the hero is fetched.
 - When fetching is done, we see the `HeroDetailComponent` instantly.
 
-This actually is the same when using `CanMatchFn`. To improve that experience we
-could introduce a global loading indicator using the logic explained
+To improve the UX we could introduce a global loading indicator using the logic
+explained
 [in this tutorial by Todd Motto](https://ultimatecourses.com/blog/angular-loading-spinners-with-router-events).
 This brings additional benefits, because we only have to build the loading logic
 once instead of into each template of several other components!
 
 ### resolve guard issues
 
-But unfortunately, a resolve guard also has downsides compared to canMatch. In
-case the user navigates to a hero that can't be found, the edge case logic kicks
-in, leading to a `router.navigate`. Doing that from a resolve guard triggers a
-`NavigationCancel` event. There's
+But unfortunately, a resolve guard also has downsides compared to a canActivate
+guard. In case the user navigates to a hero that can't be found, the edge case
+logic kicks in, leading to a `router.navigate`. Doing that from a resolve guard
+triggers a `NavigationCancel` event. There's
 [a long-running open github issue](https://github.com/angular/angular/issues/29089)
 about this, but in a nutshell a `NavigationCancel` event confuses the router. It
 also messes up the loading indicator logic mentioned above, leading to a slight
@@ -492,7 +504,7 @@ flicker of the loader (depending on how it's implemented).
 <!-- TODO: find out more downsides of resolvers?
 [Rearchitect Router so it's more modular](https://github.com/angular/angular/issues/42953) -->
 
-### canMatch guard issues
+### canActivate guard issues
 
 TODO: find out
 
