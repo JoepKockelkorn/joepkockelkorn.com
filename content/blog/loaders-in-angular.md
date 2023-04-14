@@ -3,7 +3,8 @@ title: Loaders in Angular
 date: 2023-04-15
 draft: true
 description:
-  'Loaders in Angular: Exploring the concept of Remix loaders in the world of SPA Angular.'
+  'Loaders in Angular: Exploring the concept of Remix loaders in the world of
+  SPA Angular.'
 ---
 
 ## Data fetching in meta frameworks
@@ -120,7 +121,8 @@ comes with its own additional complexity).
 The Angular router ([`@angular/router`](https://angular.io/guide/router))
 doesn't have a `loader` concept similar to React Router. Actually, to achieve
 the same result (fetch data and use it in the route component) there are no
-evident first-party solutions to pick. Let's review some options, using the 'Hello World' tutorial of angular.io as a showcase:
+evident first-party solutions to pick. Let's review some options, using the
+'Hello World' tutorial of angular.io as a showcase:
 [Tour of Heroes](https://angular.io/tutorial/tour-of-heroes).
 
 ## Tour of Heroes
@@ -174,7 +176,8 @@ const routes: Routes = [
 export class AppRoutingModule {}
 ```
 
-No lazy loading, just one route config for the whole application. Can't get much simpler.
+No lazy loading, just one route config for the whole application. Can't get much
+simpler.
 
 ### Data fetching strategy
 
@@ -217,48 +220,70 @@ export class HeroDetailComponent implements OnInit {
 
 ## Tour of Heroes in review
 
-For most experienced Angular developers it might not be a shock that the Tour of Heroes is not exactly world class code that should be used in production. But it can still be useful for this blog post, to see how we would improve and potentially use the concept of loaders in Angular. Let's take a detailed look at the `HeroDetailComponent`.
+For most experienced Angular developers it might not be a shock that the Tour of
+Heroes is not exactly world class code that should be used in production. But it
+can still be useful for this blog post, to see how we would improve and
+potentially use the concept of loaders in Angular. Let's take a detailed look at
+the `HeroDetailComponent`.
 
 ### HeroDetailComponent
 
 A couple of things come to mind when looking at both the code and the UX. From a
 **UX** perspective, we have:
 
-- A jumpy experience. When the user navigates to this route, the UI changes twice. This happens because the
-  old route component is being destroyed, then the new one is being rendered (partly), and
-  then the UI is updated again after the hero has loaded.
+- A jumpy experience. When the user navigates to this route, the UI changes
+  twice. This happens because the old route component is being destroyed, then
+  the new one is being rendered (partly), and then the UI is updated again after
+  the hero has loaded.
 - A missing 404 experience. When the user navigates to URL for a hero that does
   not exist, there is no redirect or 'whoops not found' experience shown.
 
 From a **code** perspective we have:
 
-- No separation of concerns. Data fetching logic is mixed with navigation and form logic.
-- Conditional logic. It could be the case the hero it not loaded yet. Or the fetching could be
-  done but the hero does not exist. This also leads to code duplication for any 'loading' logic, every component needs it, **again**.
+- No separation of concerns. Data fetching logic is mixed with navigation and
+  form logic.
+- Conditional logic. It could be the case the hero it not loaded yet. Or the
+  fetching could be done but the hero does not exist. This also leads to code
+  duplication for any 'loading' logic, every component needs it, **again**.
 
 ## Bringing loaders to Angular
 
 So it's obvious there's a lot to improve. Let's explore potential solutions and
 see what might be the closest thing to a `loader` in Angular.
 
-Well, let me just call it out: it's **Guards**. It might seem a bit hidden in plain sight, but on the [Common Routing Tasks](https://angular.io/guide/router) page of angular.io, there's a section devoted to guards. You can find it under the heading [Preventing unauthorized access](https://angular.io/guide/router#preventing-unauthorized-access), which is a heavy understatement: guards can be used for much more than just authorization checks.
+Well, let me just call it out: it's **Guards**. It might seem a bit hidden in
+plain sight, but on the [Common Routing Tasks](https://angular.io/guide/router)
+page of angular.io, there's a section devoted to guards. You can find it under
+the heading
+[Preventing unauthorized access](https://angular.io/guide/router#preventing-unauthorized-access),
+which is a heavy understatement: guards can be used for much more than just
+authorization checks.
 
 ### Guards introduction
 
-At the end of the section mentioned above is [a link to the Tour of Heroes router tutorial](https://angular.io/guide/router-tutorial-toh#milestone-5-route-guards), called: **Route guards**. I'm just going to borrow their explanation of route guards:
+At the end of the section mentioned above is
+[a link to the Tour of Heroes router tutorial](https://angular.io/guide/router-tutorial-toh#milestone-5-route-guards),
+called: **Route guards**. I'm just going to borrow their explanation of route
+guards:
 
-> At the moment, any user can navigate anywhere in the application any time, but sometimes you need to control access to different parts of your application for various reasons, some of which might include the following:
+> At the moment, any user can navigate anywhere in the application any time, but
+> sometimes you need to control access to different parts of your application
+> for various reasons, some of which might include the following:
+>
 > - Perhaps the user is not authorized to navigate to the target component
 > - Maybe the user must login (authenticate) first
 > - Maybe you should fetch some data before you display the target component
 > - You might want to save pending changes before leaving a component
-> - You might ask the user if it's okay to discard pending changes rather than save them
+> - You might ask the user if it's okay to discard pending changes rather than
+>   save them
 >
 > You add guards to the route configuration to handle these scenarios.
 
-From this list it becomes clear: guards are not only useful for authorization. For the sake of this blog post, bullet point #3 sounds very interesting.
+From this list it becomes clear: guards are not only useful for authorization.
+For the sake of this blog post, bullet point #3 sounds very interesting.
 
-> Maybe you should **fetch** some data **before** you display the target component
+> Maybe you should **fetch** some data **before** you display the target
+> component
 
 Actually, it sounds precisely like a loader. That's what we're looking for!
 
@@ -275,23 +300,44 @@ Now, which one to pick... These are the possible guard types:
 
 Let's explain some of them:
 
-- [CanDeactivateFn](https://angular.io/api/router/CanDeactivateFn) is called whenever a user exits a route, so is unfit for data fetching before navigation.
-- [CanLoadFn](https://angular.io/api/router/CanLoadFn) is called before a lazy loaded route component or module is loaded.
-- [CanActivateFn](https://angular.io/api/router/CanActivateFn) is called before a route is going to be activated.
-- [CanActivateChildFn](https://angular.io/api/router/CanActivateChildFn) does the same as CanActivateFn but for any of the route's children.
+- [CanDeactivateFn](https://angular.io/api/router/CanDeactivateFn) is called
+  whenever a user exits a route, so is unfit for data fetching before
+  navigation.
+- [CanLoadFn](https://angular.io/api/router/CanLoadFn) is called before a lazy
+  loaded route component or module is loaded.
+- [CanActivateFn](https://angular.io/api/router/CanActivateFn) is called before
+  a route is going to be activated.
+- [CanActivateChildFn](https://angular.io/api/router/CanActivateChildFn) does
+  the same as CanActivateFn but for any of the route's children.
 
-Since the newer [CanMatchFn](https://angular.io/api/router/CanMatchFn) was added, the CanLoadFn, CanActivateFn and CanActivateChildFn make less sense to be used for data fetching, because with CanMatchFn you can prevent a route from being matched. And routes that are not going to be matched **will not be loaded or activated** so it can do the same kind of trick, but sooner.
+Since in Angular version 14.1 the [CanMatchFn](https://angular.io/api/router/CanMatchFn) was
+added, the `CanLoadFn`, `CanActivateFn` and `CanActivateChildFn` make less sense to be
+used for data fetching, because with `CanMatchFn` you can prevent a route from
+being matched (duh 😉). And routes that are not going to be matched **will not be loaded
+or activated**. So `CanMatchFn` is more powerful than the `CanLoadFn` and `CanActivate(Child)Fn` because it's evaluated even sooner.
 
-Let's look at the remaining options resolve and canMatch more in detail and how they could be used for data fetching.
+Let's look at the remaining options resolve and canMatch more in detail and how
+they could be used for data fetching.
 
 ### canMatch
 
-TODO: explain how in code
+A canMatch guard comes in two forms. The first is the deprecated
+[`CanMatch`](https://angular.io/api/router/CanMatch) interface. The second is it's
+newer equivalent, the [`CanMatchFn`](https://angular.io/api/router/CanMatchFn).
+
+TODO: explain guard syntax (boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree>)
+
+TODO: show code example
 
 ### resolve
 
-Last on the list, but not least is the resolve guard. A resolve guard comes in two forms. The first is the deprecated [`Resolve`](https://angular.io/api/router/Resolve) interface. The second is it's newer
-equivalent, the [`ResolveFn`](https://angular.io/api/router/ResolveFn). Resolve guards are a little different in usage and API than the other guards. Let's review how a resolve might solve our data fetching issues in the Tour of Heroes. Looking at some code:
+Last on the list, but not least is the resolve guard. A resolve guard comes in
+two forms. The first is the deprecated
+[`Resolve`](https://angular.io/api/router/Resolve) interface. The second is it's
+newer equivalent, the [`ResolveFn`](https://angular.io/api/router/ResolveFn).
+Resolve guards are a little different in usage and API than the other guards.
+Let's review how a resolve might solve our data fetching issues in the Tour of
+Heroes. Looking at some code:
 
 ```typescript
 // hero-resolver.ts
@@ -384,8 +430,9 @@ export class HeroDetailComponent {
 }
 ```
 
-Note we still have to pluck the hero from the route data. The plucking requires a
-type annotation or a typecast because by default any property on `Data` resolves to `any`:
+Note we still have to pluck the hero from the route data. The plucking requires
+a type annotation or a typecast because by default any property on `Data`
+resolves to `any`:
 
 ```typescript
 type Data = {
@@ -397,7 +444,7 @@ This typecasting issue is also there in Remix. In Remix we also have to help
 typescript to infer the type of the loader using
 `useLoaderData<typeof loader>()`.
 
-Now that the hero in an `Observable<Hero>` instead of `Hero | undefined` we have
+Now that the hero property is an `Observable<Hero>` instead of `Hero | undefined` we have
 to change the template a bit:
 
 ```html
@@ -425,12 +472,22 @@ After applying the resolve guard there's a change in UX:
 - In the background the hero is fetched.
 - When fetching is done, we see the `HeroDetailComponent` instantly.
 
-This actually is the same when using `CanMatchFn`. To improve that experience we could introduce a global loading indicator using the logic explained [in this tutorial by Todd Motto](https://ultimatecourses.com/blog/angular-loading-spinners-with-router-events). This brings additional benefits, because we only have to build the loading logic once instead into each template of several other components!
+This actually is the same when using `CanMatchFn`. To improve that experience we
+could introduce a global loading indicator using the logic explained
+[in this tutorial by Todd Motto](https://ultimatecourses.com/blog/angular-loading-spinners-with-router-events).
+This brings additional benefits, because we only have to build the loading logic
+once instead of into each template of several other components!
 
 ### resolve guard issues
 
-But unfortunately, a resolve guard also has downsides compared to canMatch. In case the user navigates to a
-hero that can't be found, the edge case logic kicks in, leading to a `router.navigate`. Doing that from a resolve guard triggers a `NavigationCancel` event. There's [a long-running open github issue](https://github.com/angular/angular/issues/29089) about this, but in a nutshell a `NavigationCancel` event confuses the router. It also messes up the loading indicator logic mentioned above, leading to a slight flicker of the loader (depending on how it's implemented).
+But unfortunately, a resolve guard also has downsides compared to canMatch. In
+case the user navigates to a hero that can't be found, the edge case logic kicks
+in, leading to a `router.navigate`. Doing that from a resolve guard triggers a
+`NavigationCancel` event. There's
+[a long-running open github issue](https://github.com/angular/angular/issues/29089)
+about this, but in a nutshell a `NavigationCancel` event confuses the router. It
+also messes up the loading indicator logic mentioned above, leading to a slight
+flicker of the loader (depending on how it's implemented).
 
 <!-- TODO: find out more downsides of resolvers?
 [Rearchitect Router so it's more modular](https://github.com/angular/angular/issues/42953) -->
@@ -441,4 +498,6 @@ TODO: find out
 
 ### Other gotchas
 
-Guards run in parallel, so there'no guarantee the first guard in a route config array is finished before the second one. But when used as a loader this shouldn't be an issue because they're highly route-bound and thus you should only have one.
+Guards run in parallel, there's no guarantee the first guard is finished before
+the second one. But when used as a loader this shouldn't be an issue because
+guards are highly route-bound and thus you should only have one per route.
