@@ -183,7 +183,7 @@ simpler.
 
 ### Data fetching strategy
 
-The data is fetched in the component themselves. This is dome similarly in all
+The data is fetched in the component themselves. This is done similarly in all
 components. For example, this is the `HeroDetailComponent`:
 
 ```typescript
