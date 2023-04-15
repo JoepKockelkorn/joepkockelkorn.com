@@ -336,10 +336,121 @@ A canActivate guard comes in two forms. The first is the deprecated
 is it's newer equivalent, the
 [`CanActivateFn`](https://angular.io/api/router/CanActivateFn).
 
-TODO: explain guard syntax (boolean | UrlTree | Observable<boolean | UrlTree> |
-Promise<boolean | UrlTree>)
+A guard can only return two types of values, a `boolean` or a `UrlTree`. When
+returning `true`, the navigation succeeds. When returning `false`, navigation is
+cancelled (as if nothing happened). When returning a `UrlTree`, the router will
+navigate to that `UrlTree` instead. You could see it as a redirect. More often
+than not, the value you need to determine the result for the guard to return is
+coming from either a HTTP request or some data store. So, in order to make the
+guard asynchronous, you can return an `Observable<boolean | UrlTree>` or a
+`Promise<boolean | UrlTree>` as well.
 
-TODO: show code example
+Now that we've cleared that up, let's look at how we would solve the Tour of
+Heroes issues with `CanActivateFn`.
+
+```typescript
+// hero-loader.ts
+import { inject } from '@angular/core';
+import { Router, CanActivateFn } from '@angular/router';
+import { BehaviorSubject, map } from 'rxjs';
+import { Hero } from './hero';
+
+import { HeroService } from './hero.service';
+
+declare global {
+  var hero: BehaviorSubject<null | Hero>;
+}
+
+window.hero = new BehaviorSubject<Hero | null>(null);
+
+export const heroLoader: CanActivateFn = (route) => {
+  const id = Number(route.paramMap.get('id')!);
+  const router = inject(Router);
+  const heroService = inject(HeroService);
+
+  return heroService.getHero(id).pipe(
+    map((hero) => {
+      window.hero.next(hero);
+      return Boolean(hero) || router.createUrlTree(['/not-found']);
+    })
+  );
+};
+```
+
+Here we define a loader function which implement the `CanActivateFn` interface.
+It mainly comprises of three parts:
+
+- get some data from the route (the `id` param value)
+- use it to fetch the hero and save it in a global variable for later use (here
+  `Window`)
+- handle the edge case (i.e. navigation to a 'Not found' page in case the hero
+  can't be found)
+
+Then, we use this function in the router config:
+
+```diff
++ import { heroLoader } from './hero-loader';
+
+const routes: Routes = [
+  // ...
+  {
+    path: 'detail/:id',
+    component: HeroDetailComponent,
+    // 🔽🔽🔽 canActivate config added here 🔽🔽🔽
++    canActivate: [heroLoader],
+  },
+  // ...
+];
+```
+
+And remove the data fetching logic from the `HeroDetailComponent`:
+
+```typescript
+import { Component } from '@angular/core';
+import { Location } from '@angular/common';
+
+import { Hero } from '../hero';
+import { HeroService } from '../hero.service';
+
+@Component({
+  selector: 'app-hero-detail',
+  templateUrl: './hero-detail.component.html',
+  styleUrls: ['./hero-detail.component.css'],
+})
+export class HeroDetailComponent {
+  hero$ = window.hero!;
+
+  constructor(private heroService: HeroService, private location: Location) {}
+
+  goBack(): void {
+    this.location.back();
+  }
+
+  save(hero: Hero): void {
+    this.heroService.updateHero(hero).subscribe(() => this.goBack());
+  }
+}
+```
+
+Now that the hero property is an `Observable<Hero | null>` instead of
+`Hero | undefined` we have to change the template a bit:
+
+```html
+<!-- need to use async pipe 🔽 -->
+<div *ngIf="hero$ | async as hero">
+  <h2>{{hero.name | uppercase}} Details</h2>
+  <div><span>id: </span>{{hero.id}}</div>
+  <div>
+    <label for="hero-name">Hero name: </label>
+    <input id="hero-name" [(ngModel)]="hero.name" placeholder="Hero name" />
+  </div>
+  <button type="button" (click)="goBack()">go back</button>
+  <!--          and pass the hero here 🔽 -->
+  <button type="button" (click)="save(hero)">save</button>
+</div>
+```
+
+[For a working example on Stackblitz, see here.](https://stackblitz.com/edit/angular-loaders-canactivate?file=src/app/hero-loader.ts)
 
 ### resolve
 
@@ -364,9 +475,9 @@ import { HeroService } from './hero.service';
 export const heroResolver: ResolveFn<Hero> = (
   route: ActivatedRouteSnapshot
 ) => {
+  const id = Number(route.paramMap.get('id')!);
   const router = inject(Router);
   const heroService = inject(HeroService);
-  const id = Number(route.paramMap.get('id')!);
 
   return heroService.getHero(id).pipe(
     mergeMap((hero) => {
@@ -474,7 +585,9 @@ Now that the hero property is an `Observable<Hero>` instead of
 </div>
 ```
 
-## Guards in review
+[For a working example on Stackblitz, see here.](https://stackblitz.com/edit/angular-loaders-resolve?file=src/app/hero-resolver.ts)
+
+## Solutions in review
 
 ### General guard data fetching experience
 
@@ -490,26 +603,35 @@ explained
 This brings additional benefits, because we only have to build the loading logic
 once instead of into each template of several other components!
 
-### resolve guard issues
+### canActivate guard
 
-But unfortunately, a resolve guard also has downsides compared to a canActivate
-guard. In case the user navigates to a hero that can't be found, the edge case
-logic kicks in, leading to a `router.navigate`. Doing that from a resolve guard
-triggers a `NavigationCancel` event. There's
+While having the possibility to do a redirect using `UrlTree` is great,
+canActivate is not perfect. The ugly part is the extra 'state' management we
+have to do. It's not even actual state, it's more of a temporary cache which we
+have to keep up to date. If there were more instances of the same component
+using the same hero variable, we'd have to resort to a more sophisticated state
+management solution like NgRx to organize it, because it can get messy quickly.
+
+### resolve guard
+
+Compared to the canActivate guard, a resolve guard solves the extra state
+management we have to do. But a resolve guard also has downsides compared to a
+canActivate guard. In case the user navigates to a hero that can't be found, the
+edge case logic kicks in, leading to a `router.navigate`. Doing that from a
+resolve guard triggers a `NavigationCancel` event. There's
 [a long-running open github issue](https://github.com/angular/angular/issues/29089)
 about this, but in a nutshell a `NavigationCancel` event confuses the router. It
-also messes up the loading indicator logic mentioned above, leading to a slight
-flicker of the loader (depending on how it's implemented).
+also messes up the loading indicator logic mentioned above, possibly leading to
+a slight flicker of the loader (depending on how it's implemented).
 
-<!-- TODO: find out more downsides of resolvers?
-[Rearchitect Router so it's more modular](https://github.com/angular/angular/issues/42953) -->
+## Conclusion
 
-### canActivate guard issues
+In this article we've seen how to use the `canActivate` and `resolve` guards to
+fetch data for a component, Remix loader style. We've seen they both have their
+up- and downsides, but in general they can both get the job done.
 
-TODO: find out
-
-### Other gotchas
-
-Guards run in parallel, there's no guarantee the first guard is finished before
-the second one. But when used as a loader this shouldn't be an issue because
-guards are highly route-bound and thus you should only have one per route.
+The Angular team is still actively working on the router
+([for example see this issue](https://github.com/angular/angular/issues/42953))
+so I still expect to see more improvements in the future. But for now, resolve
+or canActivate guards are the closest thing we have to a loader in SPA Angular
+land.
