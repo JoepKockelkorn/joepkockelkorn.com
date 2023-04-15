@@ -10,7 +10,7 @@ description:
 ## Data fetching in meta frameworks
 
 All frontend javascript meta frameworks have it these days: a mechanism for data
-fetching. They come in multiple forms, but mostly as a convention-based named
+fetching. They come in many forms, but mostly as a convention-based named
 `export`, for example
 [the `loader` export from Remix](https://remix.run/docs/en/1.15.0/route/loader):
 
@@ -49,18 +49,18 @@ are:
 - and maybe it's coming to Angular with
   [Analogjs](https://github.com/analogjs/analog/issues/197)
 
-For projects that need server-side rendering this feature is a must have. But
-not all projects have that need, maybe SEO is not that important. Sometimes a
-good old SPA is good enough, i.e. for internal applications. Adding a meta
-framework only adds unnecessary complexity since all of a sudden you have a
-server to care about and manage.
+A data fetching feature is a must have for projects that need server-side
+rendering. Not all projects have that need though, so maybe SEO is not that
+important for you. Sometimes a good old SPA is good enough, i.e. for internal
+applications. Adding a meta framework only adds unnecessary complexity since all
+of a sudden you have a server to care about and manage.
 
 ## Bringing loaders to the SPA 🛀
 
-The Remix team brought the `loader` concept to the good old SPA world with React
-Router's [loader](https://reactrouter.com/en/main/route/loader). The loader of
-Remix is (almost) equivalent to a loader in React Router, except React Router
-doesn't use file-based routing but
+The Remix team brought the `loader` concept to the Single Page Application with
+React Router's [loader](https://reactrouter.com/en/main/route/loader). A loader
+in Remix is (almost) equivalent to a loader in React Router. In comparison,
+React Router doesn't use file-based routing but
 [a router config](https://reactrouter.com/en/main/routers/create-browser-router):
 
 ```typescript
@@ -91,12 +91,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 );
 ```
 
-Another difference between Remix and React Router is that the latter does not
-provide a type-safe API (yet) using a generic argument, so a typecast will be
-needed to make Typescript happy.
+Another difference is that React Router does not provide a type-safe API (yet)
+using a generic argument, so a typecast will be needed to make Typescript happy.
 [There is an ongoing discussion about that](https://github.com/remix-run/react-router/discussions/9854).
 
-Using the retrieved data is the same in React Router as in Remix, using the
+React Router uses the same mechanism for **using** the data as Remix, via the
 [`useLoaderData`](https://reactrouter.com/en/main/hooks/use-loader-data) hook:
 
 ```typescript
@@ -108,27 +107,30 @@ export default function Team() {
 }
 ```
 
-We shouldn't underestimate how much the `loader` concept does for separation of
-concerns (and thus maintainability/readability) and preventing
-[those pesky race condition bugs](https://react.dev/learn/you-might-not-need-an-effect#fetching-data)
-compared to when you do data fetching in the component itself. For React we
-could consider other alternatives like
-[React Query](https://tanstack.com/query/latest/docs/react/overview) (which
-comes with its own additional complexity).
+The `loader` concept brings a big win in terms of separation of concerns,
+maintainability, readability and preventing
+[those pesky race condition bugs when using `useEffect` in the component itself](https://react.dev/learn/you-might-not-need-an-effect#fetching-data).
+
+There are other alternatives to do data fetching like
+[React Query](https://tanstack.com/query/latest/docs/react/overview) or Redux
+(which each come with their own additional complexity). But the `loader` concept
+is simple and easy to understand.
 
 ## Angular must be missing a loader 👼
 
-The Angular router ([`@angular/router`](https://angular.io/guide/router))
-doesn't have a `loader` concept similar to React Router. Actually, to achieve
-the same result (fetch data and use it in the route component) there are no
-evident first-party solutions to pick. Let's review some options, using the
-'Hello World' tutorial of angular.io as a showcase:
-[Tour of Heroes](https://angular.io/tutorial/tour-of-heroes).
+At first sight the Angular router
+([`@angular/router`](https://angular.io/guide/router)) doesn't promote a
+`loader` concept similar to React Router. There is no evident 'data fetching'
+section in the docs. That doesn't mean it can't be done using the tools at hand.
+Let's use the 'Hello World' tutorial of angular.io
+[Tour of Heroes](https://angular.io/tutorial/tour-of-heroes) as a showcase
+application to apply solutions on.
 
 ## Tour of Heroes
 
 The setup is pretty simple, it's an application with the goal of
-showing/managing some heroes. It has a couple of components, let's go over them.
+showing/managing some heroes. It has a couple of components, let's go over them
+shortly.
 
 ### DashboardComponent
 
@@ -218,13 +220,16 @@ export class HeroDetailComponent implements OnInit {
 }
 ```
 
+For the rest of this blog post I'll focus on this component to apply possible
+solutions on.
+
 ## Tour of Heroes in review
 
-For most experienced Angular developers it might not be a shock that the Tour of
-Heroes is not exactly world class code that should be used in production. But it
-can still be useful for this blog post, to see how we would improve and
-potentially use the concept of loaders in Angular. Let's take a detailed look at
-the `HeroDetailComponent`.
+For experienced Angular developers it might not be a shock that the Tour of
+Heroes is not exactly world class code that should be used in production. It is
+not promoted as such. But it can still be useful for this blog post, to see how
+we would improve and potentially use the concept of loaders in Angular. Let's
+take a detailed look at the `HeroDetailComponent`.
 
 ### HeroDetailComponent
 
@@ -630,8 +635,9 @@ In this article we've seen how to use the `canActivate` and `resolve` guards to
 fetch data for a component, Remix loader style. We've seen they both have their
 up- and downsides, but in general they can both get the job done.
 
-The Angular team is still actively working on the router
-([for example see this issue](https://github.com/angular/angular/issues/42953))
-so I still expect to see more improvements in the future. But for now, resolve
-or canActivate guards are the closest thing we have to a loader in SPA Angular
-land.
+While being pretty feature-complete, the Angular team is still actively working
+on the router.
+[For example see this issue](https://github.com/angular/angular/issues/42953),
+saying the architecture is problematic (in 2021). I still expect to see more
+improvements in the future. But for now, resolve or canActivate guards are the
+closest thing we have to a loader in SPA Angular land.
