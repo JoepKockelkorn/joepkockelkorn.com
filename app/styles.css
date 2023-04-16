@@ -9,12 +9,14 @@
     --color-primary-700: 194 65 12;
     --color-text: 31 41 55;
     --color-background: 243 244 246;
+    --color-code: rgb(1 22 39 / 0.8);
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
       --color-text: 255 255 255;
       --color-background: 31 41 55;
+      --color-code: rgb(1 22 39);
     }
   }
 }

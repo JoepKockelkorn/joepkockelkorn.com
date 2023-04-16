@@ -9,6 +9,7 @@ module.exports = {
           400: 'rgb(var(--color-primary-400) / <alpha-value>)',
           700: 'rgb(var(--color-primary-700) / <alpha-value>)',
         },
+        code: 'var(--color-code)',
         background: {
           DEFAULT: 'rgb(var(--color-background) / <alpha-value>)',
         },
