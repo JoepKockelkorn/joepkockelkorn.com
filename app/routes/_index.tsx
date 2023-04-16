@@ -45,7 +45,7 @@ export default function Index() {
           aria-label="Twitter @JoepKockelkorn"
         >
           <svg
-            className="transform motion-safe:transition-all group-hover:scale-125 p-2"
+            className="transform motion-safe:transition-all group-hover:scale-125 p-2 h-full w-full"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -63,7 +63,7 @@ export default function Index() {
           aria-label="LinkedIn joepkockelkorn"
         >
           <svg
-            className="transform motion-safe:transition-all group-hover:scale-125 p-2"
+            className="transform motion-safe:transition-all group-hover:scale-125 p-2 h-full w-full"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -81,7 +81,7 @@ export default function Index() {
           aria-label="GitHub joepkockelkorn"
         >
           <svg
-            className="transform motion-safe:transition-all group-hover:scale-125 p-2"
+            className="transform motion-safe:transition-all group-hover:scale-125 p-2 h-full w-full"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -99,7 +99,7 @@ export default function Index() {
           aria-label="Stack Overflow joep-kockelkorn"
         >
           <svg
-            className="transform motion-safe:transition-all group-hover:scale-125 p-2"
+            className="transform motion-safe:transition-all group-hover:scale-125 p-2 h-full w-full"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
