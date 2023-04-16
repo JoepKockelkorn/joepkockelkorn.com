@@ -394,7 +394,7 @@ It mainly comprises of three parts:
 
 Then, we use this function in the router config:
 
-```diff
+```typescript
 + import { heroLoader } from './hero-loader';
 
 const routes: Routes = [
@@ -403,7 +403,7 @@ const routes: Routes = [
     path: 'detail/:id',
     component: HeroDetailComponent,
     // 🔽🔽🔽 canActivate config added here 🔽🔽🔽
-+    canActivate: [heroLoader],
++     canActivate: [heroLoader],
   },
   // ...
 ];
@@ -509,7 +509,7 @@ comprises of three parts:
 
 Then, we use this function in the router config:
 
-```diff
+```typescript
 + import { heroResolver } from './hero-resolver';
 
 const routes: Routes = [
@@ -518,7 +518,7 @@ const routes: Routes = [
     path: 'detail/:id',
     component: HeroDetailComponent,
     // 🔽🔽🔽 resolve config added here 🔽🔽🔽
-+    resolve: { hero: heroResolver },
++     resolve: { hero: heroResolver },
   },
   // ...
 ];
