@@ -12,7 +12,7 @@ description:
 All frontend javascript meta frameworks have it these days: a mechanism for data
 fetching. They come in many forms, but mostly as a convention-based named
 `export`, for example
-[the `loader` export from Remix](https://remix.run/docs/en/1.15.0/route/loader):
+[the loader export from Remix](https://remix.run/docs/en/1.15.0/route/loader):
 
 ```typescript
 import { json } from '@remix-run/node';
@@ -109,7 +109,8 @@ export default function Team() {
 
 The `loader` concept brings a big win in terms of separation of concerns,
 maintainability, readability and preventing
-[those pesky race condition bugs when using `useEffect` in the component itself](https://react.dev/learn/you-might-not-need-an-effect#fetching-data).
+[those pesky race condition bugs](https://react.dev/learn/you-might-not-need-an-effect#fetching-data)
+when using `useEffect` in the component itself.
 
 There are other alternatives to do data fetching like
 [React Query](https://tanstack.com/query/latest/docs/react/overview) or Redux
@@ -455,7 +456,7 @@ Now that the hero property is an `Observable<Hero | null>` instead of
 </div>
 ```
 
-[For a working example on Stackblitz, see here.](https://stackblitz.com/edit/angular-loaders-canactivate?file=src/app/hero-loader.ts)
+[See a working example on Stackblitz here.](https://stackblitz.com/edit/angular-loaders-canactivate?file=src/app/hero-loader.ts)
 
 ### resolve
 
@@ -590,7 +591,7 @@ Now that the hero property is an `Observable<Hero>` instead of
 </div>
 ```
 
-[For a working example on Stackblitz, see here.](https://stackblitz.com/edit/angular-loaders-resolve?file=src/app/hero-resolver.ts)
+[See a working example on Stackblitz here.](https://stackblitz.com/edit/angular-loaders-resolve?file=src/app/hero-resolver.ts)
 
 ## Solutions in review
 
