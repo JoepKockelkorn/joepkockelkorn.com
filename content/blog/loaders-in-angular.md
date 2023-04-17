@@ -383,7 +383,7 @@ export const heroLoader: CanActivateFn = (route) => {
 };
 ```
 
-Here we define a loader function which implement the `CanActivateFn` interface.
+Here we define a loader function which implements the `CanActivateFn` interface.
 It mainly comprises of three parts:
 
 - get some data from the route (the `id` param value)
@@ -499,7 +499,7 @@ export const heroResolver: ResolveFn<Hero> = (
 };
 ```
 
-Here we define a function which implement the `ResolveFn` interface. It mainly
+Here we define a function which implements the `ResolveFn` interface. It mainly
 comprises of three parts:
 
 - get some data from the route (the `id` param value)
