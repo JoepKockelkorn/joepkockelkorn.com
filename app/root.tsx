@@ -51,6 +51,19 @@ export function Website({ children, shouldHydrate = false }: WebsiteProps) {
           href="/favicon-16x16.png"
         />
         <link rel="manifest" href="/site.webmanifest" />
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-BS603B8LYL"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-BS603B8LYL');`,
+          }}
+        />
         <Meta />
         <Links />
       </head>
