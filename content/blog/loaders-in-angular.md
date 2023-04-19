@@ -1,10 +1,10 @@
 ---
 title: Loaders in Angular
-date: 2023-04-15
-draft: true
+date: 2023-04-19
+draft: false
 description:
-  'Loaders in Angular: Exploring the concept of Remix loaders in the world of
-  SPA Angular.'
+  'Exploring the concept of Remix loaders in the Tour of Heroes and explain what
+  would come closest to a loader in Angular.'
 ---
 
 ## Data fetching in meta frameworks

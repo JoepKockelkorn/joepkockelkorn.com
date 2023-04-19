@@ -7,7 +7,7 @@ export function Header() {
         <ol className="flex">
           <li className="flex">
             <MyNavLink to="/" text="Home" end />
-            {/* <MyNavLink to="/blog" text="Blog" /> */}
+            <MyNavLink to="/blog" text="Blog" />
           </li>
         </ol>
       </nav>

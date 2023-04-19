@@ -19,15 +19,17 @@ export const headers: HeadersFunction = () => {
   };
 };
 
-export async function loader({}: LoaderArgs) {
-  const posts = (await fetchBlogPosts()).map((post) =>
+export async function loader({ request }: LoaderArgs) {
+  const ref = new URL(request.url).searchParams.get('ref') ?? undefined;
+  const posts = (await fetchBlogPosts(ref)).map((post) =>
     omit(post, ['bodyMarkdown'])
   );
   const sortedPosts = sortBy(posts, (post) =>
     new Date(post.meta.date.raw).getTime()
   );
+  const newestPostsFirst = [...sortedPosts].reverse();
 
-  return json({ posts: sortedPosts });
+  return json({ posts: newestPostsFirst });
 }
 
 export default function Component() {
@@ -38,7 +40,7 @@ export default function Component() {
       <h1 className="leading-tight font-bold text-4xl mt-8 mb-12 text-gradient">
         My blog posts
       </h1>
-      <div className="space-y-4">
+      <div className="space-y-12">
         {posts.map((post) => (
           <article key={post.slug}>
             <Link
