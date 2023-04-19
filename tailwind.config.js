@@ -1,6 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./app/**/*.tsx', './app/**/*.ts'],
+  safelist: [
+    'admonition',
+    {
+      pattern: /admonition-(title|info)/,
+    },
+  ],
   theme: {
     extend: {
       colors: {
@@ -12,6 +18,10 @@ module.exports = {
         code: 'var(--color-code)',
         background: {
           DEFAULT: 'rgb(var(--color-background) / <alpha-value>)',
+        },
+        'admonition-title-background': {
+          DEFAULT:
+            'rgb(var(--color-admonition-title-background) / <alpha-value>)',
         },
         text: {
           DEFAULT: 'rgb(var(--color-text) / <alpha-value>)',
