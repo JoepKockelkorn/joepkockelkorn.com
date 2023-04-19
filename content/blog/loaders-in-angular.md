@@ -321,16 +321,25 @@ Let's explain them:
   is activated. But this one is different than `CanActivateFn`, because it's
   purpose is exclusively for data fetching.
 
+!!! info `CanMatchFn` vs `CanLoadFn` vs `CanActivateFn`
+
 Since in Angular version 14.1 the
 [CanMatchFn](https://angular.io/api/router/CanMatchFn) was added, the
 `CanLoadFn`, `CanActivateFn` and `CanActivateChildFn` seems to be less useful
 for data fetching, because with `CanMatchFn` you can prevent a route from being
 matched at all. And routes that are not going to be matched **will not be loaded
 or activated**. So `CanMatchFn` is more powerful than the `CanLoadFn` and
-`CanActivate(Child)Fn` because it's evaluated sooner. But its downside is that
-the `route` parameter is not yet a fully qualified `ActivatedRouteSnapshot`, so
-getting url params is not easy
+`CanActivate(Child)Fn` because it's evaluated sooner.
+
+But its downside is that the `route` parameter is not yet a fully qualified
+`ActivatedRouteSnapshot`, so getting url params is not easy
 ([see explanation](https://github.com/angular/angular/issues/49309#issuecomment-1453863052)).
+So therefore, `CanMatchFn` is currently not a good fit for data fetching.
+
+`CanLoadFn` is also not a good fit for data fetching, because it's only called
+for lazy loaded components or modules, not for **every** route.
+
+!!!
 
 Let's look at the canActivate and resolve guards more in detail and how they
 could be used for data fetching.
@@ -559,6 +568,8 @@ export class HeroDetailComponent {
 }
 ```
 
+!!! info Typecasting
+
 Note we still have to pluck the hero from the route data. The plucking requires
 a type annotation or a typecast because by default any property on `Data`
 resolves to `any`:
@@ -572,6 +583,8 @@ type Data = {
 This typecasting issue is also there in Remix. In Remix we also have to help
 typescript to infer the type of the loader using
 `useLoaderData<typeof loader>()`.
+
+!!!
 
 Now that the hero property is an `Observable<Hero>` instead of
 `Hero | undefined` we have to change the template a bit:
