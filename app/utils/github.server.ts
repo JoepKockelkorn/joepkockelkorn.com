@@ -151,8 +151,8 @@ export function convertMarkdownToHtml(requestUrl: URL, markdown: string) {
 
     const escapedCode = escaped ? code : escape(code, true);
     return `<pre><code${
-      !lang ? '' : `class="${escape(lang)}"`
-    }>${escapedCode}</code$></pre>\n`;
+      !lang ? '' : ` lang="${escape(lang)}"`
+    }>${escapedCode}</code></pre>\n`;
   };
 
   return marked.parse(markdown, { renderer, highlight });
