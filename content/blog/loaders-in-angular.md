@@ -329,10 +329,15 @@ Since in Angular version 14.1 the
 for data fetching, because with `CanMatchFn` you can prevent a route from being
 matched at all. And routes that are not going to be matched **will not be loaded
 or activated**. So `CanMatchFn` is more powerful than the `CanLoadFn` and
-`CanActivate(Child)Fn` because it's evaluated sooner. But its downside is that
-the `route` parameter is not yet a fully qualified `ActivatedRouteSnapshot`, so
-getting url params is not easy
+`CanActivate(Child)Fn` because it's evaluated sooner.
+
+But its downside is that the `route` parameter is not yet a fully qualified
+`ActivatedRouteSnapshot`, so getting url params is not easy
 ([see explanation](https://github.com/angular/angular/issues/49309#issuecomment-1453863052)).
+So therefore, `CanMatchFn` is currently not a good fit for data fetching.
+
+`CanLoadFn` is also not a good fit for data fetching, because it's only called
+for lazy loaded components or modules, not for **every** route.
 
 !!!
 
