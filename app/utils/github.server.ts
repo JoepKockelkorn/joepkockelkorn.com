@@ -1,10 +1,13 @@
 import { marked } from 'marked';
+import admonition from 'marked-admonition-extension';
 import parseMarkdown from 'front-matter';
 import { z } from 'zod';
 import hljs from 'highlight.js/lib/core';
 import typescript from 'highlight.js/lib/languages/typescript';
 import xml from 'highlight.js/lib/languages/xml';
 import { isTruthy } from 'remeda';
+
+marked.use(admonition);
 
 const blogPostFrontMatterSchema = z.object({
   title: z.string(),
@@ -152,7 +155,7 @@ export function convertMarkdownToHtml(requestUrl: URL, markdown: string) {
     }>${escapedCode}</code$></pre>\n`;
   };
 
-  return marked(markdown, { renderer, highlight });
+  return marked.parse(markdown, { renderer, highlight });
 }
 
 function getSlugFromFilename(name: string) {
