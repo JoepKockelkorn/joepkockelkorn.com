@@ -29,8 +29,8 @@ type GithubFile = {
   download_url: string;
 };
 
-export async function fetchBlogPosts(): Promise<MinimalBlogPost[]> {
-  const url = `https://api.github.com/repos/joepkockelkorn/joepkockelkorn.com/contents/content/blog`;
+export async function fetchBlogPosts(ref = 'main'): Promise<MinimalBlogPost[]> {
+  const url = `https://api.github.com/repos/joepkockelkorn/joepkockelkorn.com/contents/content/blog?ref=${ref}`;
   const res = await fetch(url, {
     headers: { 'User-Agent': 'joepkockelkorn.com' },
   });
@@ -38,7 +38,7 @@ export async function fetchBlogPosts(): Promise<MinimalBlogPost[]> {
   const posts = await Promise.all(
     files
       .filter((file) => file.name.endsWith('.md'))
-      .map((file) => fetchBlogPost(getSlugFromFilename(file.name)))
+      .map((file) => fetchBlogPost(getSlugFromFilename(file.name), ref))
   );
   return posts
     .filter(isTruthy)
