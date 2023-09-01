@@ -1,5 +1,5 @@
 import { component$ } from '@builder.io/qwik';
-import { Link, useLocation } from '@builder.io/qwik-city';
+import { useLocation } from '@builder.io/qwik-city';
 
 export const Header = component$(() => {
 	return (
@@ -7,7 +7,7 @@ export const Header = component$(() => {
 			<nav class="w-full max-w-3xl mx-auto flex justify-end">
 				<ol class="flex">
 					<li class="flex">
-						<MyNavLink to="/" text="Home" end />
+						<MyNavLink to="/" text="Home" exact />
 						<MyNavLink to="/blog" text="Blog" />
 					</li>
 				</ol>
@@ -16,17 +16,17 @@ export const Header = component$(() => {
 	);
 });
 
-const MyNavLink = component$(({ to, end, text }: { to: string; text: string; end?: boolean }) => {
+const MyNavLink = component$(({ to, exact, text }: { to: string; text: string; exact?: boolean }) => {
 	const location = useLocation();
-	const isCurrent = location.url.pathname === to || (end && location.url.pathname.startsWith(to));
+	const isCurrent = exact ? location.url.pathname === to : location.url.pathname.startsWith(to);
 
 	return (
-		<Link class="text-lg p-4 group -outline-offset-2" href={to} aria-current={isCurrent}>
+		<a class="text-lg p-4 group -outline-offset-2" href={to} aria-current={isCurrent || undefined}>
 			<span
 				class={`relative after:absolute after:w-full after:h-[2px] after:bottom-0 after:left-0 after:origin-bottom-left after:transition-transform after:ease-out after:bg-primary-400 after:scale-x-0 group-hover:after:scale-x-100 group-focus-visible:after:scale-x-100 after:will-change-transform group-aria-[current]:after:scale-x-100`}
 			>
 				{text}
 			</span>
-		</Link>
+		</a>
 	);
 });
