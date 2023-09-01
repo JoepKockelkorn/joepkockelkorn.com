@@ -24,7 +24,7 @@
 	font-display: swap;
 	font-weight: 400;
 	src:
-		local(''),
+		local('Mukta-Regular'),
 		url('/fonts/mukta-v13-latin-regular.woff2') format('woff2'),
 		/* Chrome 26+, Opera 23+, Firefox 39+ */ url('/fonts/mukta-v13-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
@@ -35,7 +35,7 @@
 	font-display: swap;
 	font-weight: 500;
 	src:
-		local(''),
+		local('Mukta-Regular'),
 		url('/fonts/mukta-v13-latin-500.woff2') format('woff2'),
 		/* Chrome 26+, Opera 23+, Firefox 39+ */ url('/fonts/mukta-v13-latin-500.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
@@ -46,7 +46,7 @@
 	font-display: swap;
 	font-weight: 600;
 	src:
-		local(''),
+		local('Mukta-Regular'),
 		url('/fonts/mukta-v13-latin-600.woff2') format('woff2'),
 		/* Chrome 26+, Opera 23+, Firefox 39+ */ url('/fonts/mukta-v13-latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
@@ -57,7 +57,7 @@
 	font-display: swap;
 	font-weight: 700;
 	src:
-		local(''),
+		local('Mukta-Regular'),
 		url('/fonts/mukta-v13-latin-700.woff2') format('woff2'),
 		/* Chrome 26+, Opera 23+, Firefox 39+ */ url('/fonts/mukta-v13-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
@@ -67,7 +67,7 @@
 	font-display: swap;
 	font-weight: 400;
 	src:
-		local(''),
+		local('DankMono-Regular'),
 		url('/fonts/DankMono-Regular.woff2') format('woff2'); /* Chrome 26+, Opera 23+, Firefox 39+ */
 }
 @font-face {
@@ -76,7 +76,7 @@
 	font-display: swap;
 	font-weight: 700;
 	src:
-		local(''),
+		local('DankMono-Regular'),
 		url('/fonts/DankMono-Bold.woff2') format('woff2'); /* Chrome 26+, Opera 23+, Firefox 39+ */
 }
 @font-face {
@@ -85,6 +85,6 @@
 	font-display: swap;
 	font-weight: 400;
 	src:
-		local(''),
+		local('DankMono-Regular'),
 		url('/fonts/DankMono-Italic.woff2') format('woff2'); /* Chrome 26+, Opera 23+, Firefox 39+ */
 }
