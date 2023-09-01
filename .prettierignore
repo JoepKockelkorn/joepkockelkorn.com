@@ -4,6 +4,7 @@
 .vscode/settings.json
 .history
 .yarn
+.husky
 bazel-*
 bazel-bin
 bazel-out
