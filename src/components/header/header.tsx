@@ -1,9 +1,9 @@
 import { component$ } from '@builder.io/qwik';
 import { useLocation } from '@builder.io/qwik-city';
 
-export const Header = component$(() => {
+export const Header = component$((props: { class?: string }) => {
 	return (
-		<header class="w-full border-b dark:border-b-gray-700 bg-background">
+		<header class={`w-full border-b dark:border-b-gray-700 bg-background ${props.class}`}>
 			<nav class="w-full max-w-3xl mx-auto flex justify-end">
 				<ol class="flex">
 					<li class="flex">

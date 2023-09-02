@@ -23,7 +23,7 @@
 	}
 
 	html {
-		@apply h-full flex flex-col hyphens word-break;
+		@apply h-full flex flex-col hyphens word-break scroll-smooth scroll-pt-[4rem];
 	}
 }
 

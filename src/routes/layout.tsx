@@ -19,13 +19,13 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 
 export default component$(() => {
 	return (
-		<div class="h-full flex flex-col">
-			<Header />
-			<main class="overflow-auto scroll-smooth isolate flex-grow flex-shrink">
+		<>
+			<Header class="h-[3.75rem] fixed z-10 flex-shrink-0" />
+			<main class="isolate flex-grow flex-shrink z-0 mt-[3.75rem]">
 				<div class="h-full px-4 md:px-6 xl:px-8 max-w-3xl mx-auto flex flex-col">
 					<Slot />
 				</div>
 			</main>
-		</div>
+		</>
 	);
 });

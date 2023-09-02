@@ -13,7 +13,7 @@ export default component$(() => {
 				<link rel="manifest" href="/manifest.json" />
 				<RouterHead />
 			</head>
-			<body lang="en" class="h-full py-0 bg-background text-text">
+			<body lang="en" class="h-full py-0 bg-background flex flex-col text-text overflow-auto scroll-smooth">
 				<RouterOutlet />
 				<ServiceWorkerRegister />
 			</body>
