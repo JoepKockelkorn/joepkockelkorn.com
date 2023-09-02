@@ -1,6 +1,6 @@
 import { component$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
-import { Link, routeLoader$ } from '@builder.io/qwik-city';
+import { routeLoader$ } from '@builder.io/qwik-city';
 import { omit, sortBy } from 'remeda';
 import { fetchBlogPosts } from '~/utils/github.server';
 
@@ -25,7 +25,7 @@ export default component$(() => {
 			<div class="space-y-12">
 				{posts.value.map((post) => (
 					<article key={post.slug}>
-						<Link
+						<a
 							href={`/blog/${post.slug}`}
 							class="block group space-y-4 outline-0 focus-visible:shadow-[0px_0px_0px_2px_rgb(var(--color-primary-400))]"
 						>
@@ -34,7 +34,7 @@ export default component$(() => {
 							<div class='font-bold after:content-["_→"] after:opacity-0 group-hover:after:opacity-100 motion-safe:after:transition-opacity'>
 								Read more
 							</div>
-						</Link>
+						</a>
 					</article>
 				))}
 			</div>
