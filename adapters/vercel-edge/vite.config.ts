@@ -12,11 +12,10 @@ export default extendConfig(baseConfig, () => {
       outDir: ".vercel/output/functions/_qwik-city.func",
     },
     plugins: [vercelEdgeAdapter({
-      // TODO: find out why vercel shows white screen
-      // ssg: {
-      //   include :['/', '/blog/*'],
-      //   origin: 'https://joepkockelkorn.com',
-      // }
+      ssg: {
+        include: ['*'],
+        origin: 'https://joepkockelkorn.com',
+      }
     })],
   };
 });

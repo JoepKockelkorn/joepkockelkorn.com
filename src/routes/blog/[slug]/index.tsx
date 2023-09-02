@@ -1,20 +1,28 @@
 import { component$ } from '@builder.io/qwik';
-import type { DocumentHead } from '@builder.io/qwik-city';
+import type { DocumentHead, StaticGenerateHandler } from '@builder.io/qwik-city';
 import { routeLoader$ } from '@builder.io/qwik-city';
 import invariant from 'tiny-invariant';
 
 import 'highlight.js/styles/night-owl.css';
-import { convertMarkdownToHtml, fetchBlogPost } from '~/utils/github.server';
-import { getDomainUrl } from '~/utils/domain.server';
 import { isNil } from 'remeda';
+import { convertMarkdownToHtml, fetchBlogPost, fetchBlogPosts } from '~/utils/github.server';
+
+export const onStaticGenerate: StaticGenerateHandler = async () => {
+	const blogPosts = await fetchBlogPosts();
+	const publishedPosts = blogPosts.filter((post) => !post.meta.draft);
+
+	return {
+		params: publishedPosts.map(({ slug }) => ({ slug })),
+	};
+};
 
 export const head: DocumentHead = ({ resolveValue }) => {
 	const data = resolveValue(usePost);
 	if (isNil(data)) return {};
 
+	const host = 'https://joepkockelkorn.com';
 	const {
 		meta: { title, description, draft },
-		host,
 		slug,
 	} = data;
 
@@ -40,7 +48,7 @@ export const head: DocumentHead = ({ resolveValue }) => {
 	};
 };
 
-export const usePost = routeLoader$(async ({ query, params, url, request }) => {
+export const usePost = routeLoader$(async ({ query, params, url }) => {
 	invariant(params.slug, 'Slug is required');
 	const ref = query.get('ref') ?? undefined;
 
@@ -48,9 +56,7 @@ export const usePost = routeLoader$(async ({ query, params, url, request }) => {
 	if (blogPost === null) throw new Response('Not found', { status: 404 });
 	const html = convertMarkdownToHtml(url, blogPost.bodyMarkdown);
 
-	const host = getDomainUrl(request);
-
-	return { html, meta: blogPost.meta, host, slug: params.slug };
+	return { html, meta: blogPost.meta, slug: params.slug };
 });
 
 export default component$(() => {
