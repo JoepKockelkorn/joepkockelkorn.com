@@ -1,8 +1,14 @@
-import { Resvg } from '@resvg/resvg-js';
+import { initWasm, Resvg } from '@resvg/resvg-wasm';
 import type { SatoriOptions } from 'satori';
 import satori from 'satori';
 
+let initialized = false;
+
 export async function createOGImage(title: string, origin: string) {
+	if (!initialized) {
+		await initWasm('https://unpkg.com/@resvg/resvg-wasm@2.4.1/index_bg.wasm');
+		initialized = true;
+	}
 	const muktaFont = await getMuktaFont(origin);
 	const options: SatoriOptions = {
 		width: 1200,

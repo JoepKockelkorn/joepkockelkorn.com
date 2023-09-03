@@ -25,7 +25,7 @@
 	"devDependencies": {
 		"@builder.io/qwik": "^1.2.10",
 		"@builder.io/qwik-city": "^1.2.10",
-		"@resvg/resvg-js": "^2.4.1",
+		"@resvg/resvg-wasm": "2.4.1",
 		"@tailwindcss/typography": "^0.5.9",
 		"@types/eslint": "8.44.1",
 		"@types/marked": "^5.0.1",
