@@ -6,7 +6,7 @@ let initialized = false;
 
 export async function createOGImage(title: string, origin: string) {
 	if (!initialized) {
-		await initWasm('https://unpkg.com/@resvg/resvg-wasm@2.4.1/index_bg.wasm');
+		await initWasm(new URL(`${origin}/index_bg.wasm`));
 		initialized = true;
 	}
 	const muktaFont = await getMuktaFont(origin);
