@@ -14,7 +14,7 @@ export async function createOGImage(title: string, origin: string) {
 		await initWasm(
 			typeof EdgeRuntime === 'string'
 				? // @ts-ignore
-				import(`${origin}/index_bg.wasm?module`)
+				import(`${origin}/index_bg.wasm`)
 				: new URL(`${origin}/index_bg.wasm`),
 		);
 		initialized = true;
