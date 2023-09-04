@@ -4,9 +4,19 @@ import satori from 'satori';
 
 let initialized = false;
 
+declare global {
+	const EdgeRuntime: unknown;
+}
+
 export async function createOGImage(title: string, origin: string) {
 	if (!initialized) {
-		await initWasm(new URL(`${origin}/index_bg.wasm`));
+		// prettier-ignore
+		await initWasm(
+			typeof EdgeRuntime === 'string'
+				? // @ts-ignore
+				import(`${origin}/index_bg.wasm?module`)
+				: new URL(`${origin}/index_bg.wasm`),
+		);
 		initialized = true;
 	}
 	const muktaFont = await getMuktaFont(origin);
