@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	:root {
+		--color-primary-200: 254 215 170;
+		--color-primary-400: 251 146 60;
+		--color-primary-700: 194 65 12;
+		--color-text: 31 41 55;
+		--color-background: 243 244 246;
+		--color-code: rgb(1 22 39 / 0.8);
+		--icon-info: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>');
+		--admonition-color-info: 124 58 237;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:root {
+			--color-text: 255 255 255;
+			--color-background: 31 41 55;
+			--color-code: rgb(1 22 39);
+		}
+	}
+
+	html {
+		@apply h-full flex flex-col hyphens word-break scroll-smooth scroll-pt-[4rem];
+	}
+}
+
+@layer components {
+	.header-link {
+		@apply no-underline inline-block relative after:absolute after:w-full after:h-[0.08em] after:bottom-[0.05em] after:left-0 after:origin-bottom-left after:transition-transform after:ease-out after:bg-primary-400 after:scale-x-0 hover:after:scale-x-100 focus-visible:after:scale-x-100 after:will-change-transform;
+	}
+
+	.admonition {
+		@apply text-base leading-8 border-2 px-6 rounded-md shadow-md my-10 border-[rgb(var(--admonition-color))];
+		&-info {
+			--admonition-color: var(--admonition-color-info);
+			--admonition-icon: var(--icon-info);
+		}
+
+		& > .admonition-title {
+			@apply -mx-6 py-2 pr-6 pl-16 my-0 rounded-t-sm border-b-2 border-[rgb(var(--admonition-color))] relative before:[mask-image:var(--admonition-icon)] before:absolute before:left-6 before:top-1/2 before:w-6 before:h-6 before:bg-[rgb(var(--admonition-color))] before:-translate-y-1/2;
+		}
+	}
+}
