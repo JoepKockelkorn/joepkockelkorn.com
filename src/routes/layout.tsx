@@ -12,6 +12,7 @@ export const onGet: RequestHandler = async ({ headers }) => {
 		'Cache-Control',
 		cacheHeader({
 			public: true,
+			maxAge: '5 seconds',
 			sMaxage: '1 minute',
 			staleWhileRevalidate: '1 year',
 		}),
