@@ -26,7 +26,7 @@ export const head: DocumentHead = ({ resolveValue }) => {
 		slug,
 	} = data;
 
-	const ogImageUrl = new URL(`${host}/og-image`);
+	const ogImageUrl = new URL('https://joepkockelkorn-com-og-image.vercel.app/og-image');
 	ogImageUrl.searchParams.set('title', title);
 	const ogUrl = new URL(`${host}/blog/${slug}`);
 
