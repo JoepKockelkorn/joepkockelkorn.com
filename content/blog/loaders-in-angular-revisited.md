@@ -33,9 +33,10 @@ export class About {
 The feature can be enabled by calling [`withComponentInputBinding()`](https://angular.io/api/router/withComponentInputBinding) as part of
 `provideRouter`:
 
+<!--prettier-ignore-->
 ```ts
 bootstrapApplication(AppComponent, {
-	providers: [provideRouter([], withComponentInputBinding())],
+  providers: [provideRouter([], withComponentInputBinding())]
 });
 ```
 
@@ -78,7 +79,7 @@ provideRouter(
 ## Setting things straight
 
 This blog post will try to be the best example of bringing the concept of Remix loaders to Angular. But before I do that, I have to set
-something straight. In [the previous blog post](./loaders-in-angular), I wrote that the `resolve` function is not so great. I said:
+something straight. In [the previous blog post](../loaders-in-angular), I wrote that the `resolve` function is not so great. I said:
 
 > Doing a `router.navigate` from a resolve guard triggers a `NavigationCancel` event. There's
 > [a long-running open github issue](https://github.com/angular/angular/issues/29089) about this, but in a nutshell a `NavigationCancel`
