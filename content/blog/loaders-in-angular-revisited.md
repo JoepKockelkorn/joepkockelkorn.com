@@ -33,11 +33,10 @@ export class About {
 The feature can be enabled by calling [`withComponentInputBinding()`](https://angular.io/api/router/withComponentInputBinding) as part of
 `provideRouter`:
 
-<!--prettier-ignore-->
 ```ts
-bootstrapApplication(AppComponent, {
-  providers: [provideRouter([], withComponentInputBinding())]
-});
+const routes = [];
+
+provideRouter(routes, withComponentInputBinding());
 ```
 
 ### Less code needed
