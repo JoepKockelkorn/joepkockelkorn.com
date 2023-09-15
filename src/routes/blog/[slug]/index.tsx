@@ -71,7 +71,7 @@ export default component$(() => {
 			</time>
 			<h1 class="leading-tight font-bold text-gradient text-6xl mt-2 mb-12">{title}</h1>
 			<article
-				class="prose prose-li:my-[0.25em] prose-lg dark:prose-invert pb-[100px] prose-pre:bg-[#011627] prose-code:before:content-none prose-code:after:content-none prose-code:[&_:not(pre)]:bg-code prose-code:text-white prose-code:rounded-[4px] prose-code:[&_:not(pre)]:px-1.5 prose-code:[&_:not(pre)]:py-1 prose-code:[&_a]:underline prose-h1:leading-[1.4] max-w-none"
+				class="prose prose-li:my-[0.25em] prose-lg dark:prose-invert pb-[100px] prose-pre:bg-[#011627] prose-code:before:content-none prose-code:after:content-none prose-code:[&_:not(pre)]:bg-code prose-code:text-white prose-code:rounded-[4px] prose-code:[&_:not(pre)]:px-1.5 prose-code:[&_:not(pre)]:py-1 prose-code:[&_a]:underline prose-h1:leading-[1.4] prose-code:hyphens-none max-w-none"
 				dangerouslySetInnerHTML={html}
 			/>
 		</>
