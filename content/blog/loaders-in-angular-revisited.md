@@ -137,11 +137,100 @@ guard, which means less code. So let's put it to good use.
 
 ## Remixing the loader into Angular
 
-To have a proper example of how to use the concept of Remix loaders in Angular, I created a small app. It's a simple app about books that
-has authentication logic, a 404 page, an overview page and a detail page with some tabs: general and admin (with authorization). Here is the
-sitemap:
+To have a proper example of how to use the concept of Remix loaders in Angular, I created a small app. You can find the source code on
+github: [JoepKockelkorn/loaders-in-angular](https://github.com/JoepKockelkorn/loaders-in-angular).
 
-![Books app sitemap](https://ik.imagekit.io/joepkockelkorn/tr:w-768,f-auto/loaders-in-angular-revisited/books-sitemap.png)
+It's a simple books app where the user can view an overview of books and when they're an admin of a book, they can also toggle the
+availability on a detail page.
 
-<!-- TODO: explain feature you typically need in a production app like 404 behavior, permission checking on the data level, an app global loading indicator, reuse of types (and data revalidation?) -->
+These are the possible routes:
+
+```
+  /
+  /login
+  /books
+  /books/:id
+  /books/:id/general
+  /books/:id/admin
+  /404
+```
+
+This is the behavior:
+
+- All the routes under `/books` are protected
+- The `/books` route shows a list of books, the user can click on a book to go to `/books/:id`
+- The `/books/:id` route shows some basic info on a book plus an outlet for two tabs:
+  - general (this is the default)
+  - admin
+- The `/books/:id/admin` route is extra protected by authorization, only users with the `isAdmin` property **of a book** set to `true` can
+  access it
+- Whenever the user tries to access a protected route, the app redirects to `/404`
+- Whenever a book is not found, the app redirects to `/404`
+- Whenever a route is not found, the app redirects to `/404`
+
+## The code
+
+Let's see how the `/books` route uses the concept of a loader. This is the component file:
+
+```ts
+// books.component.ts
+@Component({
+  ...
+  template: `
+    <div *ngFor="let book of books" class="book">
+      <a [routerLink]="['./', book.id]">{{ book.title }}</a>
+    </div>
+  `
+})
+export default class BooksComponent {
+  @Input() books: Resolved<typeof loader> = [];
+}
+```
+
+In the same way as in Remix, I've reused the `Resolved` type of a `loader` function. Unfortunately the loader can't be exported from the
+same file as the component, because that would eagerly load the component, even when using `loadComponent` in the router config. So I've put
+the loader in a separate file:
+
+```ts
+// books.loader.ts
+export const loader = () => inject(BooksService).getBooks();
+```
+
+The `Resolved` type is a small utility type that I've put in a separate file as well:
+
+```ts
+// types.ts
+import { ResolveFn } from '@angular/router';
+
+export type Resolved<T> = T extends ResolveFn<infer R> ? R : never;
+```
+
+It's basically returning the type of the data that the loader function loads.
+
+The router config looks like this:
+
+```ts
+import { loader as booksLoader } from './books.loader';
+
+const routes = [
+	// ...other routes
+	{
+		path: 'books',
+		loadComponent: () => import('./books.component'),
+		resolve: { books: booksLoader },
+	},
+];
+```
+
+The `booksLoader` is passed to the `resolve` property of the route config. There is some repetition in the router config and in the
+component, both hard-reference the `books` key. But that key could also be moved to a variable and imported in both places, so it's not a
+big deal.
+
+Now when the user navigates to `/books`, the `booksLoader` is called and the result is passed to the `books` input of the `BooksComponent`.
+The component can then use the data to render the list of books. No state management needed. Nice.
+
+## The details
+
+TODO
+
 <!-- TODO: explain how I applied concepts of Remix to achieve those -->
