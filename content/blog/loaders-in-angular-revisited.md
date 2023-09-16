@@ -280,3 +280,61 @@ const routes = [
 	},
 ];
 ```
+
+The `runGuardsAndResolvers` property is set to `'always'` to make sure the resolve is always called when switching tabs. This is needed
+because the `bookId` param is not changed when switching tabs, so the router thinks it's the same route and doesn't call the resolve again.
+
+## Admin tab authorization guard
+
+The admin tab should only be visible when the user is an admin of the book. This check is also done in a resolve:
+
+```ts
+// book-details-admin.loader.ts
+import { loader as bookLoader } from './book-details.loader';
+
+export const loader = (route: ActivatedRouteSnapshot) => {
+	return of(route.parent?.data).pipe(
+		map((data) => (data!['book'] as Resolved<typeof bookLoader>).isAdmin ?? false),
+		filter(Boolean),
+	);
+};
+```
+
+To prevent refetching the book, we reuse the already fetched book from the parent route. We then check if the user is an admin of the book
+or otherwise return `false` and filter only truthy values using the `filter` operator. This will trigger the `NavigationCancel` event, which
+will lead to a redirect to the 404 page because of the listener in the `AppComponent` as described under
+[Setting things straight](#setting-things-straight).
+
+The router config looks like this:
+
+```ts
+import { loader as bookLoader } from './book-details.loader';
+import { loader as adminLoader } from './book-details-admin.loader';
+
+const routes = [
+	// ...other routes
+	{
+		path: 'books/:bookId',
+		loadComponent: () => import('./book-details.component'),
+		runGuardsAndResolvers: 'always',
+		resolve: { book: bookLoader },
+		// ⬇️ this is the new part
+		children: [
+			{ path: 'general', loadComponent: () => import('./book-details-general.component') },
+			{ path: 'admin', loadComponent: () => import('./book-details-admin.component'), resolve: { isAdmin: adminLoader } },
+			{ path: '', redirectTo: 'general', pathMatch: 'full' },
+		],
+	},
+];
+```
+
+Here you can see the `adminLoader` is passed to the `resolve` property of the `admin` child route. Also, the default route is set to
+`general` so the user will always see something when navigating to `/books/:bookId`.
+
+## Mutating data
+
+<!-- TODO: explain -->
+
+## Conclusion
+
+<!-- TODO: explain -->
