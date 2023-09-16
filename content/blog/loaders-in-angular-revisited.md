@@ -229,8 +229,8 @@ The component can then use the data to render the list of books. No state manage
 
 ## The details
 
-For the details page, I've created a `BookComponent` and a `BookLoader`. The `BookComponent` is a bit more complex than the `BooksComponent`
-because itt has to handle the case the book is not found. This is the (simplified) component file:
+For the details page, I've created a `BookDetailsComponent` and a `loader`. The `BookDetailsComponent` is a bit more complex than the
+`BooksComponent` because it has to handle the case the book is not found. This is the (simplified) component file:
 
 ```ts
 // book-details.component.ts
