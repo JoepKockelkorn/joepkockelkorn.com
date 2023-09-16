@@ -265,4 +265,18 @@ Here we get a book by id from the `BooksService`. We then transform the `Promise
 lead to a redirect to the 404 page because of the listener in the `AppComponent` as described under
 [Setting things straight](#setting-things-straight).
 
-<!-- TODO: explain how I applied concepts of Remix to achieve those -->
+The router config looks like this:
+
+```ts
+import { loader as booksLoader } from './books.loader';
+
+const routes = [
+	// ...other routes
+	{
+		path: 'books/:bookId',
+		loadComponent: () => import('./book-details.component'),
+		runGuardsAndResolvers: 'always',
+		resolve: { book: bookLoader },
+	},
+];
+```
