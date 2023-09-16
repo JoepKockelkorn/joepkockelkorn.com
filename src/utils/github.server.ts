@@ -33,7 +33,10 @@ type GithubFile = {
 export async function fetchBlogPosts(ref = 'main'): Promise<MinimalBlogPost[]> {
 	const url = `https://api.github.com/repos/joepkockelkorn/joepkockelkorn.com/contents/content/blog?ref=${ref}`;
 	const res = await fetch(url, {
-		headers: { 'User-Agent': 'joepkockelkorn.com' },
+		headers: {
+			'User-Agent': 'joepkockelkorn.com',
+			'Cache-Control': 'no-cache',
+		},
 	});
 	const files = (await res.json()) as GithubFile[];
 	const posts = await Promise.all(
@@ -50,7 +53,12 @@ export type MinimalBlogPost = {
 
 export async function fetchBlogPost(slug: string, ref: string = 'main'): Promise<MinimalBlogPost | null> {
 	const url = `https://raw.githubusercontent.com/joepkockelkorn/joepkockelkorn.com/${ref}/content/blog/${encodeURIComponent(slug)}.md`;
-	const res = await fetch(url);
+	const res = await fetch(url, {
+		headers: {
+			'User-Agent': 'joepkockelkorn.com',
+			'Cache-Control': 'no-cache',
+		},
+	});
 
 	if (res.status === 404) {
 		return null;
