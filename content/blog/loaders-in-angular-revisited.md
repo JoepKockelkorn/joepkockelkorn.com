@@ -185,16 +185,16 @@ export default class BooksComponent {
 }
 ```
 
-In the same way as in Remix, I've reused the `Resolved` type of a `loader` function. Unfortunately the loader can't be exported from the
-same file as the component, because that would eagerly load the component, even when using `loadComponent` in the router config. So I've put
-the loader in a separate file:
+Unfortunately the loader can't be exported from the same file as the component, because that would eagerly load the component, even when
+using `loadComponent` in the router config. So I've put the loader in a separate file:
 
 ```ts
 // books.loader.ts
 export const loader = () => inject(BooksService).getBooks();
 ```
 
-The `Resolved` type is a small utility type that I've put in a separate file as well:
+In the same way as in Remix, I've reused the type of the `loader` function when declaring the type of the `@Input()`. The `Resolved` type is
+a small utility type that I've put in a separate file:
 
 ```ts
 // types.ts
