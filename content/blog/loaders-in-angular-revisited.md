@@ -37,8 +37,8 @@ The feature can be enabled by calling [`withComponentInputBinding()`](https://an
 `provideRouter`:
 
 ```ts
-const providers = [provideRouter(routes, withComponentInputBinding())];
-bootstrapApplication(AppComponent, { providers });
+// typically done in the main.ts file
+provideRouter(routes, withComponentInputBinding());
 ```
 
 ### Less code needed
