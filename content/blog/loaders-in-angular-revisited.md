@@ -268,7 +268,7 @@ lead to a redirect to the 404 page because of the listener in the `AppComponent`
 The router config looks like this:
 
 ```ts
-import { loader as booksLoader } from './books.loader';
+import { loader as bookLoader } from './book-details.loader';
 
 const routes = [
 	// ...other routes
