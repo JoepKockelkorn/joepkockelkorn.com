@@ -137,5 +137,11 @@ guard, which means less code. So let's put it to good use.
 
 ## Remixing the loader into Angular
 
+To have a proper example of how to use the concept of Remix loaders in Angular, I created a small app. It's a simple app about books that
+has authentication logic, a 404 page, an overview page and a detail page with some tabs: general and admin (with authorization). Here is the
+sitemap:
+
+![Books app sitemap](https://ik.imagekit.io/joepkockelkorn/tr:w-768,f-auto/loaders-in-angular-revisited/books-sitemap.png)
+
 <!-- TODO: explain feature you typically need in a production app like 404 behavior, permission checking on the data level, an app global loading indicator, reuse of types (and data revalidation?) -->
 <!-- TODO: explain how I applied concepts of Remix to achieve those -->
