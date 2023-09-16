@@ -229,6 +229,40 @@ The component can then use the data to render the list of books. No state manage
 
 ## The details
 
-TODO
+For the details page, I've created a `BookComponent` and a `BookLoader`. The `BookComponent` is a bit more complex than the `BooksComponent`
+because itt has to handle the case the book is not found. This is the (simplified) component file:
+
+```ts
+// book-details.component.ts
+@Component({
+	template: `
+		<h1>{{ book.title }}</h1>
+		<div>
+			<a [routerLink]="['./', 'general']">General</a>
+			<a *ngIf="book.isAdmin" [routerLink]="['./', 'admin']">Admin</a>
+		</div>
+		<router-outlet></router-outlet>
+		<a [routerLink]="['../', book.id + 1]">Try next book</a>
+	`,
+})
+export default class BookDetailsComponent {
+	@Input() book!: Resolved<typeof loader>;
+}
+```
+
+This is the loader:
+
+```ts
+// book-details.loader.ts
+export const loader = (route: ActivatedRouteSnapshot) => {
+	const bookId = route.paramMap.get('bookId');
+	return from(inject(BooksService).getBook(bookId!)).pipe(filter(Boolean));
+};
+```
+
+Here we get a book by id from the `BooksService`. We then transform the `Promise<Book>` to an `Observable<Book>` and filter out the
+`undefined` value so when the book is not found, the resolve will emit nothing. This will trigger the `NavigationCancel` event, which will
+lead to a redirect to the 404 page because of the listener in the `AppComponent` as described under
+[Setting things straight](#setting-things-straight).
 
 <!-- TODO: explain how I applied concepts of Remix to achieve those -->
