@@ -146,13 +146,13 @@ availability on a detail page.
 These are the possible routes:
 
 ```
-  /
-  /login
-  /books
-  /books/:id
-  /books/:id/general
-  /books/:id/admin
-  /404
+/
+/login
+/books
+/books/:id
+/books/:id/general
+/books/:id/admin
+/404
 ```
 
 This is the behavior:
