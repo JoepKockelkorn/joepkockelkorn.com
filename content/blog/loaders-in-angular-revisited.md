@@ -107,9 +107,10 @@ enum NavigationCancellationCode {
 
 > A navigation failed because one of the resolvers completed without emitting a value.
 
-So if we don't return a value from a resolver, the loading indicator logic will work as expected and only a single `NavigationCancel` event
-will be triggered. This does however mean the redirect logic should be moved elsewhere. To still have the 'redirect to 404' logic, we can
-add some code to the app component:
+So if we don't return a value from a resolver,
+[the loading indicator logic](https://ultimatecourses.com/blog/angular-loading-spinners-with-router-events) will work as expected and only a
+single `NavigationCancel` event will be triggered. This does however mean the redirect logic is no longer in the guard. To still have the
+app redirect to a 404 page when the resolver returns no data, we can add a side-effect to the app component:
 
 ```ts
 @Component(...)
@@ -127,12 +128,12 @@ export class AppComponent implements OnInit {
 ```
 
 As you can see, we use the `code` property of the `NavigationCancel` event to check if the resolver returned no data. If so, we navigate to
-the 404 page and replace the url. We replace the url because otherwise the browser back button will just trigger the 404 redirect again.
-This code will handle all cases where resolve guards emit nothing in the whole app, instead of having to redirect to 404 in every resolve
-guard.
+the 404 page and replace the url. We replace the url because otherwise the browser back button will just trigger the 404 redirect again,
+seemingly doing nothing. This small piece of code will handle **all** cases where resolve guards emit nothing, for the whole app, instead of
+having to redirect to 404 in every resolve guard.
 
-My conclusion is that `ResolveFn` is not so bad after all. It prevents us from having to do state management outside of any route guard,
-which means less code. So let's put it to good use.
+My conclusion is that `ResolveFn` is not so bad after all. It prevents us from having to do additional state management outside of any route
+guard, which means less code. So let's put it to good use.
 
 ## Remixing the loader into Angular
 
