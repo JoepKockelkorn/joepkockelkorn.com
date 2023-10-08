@@ -333,7 +333,17 @@ Here you can see the `adminLoader` is passed to the `resolve` property of the `a
 
 ## Mutating data
 
-<!-- TODO: explain -->
+Need to reload data when the user changes something? Just redirect! If needed, to the same route. The gotcha here is to set the
+`runGuardsAndResolvers` property to `'always'` for **each component** in the router config, otherwise the resolve won't be called again.
+Also, when redirecting to the same route you need to use the `'reload'` option for the `onSameUrlNavigation` property of the router config,
+otherwise the resolve won't be called again. This can be set globally in the `provideRouter` function or per `router.navigate`.
+
+### Reloading too much
+
+Setting `runGuardsAndResolvers` to `'always'` for each component in the router config will lead to the resolve being called on each
+navigation (duh!). To prevent this, we could introduce the [Ng Query library](https://ngneat.github.io/query/) in the resolvers to have more
+control over when to call the actual HttpClient or reuse the cache (and when to invalidate). But this depends heavily on your setup and is
+pure optimization, so I won't go into detail here.
 
 ## Conclusion
 
