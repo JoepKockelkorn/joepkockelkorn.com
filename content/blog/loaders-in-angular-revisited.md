@@ -1,7 +1,7 @@
 ---
 title: Loaders in Angular, revisited
-date: 2023-09-13
-draft: true
+date: 2023-10-26
+draft: false
 description: 'Using new Angular APIs to bring the concept of Remix loaders closer to Angular than before.'
 ---
 
@@ -347,4 +347,11 @@ pure optimization, so I won't go into detail here.
 
 ## Conclusion
 
-<!-- TODO: explain -->
+By using the `withComponentInputBinding` setting of the router, data loading in a client-side rendered Angular app can become very similar
+to Remix loaders. Together with the `paramsInheritanceStrategy` setting set to `'always'`, it now becomes easy to resolve, inject and reuse
+loaded data down the component tree. To implement a proper '404 not found' user experience, we can use the
+`NavigationCancellationCode.NoDataFromResolver` case by not returning anything from a resolve function.
+
+Using resolve functions to load data prevents the need of a separate state management solution, which means less code and less dependencies
+🥳. The gotcha is that the `runGuardsAndResolvers` setting should probably be `'always'` everywhere, otherwise the resolve won't be called
+upon navigation and a bug is introduced. But all in all, this is a small price to pay for the simplicity of the solution.
