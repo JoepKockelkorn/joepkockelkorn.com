@@ -1,13 +1,14 @@
-import type { MarkedOptions } from 'marked';
-import { marked } from 'marked';
-import admonition from 'marked-admonition-extension';
 import parseMarkdown from 'front-matter';
-import { z } from 'zod';
+import GithubSlugger from 'github-slugger';
 import hljs from 'highlight.js/lib/core';
 import typescript from 'highlight.js/lib/languages/typescript';
 import xml from 'highlight.js/lib/languages/xml';
+import { Marked } from 'marked';
+import admonition from 'marked-admonition-extension';
 import { isTruthy } from 'remeda';
+import { z } from 'zod';
 
+const marked = new Marked();
 marked.use(admonition);
 
 const blogPostFrontMatterSchema = z.object({
@@ -73,6 +74,7 @@ export async function fetchBlogPost(slug: string, ref: string = 'main'): Promise
 
 export function convertMarkdownToHtml(requestUrl: URL, markdown: string) {
 	const renderer = new marked.Renderer();
+	const slugger = new GithubSlugger();
 
 	const linkRenderer = renderer.link;
 	renderer.link = (href, title, text) => {
@@ -87,16 +89,13 @@ export function convertMarkdownToHtml(requestUrl: URL, markdown: string) {
 		return html.replace(/^<img /, `<img loading="lazy" `);
 	};
 
-	renderer.heading = (text, level, raw, slugger) => {
+	renderer.heading = (text, level, raw) => {
 		const id = slugger.slug(raw);
 		return `<h${level} id="${id}"><a href="#${id}" class="header-link">${text}</a></h${level}>\n`;
 	};
 
 	hljs.getLanguage('typescript') || hljs.registerLanguage('typescript', typescript);
 	hljs.getLanguage('xml') || hljs.registerLanguage('xml', xml);
-	// TODO: remove deprecated highlight option
-	const highlight: MarkedOptions['highlight'] = (code, _lang): string => hljs.highlightAuto(code).value;
-
 	renderer.code = (code, infostring, escaped) => {
 		const lang = (infostring ?? '').match(/\S*/)![0];
 		const lines = code.split('\n');
@@ -114,7 +113,7 @@ export function convertMarkdownToHtml(requestUrl: URL, markdown: string) {
 		}
 
 		// Apply syntax highlighting
-		const out = highlight(code, lang);
+		const out = hljs.highlightAuto(code).value;
 		if (out && out !== code) {
 			escaped = true;
 			code = out;
@@ -137,7 +136,7 @@ export function convertMarkdownToHtml(requestUrl: URL, markdown: string) {
 		return `<pre><code${!lang ? '' : ` lang="${escape(lang)}"`}>${escapedCode}</code></pre>\n`;
 	};
 
-	return marked.parse(markdown, { renderer, highlight });
+	return marked.parse(markdown, { renderer });
 }
 
 function getSlugFromFilename(name: string) {
