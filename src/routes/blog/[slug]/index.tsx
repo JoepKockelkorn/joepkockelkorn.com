@@ -54,7 +54,7 @@ export const usePost = routeLoader$(async ({ query, params, url }) => {
 
 	const blogPost = await fetchBlogPost(params.slug, ref);
 	if (blogPost === null) throw new Response('Not found', { status: 404 });
-	const html = convertMarkdownToHtml(url, blogPost.bodyMarkdown);
+	const html = await convertMarkdownToHtml(url, blogPost.bodyMarkdown);
 
 	return { html, meta: blogPost.meta, slug: params.slug };
 });
