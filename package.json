@@ -19,10 +19,11 @@
 		"lint": "eslint \"src/**/*.ts*\"",
 		"preview": "qwik build preview && vite preview --open",
 		"start": "vite --open --mode ssr",
-		"qwik": "qwik",
-		"prepare": "husky install"
+		"prepare": "husky install",
+		"qwik": "qwik"
 	},
 	"devDependencies": {
+		"@builder.io/partytown": "^0.8.0",
 		"@builder.io/qwik": "^1.2.10",
 		"@builder.io/qwik-city": "^1.2.10",
 		"@tailwindcss/typography": "^0.5.9",
