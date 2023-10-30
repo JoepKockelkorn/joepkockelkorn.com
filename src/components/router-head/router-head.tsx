@@ -1,5 +1,6 @@
 import { component$ } from '@builder.io/qwik';
 import { useDocumentHead, useLocation } from '@builder.io/qwik-city';
+import { QwikPartytown } from '../partytown/partytown';
 
 export const RouterHead = component$(() => {
 	const head = useDocumentHead();
@@ -15,13 +16,15 @@ export const RouterHead = component$(() => {
 			<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 			<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 			<link rel="manifest" href="/site.webmanifest" />
-			<script async src="https://www.googletagmanager.com/gtag/js?id=G-BS603B8LYL" />
+			<QwikPartytown forward={['dataLayer.push']} />
+			<script async type="text/partytown" src="https://www.googletagmanager.com/gtag/js?id=G-BS603B8LYL" />
 			<script
+				type="text/partytown"
 				dangerouslySetInnerHTML={`
-						window.dataLayer = window.dataLayer || [];
-						function gtag(){dataLayer.push(arguments);}
-						gtag('js', new Date());
-						gtag('config', 'G-BS603B8LYL');
+					window.dataLayer = window.dataLayer || [];
+					function gtag(){dataLayer.push(arguments);}
+					gtag('js', new Date());
+					gtag('config', 'G-BS603B8LYL');
 				`}
 			/>
 
