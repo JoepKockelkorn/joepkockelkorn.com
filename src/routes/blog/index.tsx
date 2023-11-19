@@ -21,7 +21,7 @@ export default component$(() => {
 	const posts = usePosts();
 	return (
 		<>
-			<h1 class="leading-tight font-bold text-4xl mt-8 mb-12 text-gradient">My blog posts</h1>
+			<h2 class="leading-tight font-bold text-4xl mt-8 mb-12 text-gradient">My blog posts</h2>
 			<div class="space-y-12">
 				{posts.value.map((post) => (
 					<article key={post.slug}>
