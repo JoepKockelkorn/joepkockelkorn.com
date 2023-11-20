@@ -7,7 +7,7 @@ import { join } from 'path';
 
 export default defineConfig(() => {
 	return {
-		plugins: [qwikCity(), qwikVite(), tsconfigPaths(), partytownVite({ dest: join(__dirname, 'dist', '~partytown') })],
+		plugins: [qwikCity({ trailingSlash: false }), qwikVite(), tsconfigPaths(), partytownVite({ dest: join(__dirname, 'dist', '~partytown') })],
 		preview: {
 			headers: {
 				'Cache-Control': 'public, max-age=600',
