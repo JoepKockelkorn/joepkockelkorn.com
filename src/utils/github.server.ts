@@ -4,9 +4,10 @@ import hljs from 'highlight.js/lib/core';
 import typescript from 'highlight.js/lib/languages/typescript';
 import xml from 'highlight.js/lib/languages/xml';
 import { Marked } from 'marked';
-import admonition from 'marked-admonition-extension';
 import { isTruthy } from 'remeda';
 import { z } from 'zod';
+
+import admonition from './admonition.server';
 
 const marked = new Marked();
 marked.use(admonition);
