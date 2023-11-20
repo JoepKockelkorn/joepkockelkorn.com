@@ -5,7 +5,7 @@ export const Header = component$((props: { class?: string }) => {
 	return (
 		<header class={`w-full border-b dark:border-b-gray-700 bg-background flex flex-nowrap ${props.class}`}>
 			<nav class="w-full max-w-3xl mx-auto flex justify-end">
-				<MyNavLink class="mr-auto p-4 px-6 font-semibold text-xl" to="/" exact>
+				<MyNavLink class="mr-auto p-4 md:px-6 xl:px-8 font-semibold text-xl" to="/" exact>
 					<h1>Joep Kockelkorn</h1>
 				</MyNavLink>
 				<MyNavLink to="/blog">Blog</MyNavLink>
