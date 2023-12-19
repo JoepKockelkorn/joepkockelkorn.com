@@ -1,0 +1,75 @@
+==================================================================
+https://keybase.io/joepkockelkorn
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://joepkockelkorn.com
+  * I am joepkockelkorn (https://keybase.io/joepkockelkorn) on keybase.
+  * I have a public key with fingerprint CB8D 9400 9655 1F7E F2D8  9996 2DDA 9400 0E11 E53C
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0120fd353ac49b61922330ee4349248d651b90f5c72efd1c030530c8e57761521f450a",
+      "fingerprint": "cb8d940096551f7ef2d899962dda94000e11e53c",
+      "host": "keybase.io",
+      "key_id": "2dda94000e11e53c",
+      "kid": "010145c327516612b00938be16279819316e2c75b79f8e7dc40375e394529c2b9bf30a",
+      "uid": "873690aa6db8637f89e7f0b75f70d219",
+      "username": "joepkockelkorn"
+    },
+    "service": {
+      "hostname": "joepkockelkorn.com",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "ctime": 1702974276,
+  "expire_in": 157680000,
+  "prev": "9112bdbef54a5f4aee61b09450e94d3c484b6d1a513b3693ea27313608fa0187",
+  "seqno": 15,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.1.13
+Comment: https://keybase.io/crypto
+
+yMNvAnicbVJtUFRVGF4Cg4USAixzcLJLqUzLds6999yPhRkV0CGrUYa0NAPvx7lw
+3d17l90FA6TMIWiiKAURNJsUG0ehUWHMcrL4EJEMxwaKj8amiSgQZWVmhQL7uJfJ
+f/46c973eZ73eZ95Lz4caokMSR6utSx8ZDQ15Er7sUILfis7o5QQdbmYcJQSTjz/
+YJeMff5cpyoTDgJAEigyhShBonmRgTxJUhTAmKZonqQ5mUFQ5IGCJJbEigwlQAFE
+AYnDiGUZiEio0AgIhI1QVC0Pez1eVfMbspLIyTwNAM8gBBUWK6TM8TzPkLIsmHWA
+IcSIkgxivu4zGYY5UfBhu6obNeOTO2/vPvh7vgGkkUSRLIIMA0nRmEVxIoYMyfIc
+5CnIYFJikcjyCodZWaIBxSJM8TQieYkUeVGh5n0XzstxLMXwQBAYWeQYilU4HrMK
+EFmksEAmIW8CfdirCW5soHfo2OPUJSd2OXWvRpTZCKNXpErYjNfc5744u6S7DR2P
+V/frku4y+vl+v8fnMPn+Yo9J2InF3P+lckVVk41MDUYR9vpUXSMc0EBKftXUhiwg
+eZYmWcZG4Nc9qhfnqiYCsQxnxAXMObjIkOShEY4sYgXRAlJoAWMGisCIAWCelimJ
+5miRkaGAICUaGVBYIFkKUgzgFAFAjiXM5Qo03dQ2fAp5hqZPzdMEf6EXE2Ud7dvC
+LCGRlgcXPGAemyXSGnPvBFPFGEtXYtuxWktY/j9FgfjUVV1L575bm2SHg90/bXRd
+jjizpOOXvfTJ8ZV15edOBO014RPtO+eCP57ZXHZY/mxiT/ejv899U7Pl3Zla8dKR
+9krh6+ejKisWOodCE2adG6pSR5Ia8+IjFqhJWbZXrUcPBYeGJxsPj/2cM1iwO6rF
+se9i+6Zi7Q1X/wzT83Fz3ORkW2H51sdhQn3KawO7Pln90Lr0ZEfa2fNNCjHc2NTk
+23day2p4u8omnssWLlTftKZM7435/MP8ktZFnQNROcxockttadJYRe/2tisl3hvy
+2Yn16SV13uj61Znp56/HosxrVKCOTNFRoLr/6tHpr9KG+tIaiNa4rTemp7In1W2J
+9spnNlolC5G+cv/uTzP9j33U+3Qvt/5W55vfh9x+cdmFrgOnEoo32J4CgVu9iyOW
+eXIOVuU0RCYLWTf9cx8Uxw4qHaTY6apegpXnWOn6CjDWpI0tD39neaBt9nL0s4gJ
+LK3YPPrbSPAvtae+pIVz15SdGJkCV3/oqDuy6M/jp0P3xP5tCx/81f1twqWeqe3x
+vuG+P8IObpod4P/FZTDVOgsPBF9YEed7uXGNvW+NY7hg1/Et7i8C9Z3rpmYqM8a7
+y5nE7vTCwVVPfrm2Od+xI675zuSh1sX7J0K7q4NPZGeON77vo98TrHcj7vRE9yc6
+7krX3K+cup32UsbJ/wCRTMOz
+=PqRz
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/joepkockelkorn
+
+==================================================================
