@@ -1,5 +1,8 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from 'tailwindcss';
+import plugin from 'tailwindcss/plugin';
+import typographyPlugin from '@tailwindcss/typography';
+
+export default {
 	content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
 	safelist: [
 		'admonition',
@@ -42,8 +45,7 @@ module.exports = {
 		},
 	},
 	plugins: [
-		/** @type {import('tailwindcss/types/config').PluginCreator} */
-		({ matchUtilities, addUtilities, theme }) => {
+		plugin(function ({ matchUtilities, addUtilities, theme }) {
 			matchUtilities({ 'text-fill': (value) => ({ '-webkit-text-fill-color': value }) }, { values: theme('colors') });
 			addUtilities({
 				'.hyphens': { hyphens: 'auto' },
@@ -52,7 +54,7 @@ module.exports = {
 					'@apply from-primary-700 to-primary-400 dark:to-primary-200 bg-gradient-to-r bg-clip-text text-fill-transparent': {},
 				},
 			});
-		},
-		require('@tailwindcss/typography'),
+		}),
+		typographyPlugin,
 	],
-};
+} satisfies Config;
