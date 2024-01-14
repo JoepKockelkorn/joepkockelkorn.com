@@ -11,6 +11,14 @@ export default extendConfig(baseConfig, () => {
       },
       outDir: ".vercel/output/functions/_qwik-city.func",
     },
+    resolve: {
+      alias: {
+        buffer: 'buffer',
+        events: 'events',
+        stream: 'stream-browserify',
+        util: 'util',
+      }
+    },
     plugins: [vercelEdgeAdapter({
       ssg: {
         include: ['*'],

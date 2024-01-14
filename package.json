@@ -53,5 +53,11 @@
 		"vite": "5.0.11",
 		"vite-tsconfig-paths": "4.2.3",
 		"zod": "^3.22.4"
+	},
+	"dependencies": {
+		"buffer": "^6.0.3",
+		"events": "^3.3.0",
+		"stream-browserify": "^3.0.0",
+		"util": "^0.12.5"
 	}
 }
