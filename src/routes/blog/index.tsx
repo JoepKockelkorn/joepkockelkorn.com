@@ -30,6 +30,9 @@ export default component$(() => {
 							class="block group space-y-4 outline-0 focus-visible:shadow-[0px_0px_0px_2px_rgb(var(--color-primary-400))]"
 						>
 							<h2 class="font-bold text-2xl group-hover:text-primary-400 motion-safe:transition-colors">{post.meta.title}</h2>
+							<p class="text-gray-500">
+								{post.meta.date.formatted} - {post.readingTime}
+							</p>
 							<p>{post.meta.description}</p>
 							<div class='font-bold after:content-["_→"] after:opacity-0 group-hover:after:opacity-100 motion-safe:after:transition-opacity'>
 								Read more

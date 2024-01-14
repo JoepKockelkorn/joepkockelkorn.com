@@ -6,6 +6,7 @@ import xml from 'highlight.js/lib/languages/xml';
 import { Marked } from 'marked';
 import { isTruthy } from 'remeda';
 import { z } from 'zod';
+import readingTime from 'reading-time';
 
 import admonition from './admonition.server';
 
@@ -51,6 +52,7 @@ export type MinimalBlogPost = {
 	slug: string;
 	bodyMarkdown: string;
 	meta: BlogPostFrontMatter;
+	readingTime: string;
 };
 
 export async function fetchBlogPost(slug: string, ref: string = 'main'): Promise<MinimalBlogPost | null> {
@@ -69,8 +71,9 @@ export async function fetchBlogPost(slug: string, ref: string = 'main'): Promise
 	const rawMarkdown = await res.text();
 	const { body, attributes } = parseMarkdown(rawMarkdown);
 	const meta = blogPostFrontMatterSchema.parse(attributes);
+	const { text } = readingTime(body);
 
-	return { slug, bodyMarkdown: body, meta };
+	return { slug, bodyMarkdown: body, meta, readingTime: text };
 }
 
 export function convertMarkdownToHtml(requestUrl: URL, markdown: string) {

@@ -56,19 +56,19 @@ export const usePost = routeLoader$(async ({ query, params, url }) => {
 	if (blogPost === null) throw new Response('Not found', { status: 404 });
 	const html = await convertMarkdownToHtml(url, blogPost.bodyMarkdown);
 
-	return { html, meta: blogPost.meta, slug: params.slug };
+	return { html, meta: blogPost.meta, slug: params.slug, readingTime: blogPost.readingTime };
 });
 
 export default component$(() => {
-	const { html, meta } = usePost().value;
+	const { html, meta, readingTime } = usePost().value;
 	const { date, title } = meta;
 	const { formatted, raw } = date;
 
 	return (
 		<>
-			<time dateTime={raw} class="mt-4">
-				{formatted}
-			</time>
+			<div class="flex flex-wrap mt-4 gap-1">
+				<time dateTime={raw}>{formatted}</time>-<p>{readingTime}</p>
+			</div>
 			<h2 class="leading-tight font-bold text-gradient text-6xl mt-2 mb-12">{title}</h2>
 			<article
 				class="prose prose-li:my-[0.25em] prose-lg dark:prose-invert pb-[100px] prose-pre:bg-[#011627] prose-code:before:content-none prose-code:after:content-none prose-code:[&_:not(pre)]:bg-code prose-code:text-white prose-code:rounded-[4px] prose-code:[&_:not(pre)]:px-1.5 prose-code:[&_:not(pre)]:py-1 prose-code:[&_a]:underline prose-h1:leading-[1.4] prose-code:hyphens-none max-w-none"
