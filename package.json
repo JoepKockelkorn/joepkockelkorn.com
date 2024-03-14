@@ -57,6 +57,7 @@
 	"dependencies": {
 		"buffer": "^6.0.3",
 		"events": "^3.3.0",
+		"og-img": "^0.2.0",
 		"stream-browserify": "^3.0.0",
 		"util": "^0.12.5"
 	}
