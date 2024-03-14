@@ -22,6 +22,7 @@ export default extendConfig(baseConfig, () => {
     plugins: [vercelEdgeAdapter({
       ssg: {
         include: ['*'],
+        exclude: ['og-image'],
         origin: 'https://joepkockelkorn.com',
       }
     })],
