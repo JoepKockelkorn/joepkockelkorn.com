@@ -7,7 +7,7 @@ description: 'How to combine and configure git, EditorConfig and Prettier to wor
 
 We all know the eternal debates about tabs vs spaces, single quotes vs double quotes, etc. While they can be entertaining, that is **not**
 what this blog post is about. This article is about combining and configuring git, EditorConfig and Prettier to work together in a project.
-So you can work together with your team without having to worry (too much) about formatting and style.
+So you can work together with your team without having to worry (too much) about formatting.
 
 I've intentionally left eslint out of scope, because this post is about formatting. And linting is not formatting. Whatever you do, don't
 use eslint for formatting. That's what Prettier is for
@@ -32,7 +32,7 @@ So we want to standardize and enforce. The next chapters will go through each to
 The scope of git regarding formatting is rather limited, but very powerful. In the
 [`.gitattributes`](https://git-scm.com/docs/gitattributes) file you can only configure line endings behavior. Here is the config I use:
 
-```
+```text
 * text=auto
 
 *.{cmd,[cC][mM][dD]} text eol=crlf
