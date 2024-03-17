@@ -100,7 +100,35 @@ line. Trailing whitespace could potentially be used for alignment/aesthetics.
 
 # Prettier
 
-TODO: .prettierrc
+While gitattributes and EditorConfig are good for the basics and work on all files, they have a rather limited formatting scope.
+[Prettier](https://prettier.io/docs/en/configuration.html) on the other hand is more powerful and opinionated but works on only a few file
+types. Here is the config I use:
+
+```json
+{
+	"plugins": ["@prettier/plugin-xml"],
+	"singleQuote": true,
+	"semi": false,
+	"bracketSpacing": true,
+	"bracketSameLine": false,
+	"trailingComma": "all"
+}
+```
+
+Let's go through it. First, I set the `plugins` to include `@prettier/plugin-xml`. This is because prettier does not format xml files out of
+the box. Make sure it is installed as a dev dependency.
+
+Then, I set the following options:
+
+- `singleQuote` to `true`: This makes sure that single quotes are used instead of double quotes.
+- `semi` to `false`: This makes sure that no semicolons are used. This makes refactoring easier, and less is more.
+- `bracketSpacing` to `true`: This makes sure there is a space between the brackets and the content, and thus improves readability.
+- `bracketSameLine` to `false`: This makes sure that for HTML-like languages, the closing bracket of the opening tag is **not** on the same
+  line as the last line of the opening tag. Makes it more readable.
+  [See an example here](https://prettier.io/docs/en/options.html#bracket-line).
+- `trailingComma` to `all`: This makes sure that there is a trailing comma wherever possible. This makes refactoring easier.
+
+TODO: explain why some options are not set, like `tabWidth` and `printWidth`
 
 # Exceptions
 
