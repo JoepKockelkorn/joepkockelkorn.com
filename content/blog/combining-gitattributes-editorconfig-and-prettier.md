@@ -2,7 +2,7 @@
 title: Combining gitattributes, EditorConfig and Prettier
 date: 2024-03-16
 draft: true
-description: 'How to combine and configure git, EditorConfig and Prettier to work together in a project.'
+description: 'How to combine and configure git, EditorConfig and Prettier in a project.'
 ---
 
 We all know the eternal debates about tabs vs spaces, single quotes vs double quotes, etc. While they can be entertaining, that is **not**
@@ -11,13 +11,13 @@ So you can work together with your team without having to worry (too much) about
 
 I've intentionally left eslint out of scope, because this post is about formatting. And linting is not formatting. Whatever you do, don't
 use eslint for formatting. That's what Prettier is for
-([link](https://www.joshuakgoldberg.com/blog/you-probably-dont-need-eslint-config-prettier-or-eslint-plugin-prettier/)).
+([link to blog post from Josh Goldberg](https://www.joshuakgoldberg.com/blog/you-probably-dont-need-eslint-config-prettier-or-eslint-plugin-prettier/)).
 
 # Why do we need these tools
 
-In my career so far I've have seen many different ways of formatting code. Anyway, when no format is enforced, it leads to many discussions
-and thus time lost. Also, the codebase will soon have many different formatting flavors in the same repository. If you recognize any of
-these situations, you know what I'm talking about:
+During my career I've have seen many different ways of formatting code. When no single format is enforced, it leads to many discussions and
+thus time lost. Also, the codebase will soon have many different formatting flavors in the same repository. If you recognize any of these
+situations, you know what I'm talking about:
 
 > Why are you using tabs instead of spaces? I can't read this code.
 
@@ -29,14 +29,15 @@ So we want to standardize and enforce. The next chapters will go through each to
 
 !!! info Disclaimer
 
-For all settings the following is true: argue or tweak however you want, but it's better to have a standard than to have none.
+Discuss and/or tweak the settings however you want, but whatever you do, use and enforce **a single standard**. Not everyone has to agree
+with it, but everyone must comply.
 
 !!!
 
 # gitattributes
 
-The scope of git regarding formatting is rather limited, but very powerful. In the
-[`.gitattributes`](https://git-scm.com/docs/gitattributes) file you can only configure line endings behavior. Here is the config I use:
+Git is a version control system, not a formatting tool. However, it does have some formatting capabilities though limited. In the
+[`.gitattributes`](https://git-scm.com/docs/gitattributes) file you can configure line endings behavior. Here is the config I use:
 
 ```text
 * text=auto
@@ -47,26 +48,25 @@ The scope of git regarding formatting is rather limited, but very powerful. In t
 *.sh text eol=lf
 ```
 
-Let's go through it. At the top, I set the baseline, apply `text=auto` on every file. This makes sure that whenever a commit is done, git
-will normalize line endings (to `LF`) in the index. And whenever a checkout is done, git will convert the normalized line endings to the
-native line endings for the platform.
+Let's go through it. At the top, I set the baseline `text=auto` on every file. This makes sure that whenever a `git commit` or `add` is
+done, git will normalize line endings (to `LF`) in the index. And whenever a `git checkout`, `merge` or `switch` is done, git will convert
+the normalized line endings to the native line endings for the operating system.
 
-Converting line endings on checkout is important because different operating systems use different line endings. Windows uses CRLF, while
-Unix uses LF. If you have a file with CRLF line endings in a Unix environment, it could potentially not work when you run it. And vice
-versa.
+Converting line endings **on checkout/switch/merge** is important because different operating systems use different line endings. Windows
+uses CRLF, while Unix uses LF. If you have a file with CRLF line endings in a Unix environment, it could potentially not work when you run
+it. And vice versa.
 
-Normalizing line endings on commit is important because it makes sure that the line endings are consistent in the repository. This is
-important because it makes it easier to review changes, and it makes it easier to merge changes. If you have a file with mixed line endings,
-it could potentially cause merge conflicts.
+Normalizing line endings **on commit/add** is important because it makes sure that the line endings are consistent in the repository. This
+makes it easier to review changes in a PR. Also, if you have a file with mixed line endings it could potentially cause merge conflicts.
 
 There are some exceptions, some files do not make sense to normalize. For example, `.bat` files should always have CRLF line endings,
-because they can only run in Windows. The same goes for bash scripts, which should always have LF line endings, because they are used in
-Unix. This idea I've copied from [this blog post](https://rehansaeed.com/gitattributes-best-practices/).
+because they can only run in Windows. The same goes for bash scripts in Unix, which should always have LF line endings. I've copied this
+setup from [this blog post](https://rehansaeed.com/gitattributes-best-practices/) by Muhammad Rehan Saeed.
 
 # EditorConfig
 
-Next up is [EditorConfig](https://editorconfig.org/). It is a bit more powerful than gitattributes regarding formatting, but also has its
-limits. Here is the config I use:
+Next up is [EditorConfig](https://editorconfig.org/). Compared to git, EditorConfig is a tool solely about maintaining consistent coding
+styles, so it has some more formatting related features. Here is the config I use:
 
 ```text
 root = true
@@ -86,8 +86,9 @@ trim_trailing_whitespace = false
 Let's go through it. At the top, I set `root = true`, which tells EditorConfig to stop looking for an `.editorconfig` file in parent
 directories. Then, I set the baseline for all files (targeted by the `*`), which is:
 
-- charset to `utf-8`: This is the most common encoding.
-- indent_style to `tab`: This is truly a personal preference and many words have already been written on it, but just use one of the two.
+- charset to `utf-8`: This is **the** most common/dominant encoding.
+- indent_style to `tab`: This is truly a personal preference and many words have already been written on it, but just use one of the two. I
+  like the accessibility of tabs, but I won't go into details.
 - insert_final_newline to `true`: This makes sure that every file ends with a newline. This is important because some tools (like `cat`)
   will not display the last line of a file if it doesn't end with a newline. Also see
   [this answer on StackOverflow](https://stackoverflow.com/a/729795/5475829).
@@ -116,51 +117,50 @@ types. Here is the config I use:
 ```
 
 Let's go through it. First, I set the `plugins` to include `@prettier/plugin-xml`. This is because prettier does not format xml files out of
-the box. Make sure it is installed as a dev dependency.
+the box. Make sure it is [installed as a dev dependency](https://www.npmjs.com/package/@prettier/plugin-xml).
 
 Then, I set the following options:
 
-- `singleQuote` to `true`: This makes sure that single quotes are used instead of double quotes.
-- `semi` to `false`: This makes sure that no semicolons are used. This makes refactoring easier, and less is more.
-- `bracketSpacing` to `true`: This makes sure there is a space between the brackets and the content, and thus improves readability.
-- `bracketSameLine` to `false`: This makes sure that for HTML-like languages, the closing bracket of the opening tag is **not** on the same
-  line as the last line of the opening tag. Makes it more readable.
+- singleQuote to `true`: This makes sure that single quotes are used instead of double quotes. Pick whatever you like, but stick to it.
+- semi to `false`: This makes sure that no semicolons are used. This makes refactoring easier, and less is more.
+- bracketSpacing to `true`: This makes sure there is a space between the brackets and the content, and thus improves readability.
+- bracketSameLine to `false`: This makes sure that for HTML-like languages, the closing bracket of the opening tag is **not** on the same
+  line as the last line of the opening tag. Also makes it more readable.
   [See an example here](https://prettier.io/docs/en/options.html#bracket-line).
-- `trailingComma` to `all`: This makes sure that there is a trailing comma wherever possible. This makes refactoring easier.
+- trailingComma to `all`: This makes sure that there is a trailing comma wherever possible. This makes refactoring easier.
 
-!!! info Adhere to EditorConfig
+!!! info Prettier follows EditorConfig
 
-Prettier will respect the settings from EditorConfig. And because EditorConfig applies to more files than Prettier, I did not include the
-`printWidth`, `tabWidth` and `useTabs` options in the Prettier config.
+You might be missing the `printWidth`, `tabWidth` or `useTabs` options in my Prettier config. But I omitted them on purpose, because
+Prettier will respect the settings from EditorConfig. And because EditorConfig applies to more files it's better to have the settings in
+EditorConfig and let Prettier use them.
 
 !!!
 
 # Editor integration
 
-The gitattributes settings automatically apply when you commit or checkout files. For the EditorConfig settings to apply, you possibly need
-to have an EditorConfig plugin installed in your editor. [You can look it up here](https://editorconfig.org/). For Prettier, you need to
-have the Prettier plugin installed in your editor, or run Prettier in the background whenever you want. See
-[the Prettier website](https://prettier.io/docs/en/editors.html) for more information.
+The `.gitattributes` settings automatically apply when you commit/add or merge/checkout files or switch branches. For the EditorConfig
+settings to work you (possibly) need to have [a plugin installed in your editor](https://editorconfig.org/). For Prettier, you also need to
+have the plugin installed in your editor. See [the Prettier website](https://prettier.io/docs/en/editors.html) for more information.
 
 # Further improvements
 
-While the editor integrations are nice for who wants to use them, they are not enforced. You can still commit files that do not adhere to
-the settings.
+While the editor integrations are nice, they are not enforced. People can still commit files that do not adhere to the settings.
 
 As a first improvement you could format the files on the pre-commit git hook. For example, use
-[lint-staged](https://www.npmjs.com/package/lint-staged) combined with [husky](https://typicode.github.io/husky/) and
-[the Prettier cli](https://prettier.io/docs/en/cli). Configuring this is out of scope for this blog post.
+[the Prettier cli](https://prettier.io/docs/en/cli) together with [lint-staged](https://www.npmjs.com/package/lint-staged) registered by
+[husky](https://typicode.github.io/husky/). Configuring this is out of scope for this blog post.
 
-This can however still be bypassed (`git commit --no-verify`). As a second improvement you could use a CI/CD pipeline to check the
+This however can still be bypassed (`git commit --no-verify`). So as a second improvement you could use a CI/CD pipeline to check the
 formatting. You can [run the Prettier CLI in the pipeline](https://prettier.io/docs/en/cli#--check), failing the pipeline when the
-formatting is not correct. This is also out of scope for this blog post, but there are plenty of examples available on the internet.
+formatting is not correct. This is also out of scope for this blog post. There are plenty of examples available on the internet.
 
 # Building docker containers
 
-If you are building a Docker container, you might want to set the line endings to the native line endings for the target operating system.
-This has the same reason as mentioned in the gitattributes section: the docker container might not work if the line endings are not
-compatible with the underlying operating system. There is tooling available to do this ([this](https://linux.die.net/man/1/unix2dos) and
-[that](https://linux.die.net/man/1/dos2unix)), but I'll leave it as an exercise for the reader.
+If you are building a Docker container, you might want to convert line endings for the target operating system. This has the same reason as
+mentioned in the gitattributes section: the docker container might not work if the line endings are not compatible with the underlying
+operating system. There is conversion tooling available ([this](https://linux.die.net/man/1/unix2dos) and
+[that](https://linux.die.net/man/1/dos2unix)), but I'll leave it as an exercise for the reader to use them.
 
 # Conclusion
 
