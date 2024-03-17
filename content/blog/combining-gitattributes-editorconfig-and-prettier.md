@@ -27,6 +27,12 @@ these situations, you know what I'm talking about:
 
 So we want to standardize and enforce. The next chapters will go through each tool and how to configure them.
 
+!!! info Disclaimer
+
+For all settings the following is true: argue or tweak however you want, but it's better to have a standard than to have none.
+
+!!!
+
 # gitattributes
 
 The scope of git regarding formatting is rather limited, but very powerful. In the
@@ -59,7 +65,38 @@ Unix. This idea I've copied from [this blog post](https://rehansaeed.com/gitattr
 
 # EditorConfig
 
-TODO: .editorconfig
+Next up is [EditorConfig](https://editorconfig.org/). It is a bit more powerful than gitattributes regarding formatting, but also has its
+limits. Here is the config I use:
+
+```text
+root = true
+
+[*]
+charset = utf-8
+indent_style = tab
+insert_final_newline = true
+trim_trailing_whitespace = true
+max_line_length = 80
+
+[*.md]
+max_line_length = off
+trim_trailing_whitespace = false
+```
+
+Let's go through it. At the top, I set `root = true`, which tells EditorConfig to stop looking for an `.editorconfig` file in parent
+directories. Then, I set the baseline for all files (targeted by the `*`), which is:
+
+- charset to `utf-8`: This is the most common encoding.
+- indent_style to `tab`: This is truly a personal preference and many words have already been written on it, but just use one of the two.
+- insert_final_newline to `true`: This makes sure that every file ends with a newline. This is important because some tools (like `cat`)
+  will not display the last line of a file if it doesn't end with a newline. Also see
+  [this answer on StackOverflow](https://stackoverflow.com/a/729795/5475829).
+- trim_trailing_whitespace to `true`: This makes sure that no trailing whitespace is left in the file. Because well, less is better.
+- max_line_length to `80`: This wraps most lines at 80 characters. This is a common convention, and it's also the default in many tools. It
+  also improves readability, and also gives the writer a good indication when the code might be getting too long and should be split up.
+
+For markdown files I set some exceptions. Markdown files are often used for documentation, and therefore often go over 80 characters per
+line. Trailing whitespace could potentially be used for alignment/aesthetics.
 
 # Prettier
 
