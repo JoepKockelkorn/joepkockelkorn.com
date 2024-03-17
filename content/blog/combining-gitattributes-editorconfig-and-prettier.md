@@ -5,13 +5,13 @@ draft: true
 description: 'How to combine and configure git, EditorConfig and Prettier in a project.'
 ---
 
-We all know the eternal debates about tabs vs spaces, single quotes vs double quotes, etc. While they can be entertaining, that is **not**
-what this blog post is about. This article is about combining and configuring git, EditorConfig and Prettier to work together in a project.
-So you can work together with your team without having to worry (too much) about formatting.
+We all know the eternal debates about tabs vs spaces, single vs double quotes, and so on. They can be entertaining, but also time-consuming.
+This article will explain how to combine git, EditorConfig and Prettier so you can focus on shipping features instead of debating endlessly
+about that missing semicolon on line 39.
 
-I've intentionally left eslint out of scope, because this post is about formatting. And linting is not formatting. Whatever you do, don't
-use eslint for formatting. That's what Prettier is for
-([link to blog post from Josh Goldberg](https://www.joshuakgoldberg.com/blog/you-probably-dont-need-eslint-config-prettier-or-eslint-plugin-prettier/)).
+I've intentionally left eslint out of scope, because this post is about formatting.
+[And linting is not formatting](https://www.joshuakgoldberg.com/blog/you-probably-dont-need-eslint-config-prettier-or-eslint-plugin-prettier/).
+Whatever you do, please don't use eslint for formatting.
 
 # Why do we need these tools
 
