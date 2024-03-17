@@ -154,7 +154,12 @@ This can however still be bypassed by using `git commit --no-verify`. As a secon
 formatting. You can run the Prettier CLI in the pipeline, and fail the pipeline if the formatting is not correct. This is also out of scope
 for this blog post, but you can look it up in the documentation of your CI/CD tool.
 
-# Other exceptions
+# Building docker containers
 
-TODO: explain solution for Docker container comment from blog post:
-https://dev.to/deadlybyte/please-add-gitattributes-to-your-git-repository-1jld/comments
+If you are building a Docker container, you might want to set the line endings to the native line endings for the target operating system.
+This has the same reason as mentioned in the gitattributes section: the docker container might not work if the line endings are not
+compatible with the underlying operating system. There is tooling available to do this, but it is out of scope for this blog post.
+
+# Conclusion
+
+TODO: write conclusion
