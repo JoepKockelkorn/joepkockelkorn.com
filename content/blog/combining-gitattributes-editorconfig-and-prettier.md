@@ -2,7 +2,7 @@
 title: Combining gitattributes, EditorConfig and Prettier
 date: 2024-03-17
 draft: false
-description: 'How to combine and configure git, EditorConfig and Prettier in a project.'
+description: 'How to combine and configure gitattributes, EditorConfig and Prettier in a project.'
 ---
 
 We all know the eternal debates about tabs vs spaces, single vs double quotes, and so on. They can be entertaining, but also time-consuming.
