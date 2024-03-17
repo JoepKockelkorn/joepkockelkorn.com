@@ -117,8 +117,8 @@ export function convertMarkdownToHtml(requestUrl: URL, markdown: string) {
 		}
 
 		// Apply syntax highlighting
-		const out = hljs.highlightAuto(code).value;
-		if (out && out !== code) {
+		const out = lang === 'text' ? code : hljs.highlightAuto(code).value;
+		if ((out && out !== code) || lang === 'text') {
 			escaped = true;
 			code = out;
 		}
