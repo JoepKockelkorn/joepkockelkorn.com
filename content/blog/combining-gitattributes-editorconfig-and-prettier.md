@@ -128,9 +128,22 @@ Then, I set the following options:
   [See an example here](https://prettier.io/docs/en/options.html#bracket-line).
 - `trailingComma` to `all`: This makes sure that there is a trailing comma wherever possible. This makes refactoring easier.
 
-TODO: explain why some options are not set, like `tabWidth` and `printWidth`
+!!! info Adhere to EditorConfig
 
-# Exceptions
+Prettier will respect the settings from EditorConfig. And because EditorConfig applies to more files than Prettier, I did not include the
+`printWidth`, `tabWidth` and `useTabs` options in the Prettier config.
+
+!!!
+
+# Editor integration
+
+TODO: explain how to integrate EditorConfig and Prettier in your editor/workflow
+
+# How to enforce
+
+TODO: explain how to enforce these settings in a pipeline
+
+# Other exceptions
 
 TODO: explain solution for Docker container comment from blog post:
 https://dev.to/deadlybyte/please-add-gitattributes-to-your-git-repository-1jld/comments
