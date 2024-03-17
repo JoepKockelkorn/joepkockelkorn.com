@@ -142,24 +142,28 @@ to have an EditorConfig plugin installed in your editor. [You can look it up her
 have the Prettier plugin installed in your editor, or run Prettier in the background whenever you want. See
 [the Prettier website](https://prettier.io/docs/en/editors.html) for more information.
 
-# How to enforce
+# Further improvements
 
-While the above settings are good for the basics, they are not enforced. You can still commit files that do not adhere to the settings.
+While the editor integrations are nice for who wants to use them, they are not enforced. You can still commit files that do not adhere to
+the settings.
 
-As a first improvement you could format the files using [the Prettier cli](https://prettier.io/docs/en/cli) on the pre-commit git hook. For
-that, you could use [lint-staged](https://www.npmjs.com/package/lint-staged) and [husky](https://typicode.github.io/husky/) to register the
-script. Configuring this is out of scope for this blog post, but you can look it up in the documentation of the tools.
+As a first improvement you could format the files on the pre-commit git hook. For example, use
+[lint-staged](https://www.npmjs.com/package/lint-staged) combined with [husky](https://typicode.github.io/husky/) and
+[the Prettier cli](https://prettier.io/docs/en/cli). Configuring this is out of scope for this blog post.
 
-This can however still be bypassed by using `git commit --no-verify`. As a second improvement you could use a CI/CD pipeline to check the
-formatting. You can run the Prettier CLI in the pipeline, and fail the pipeline if the formatting is not correct. This is also out of scope
-for this blog post, but you can look it up in the documentation of your CI/CD tool.
+This can however still be bypassed (`git commit --no-verify`). As a second improvement you could use a CI/CD pipeline to check the
+formatting. You can [run the Prettier CLI in the pipeline](https://prettier.io/docs/en/cli#--check), failing the pipeline when the
+formatting is not correct. This is also out of scope for this blog post, but there are plenty of examples available on the internet.
 
 # Building docker containers
 
 If you are building a Docker container, you might want to set the line endings to the native line endings for the target operating system.
 This has the same reason as mentioned in the gitattributes section: the docker container might not work if the line endings are not
-compatible with the underlying operating system. There is tooling available to do this, but it is out of scope for this blog post.
+compatible with the underlying operating system. There is tooling available to do this ([this](https://linux.die.net/man/1/unix2dos) and
+[that](https://linux.die.net/man/1/dos2unix)), but I'll leave it as an exercise for the reader.
 
 # Conclusion
 
-TODO: write conclusion
+In this blog post I've shown how to combine and configure git, EditorConfig and Prettier, so you don't have to manually format your code.
+These tools can be integrated in your IDE so the formatting is automatically applied while you program. To be safe you should also add
+checks in your CI/CD pipeline so everyone is guaranteed to adhere to the formatting.
