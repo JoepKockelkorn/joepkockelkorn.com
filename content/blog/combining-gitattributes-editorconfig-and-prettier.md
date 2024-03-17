@@ -137,11 +137,22 @@ Prettier will respect the settings from EditorConfig. And because EditorConfig a
 
 # Editor integration
 
-TODO: explain how to integrate EditorConfig and Prettier in your editor/workflow
+The gitattributes settings automatically apply when you commit or checkout files. For the EditorConfig settings to apply, you possibly need
+to have an EditorConfig plugin installed in your editor. [You can look it up here](https://editorconfig.org/). For Prettier, you need to
+have the Prettier plugin installed in your editor, or run Prettier in the background whenever you want. See
+[the Prettier website](https://prettier.io/docs/en/editors.html) for more information.
 
 # How to enforce
 
-TODO: explain how to enforce these settings in a pipeline
+While the above settings are good for the basics, they are not enforced. You can still commit files that do not adhere to the settings.
+
+As a first improvement you could format the files using [the Prettier cli](https://prettier.io/docs/en/cli) on the pre-commit git hook. For
+that, you could use [lint-staged](https://www.npmjs.com/package/lint-staged) and [husky](https://typicode.github.io/husky/) to register the
+script. Configuring this is out of scope for this blog post, but you can look it up in the documentation of the tools.
+
+This can however still be bypassed by using `git commit --no-verify`. As a second improvement you could use a CI/CD pipeline to check the
+formatting. You can run the Prettier CLI in the pipeline, and fail the pipeline if the formatting is not correct. This is also out of scope
+for this blog post, but you can look it up in the documentation of your CI/CD tool.
 
 # Other exceptions
 
