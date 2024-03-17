@@ -1,7 +1,7 @@
 ---
 title: Combining gitattributes, EditorConfig and Prettier
-date: 2024-03-16
-draft: true
+date: 2024-03-17
+draft: false
 description: 'How to combine and configure git, EditorConfig and Prettier in a project.'
 ---
 
