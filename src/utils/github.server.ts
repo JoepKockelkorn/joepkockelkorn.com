@@ -3,6 +3,7 @@ import GithubSlugger from 'github-slugger';
 import hljs from 'highlight.js/lib/core';
 import typescript from 'highlight.js/lib/languages/typescript';
 import xml from 'highlight.js/lib/languages/xml';
+import json from 'highlight.js/lib/languages/json';
 import { Marked } from 'marked';
 import { isTruthy } from 'remeda';
 import { z } from 'zod';
@@ -100,6 +101,7 @@ export function convertMarkdownToHtml(requestUrl: URL, markdown: string) {
 
 	hljs.getLanguage('typescript') || hljs.registerLanguage('typescript', typescript);
 	hljs.getLanguage('xml') || hljs.registerLanguage('xml', xml);
+	hljs.getLanguage('json') || hljs.registerLanguage('json', json);
 	renderer.code = (code, infostring, escaped) => {
 		const lang = (infostring ?? '').match(/\S*/)![0];
 		const lines = code.split('\n');
