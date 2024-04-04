@@ -112,7 +112,8 @@ types. Here is the config I use:
 	"semi": false,
 	"bracketSpacing": true,
 	"bracketSameLine": false,
-	"trailingComma": "all"
+	"trailingComma": "all",
+	"endOfLine": "auto"
 }
 ```
 
@@ -128,6 +129,7 @@ Then, I set the following options:
   line as the last line of the opening tag. Also makes it more readable.
   [See an example here](https://prettier.io/docs/en/options.html#bracket-line).
 - trailingComma to `all`: This makes sure that there is a trailing comma wherever possible. This makes refactoring easier.
+- endOfLine to `auto`: This makes sure that the line endings are consistent the settings of the `.gitattributes` file.
 
 !!! info Prettier follows EditorConfig
 
