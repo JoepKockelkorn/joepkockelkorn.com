@@ -1,5 +1,6 @@
 import { Slot, component$ } from '@builder.io/qwik';
 import { useLocation } from '@builder.io/qwik-city';
+import { ThemeSwitch } from '../theme-switch/theme-switch';
 
 export const Header = component$((props: { class?: string }) => {
 	return (
@@ -9,6 +10,7 @@ export const Header = component$((props: { class?: string }) => {
 					<h1>Joep Kockelkorn</h1>
 				</MyNavLink>
 				<MyNavLink to="/blog">Blog</MyNavLink>
+				<ThemeSwitch />
 			</nav>
 		</header>
 	);

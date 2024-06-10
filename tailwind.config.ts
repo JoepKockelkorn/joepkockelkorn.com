@@ -4,6 +4,7 @@ import typographyPlugin from '@tailwindcss/typography';
 
 export default {
 	content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
+	darkMode: 'class',
 	safelist: [
 		'admonition',
 		{
