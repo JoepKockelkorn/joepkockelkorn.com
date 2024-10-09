@@ -1,13 +1,14 @@
-import parseMarkdown from 'front-matter';
+import getFrontMatter from 'front-matter';
 import GithubSlugger from 'github-slugger';
 import hljs from 'highlight.js/lib/core';
+import json from 'highlight.js/lib/languages/json';
 import typescript from 'highlight.js/lib/languages/typescript';
 import xml from 'highlight.js/lib/languages/xml';
-import json from 'highlight.js/lib/languages/json';
+import type { Token } from 'marked';
 import { Marked } from 'marked';
+import readingTime from 'reading-time';
 import { isTruthy } from 'remeda';
 import { z } from 'zod';
-import readingTime from 'reading-time';
 
 import admonition from './admonition.server';
 
@@ -70,14 +71,14 @@ export async function fetchBlogPost(slug: string, ref: string = 'main'): Promise
 	}
 
 	const rawMarkdown = await res.text();
-	const { body, attributes } = parseMarkdown(rawMarkdown);
+	const { body, attributes } = getFrontMatter(rawMarkdown);
 	const meta = blogPostFrontMatterSchema.parse(attributes);
 	const { text } = readingTime(body);
 
 	return { slug, bodyMarkdown: body, meta, readingTime: text };
 }
 
-export function convertMarkdownToHtml(requestUrl: URL, markdown: string) {
+export async function parseMarkdown(requestUrl: URL, markdown: string): Promise<{ html: string; tokens: Token[] }> {
 	const renderer = new marked.Renderer();
 	const slugger = new GithubSlugger();
 
@@ -142,7 +143,10 @@ export function convertMarkdownToHtml(requestUrl: URL, markdown: string) {
 		return `<pre><code${!lang ? '' : ` lang="${escape(lang)}"`}>${escapedCode}</code></pre>\n`;
 	};
 
-	return marked.parse(markdown, { renderer });
+	const tokens = marked.lexer(markdown);
+	const html = await marked.parse(markdown, { renderer });
+
+	return { html, tokens };
 }
 
 function getSlugFromFilename(name: string) {
