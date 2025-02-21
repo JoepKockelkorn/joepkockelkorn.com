@@ -1,9 +1,35 @@
 ---
+interface Props {
+	title: string;
+	description: string;
+}
+
+import Header from '../components/header.astro';
 import '../styles/fonts.css';
+
+const { title, description } = Astro.props;
 ---
 
-<html>
-	<body>
-		<slot />
+<html lang="en">
+	<head>
+		<!-- Favicon -->
+		<link rel="manifest" href="/manifest.json" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+
+		<!-- Meta tags -->
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Joep Kockelkorn | {title}</title>
+		<meta name="description" content={description} />
+	</head>
+	<body class="h-full py-0 bg-background flex flex-col text-text overflow-auto scroll-smooth">
+		<Header />
+		<main class="isolate flex-grow flex-shrink z-0 mt-[3.75rem]">
+			<div class="h-full px-4 md:px-6 xl:px-8 max-w-3xl mx-auto flex flex-col">
+				<slot />
+			</div>
+		</main>
 	</body>
 </html>
