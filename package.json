@@ -1,63 +1,29 @@
 {
 	"name": "joepkockelkorn.com",
 	"engines": {
-		"node": ">=18.0.0"
+		"node": ">=20.0.0"
 	},
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"build": "qwik build",
-		"build.client": "vite build",
-		"build.preview": "vite build --ssr src/entry.preview.tsx",
-		"build.server": "vite build -c adapters/vercel-edge/vite.config.ts",
-		"build.types": "tsc --incremental --noEmit",
-		"deploy": "vercel deploy",
-		"dev": "vite --mode ssr",
-		"dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
+		"dev": "astro dev",
+		"check": "astro check",
+		"build": "astro build",
+		"preview": "astro preview",
 		"fmt": "prettier --write .",
 		"fmt.check": "prettier --check .",
-		"lint": "eslint \"src/**/*.ts*\"",
-		"preview": "qwik build preview && vite preview --open",
-		"start": "vite --open --mode ssr",
-		"prepare": "husky",
-		"qwik": "qwik"
+		"prepare": "husky"
 	},
 	"devDependencies": {
-		"@builder.io/partytown": "^0.9.1",
-		"@builder.io/qwik": "^1.4.5",
-		"@builder.io/qwik-city": "^1.4.5",
-		"@tailwindcss/typography": "^0.5.10",
-		"@types/eslint": "8.56.2",
-		"@types/node": "^20.11.17",
-		"@typescript-eslint/eslint-plugin": "^7.0.1",
-		"@typescript-eslint/parser": "^7.0.1",
-		"autoprefixer": "^10.4.17",
-		"eslint": "8.56.0",
-		"eslint-plugin-qwik": "^1.4.5",
-		"front-matter": "^4.0.2",
-		"github-slugger": "^2.0.0",
-		"highlight.js": "^11.9.0",
+		"@astrojs/check": "^0.9.4",
+		"@astrojs/ts-plugin": "^1.10.4",
+		"@astrojs/vercel": "^8.0.7",
+		"astro": "^5.3.0",
 		"husky": "^9.0.11",
 		"lint-staged": "^15.2.2",
-		"marked": "^12.0.0",
-		"postcss": "^8.4.35",
 		"prettier": "^3.2.5",
-		"pretty-cache-header": "^1.0.0",
-		"reading-time": "^1.5.0",
-		"remeda": "^1.40.2",
-		"tailwindcss": "3.4.1",
-		"tiny-invariant": "^1.3.1",
-		"typescript": "5.3.3",
-		"undici": "^6.6.2",
-		"vercel": "^33.5.1",
-		"vite": "5.1.2",
-		"vite-tsconfig-paths": "4.3.1",
-		"zod": "^3.22.4"
-	},
-	"dependencies": {
-		"buffer": "^6.0.3",
-		"events": "^3.3.0",
-		"stream-browserify": "^3.0.0",
-		"util": "^0.12.5"
+		"prettier-plugin-astro": "^0.14.1",
+		"typescript": "^5.7.3",
+		"vercel": "^41.1.4"
 	}
 }
