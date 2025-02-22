@@ -23,6 +23,10 @@ const { title, description } = Astro.props;
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Joep Kockelkorn | {title}</title>
 		<meta name="description" content={description} />
+
+		<!-- Partytown + analytics -->
+		<script is:inline async type="text/partytown" src="https://www.googletagmanager.com/gtag/js?id=G-BS603B8LYL"></script>
+		<script is:inline type="text/partytown" src="/google-analytics.js"></script>
 	</head>
 	<body class="h-full py-0 bg-background flex flex-col text-text overflow-auto scroll-smooth">
 		<Header />
