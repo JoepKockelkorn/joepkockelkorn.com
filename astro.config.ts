@@ -12,6 +12,10 @@ export default defineConfig({
 	site: 'https://joepkockelkorn.com',
 	markdown: {
 		remarkPlugins: [remarkReadingTime],
+		shikiConfig: {
+			theme: 'night-owl',
+			wrap: false,
+		},
 	},
 	integrations: [
 		partytown({
