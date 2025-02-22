@@ -1,6 +1,6 @@
 ---
 import Layout from '@layouts/layout.astro';
-import { getReadingTimeFromRenderedContent } from '@utils/remark-reading-time';
+import { getFrontmatter } from '@utils/frontmatter';
 import { getCollection } from 'astro:content';
 
 const posts = await getCollection('blog');
@@ -12,7 +12,7 @@ const filteredPosts = posts.filter((post) => import.meta.env.DEV || !post.data.d
 	<div class="space-y-12">
 		{
 			filteredPosts.map(({ data: post, id: slug, rendered }) => {
-				const readingTime = getReadingTimeFromRenderedContent(rendered);
+				const { readingTime } = getFrontmatter(rendered);
 				return (
 					<article>
 						<a

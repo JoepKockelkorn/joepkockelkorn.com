@@ -1,6 +1,6 @@
 ---
 import Layout from '@layouts/layout.astro';
-import { getReadingTimeFromRenderedContent } from '@utils/remark-reading-time';
+import { getFrontmatter } from '@utils/frontmatter';
 import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
 import { getCollection, render } from 'astro:content';
 
@@ -18,7 +18,7 @@ export const getStaticPaths = (async () => {
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { post } = Astro.props as Props;
-const readingTime = getReadingTimeFromRenderedContent(post.rendered);
+const { readingTime } = getFrontmatter(post.rendered);
 const { Content } = await render(post);
 ---
 
