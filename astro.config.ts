@@ -1,5 +1,6 @@
 import partytown from '@astrojs/partytown';
 import vercelStatic from '@astrojs/vercel';
+import { transformerNotationDiff } from '@shikijs/transformers';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
 import { remarkReadingTime } from './src/utils/remark-reading-time';
@@ -15,6 +16,12 @@ export default defineConfig({
 		shikiConfig: {
 			theme: 'night-owl',
 			wrap: false,
+			transformers: [
+				transformerNotationDiff({
+					classLineAdd: 'bg-green-900',
+					classLineRemove: 'bg-red-900',
+				}) as any,
+			], // any needed due to type mismatch, works fine
 		},
 	},
 	integrations: [

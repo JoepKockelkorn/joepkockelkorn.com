@@ -343,20 +343,22 @@ Here we define a loader function which implements the `CanActivateFn` interface.
 
 Then, we use this function in the router config:
 
+<!-- prettier-ignore-start -->
 ```typescript
-+ import { heroLoader } from './hero-loader';
++ import { heroLoader } from './hero-loader';// [!code ++]
 
 const routes: Routes = [
-  // ...
-  {
-    path: 'detail/:id',
-    component: HeroDetailComponent,
-    // 🔽🔽🔽 canActivate config added here 🔽🔽🔽
-+     canActivate: [heroLoader],
-  },
-  // ...
+	// ...
+	{
+		path: 'detail/:id',
+		component: HeroDetailComponent,
+		// 🔽🔽🔽 canActivate config added here 🔽🔽🔽
++		canActivate: [heroLoader],// [!code ++]
+	},
+	// ...
 ];
 ```
+<!-- prettier-ignore-end -->
 
 And remove the data fetching logic from the `HeroDetailComponent`:
 
@@ -453,20 +455,22 @@ Here we define a function which implements the `ResolveFn` interface. It mainly 
 
 Then, we use this function in the router config:
 
+<!-- prettier-ignore-start -->
 ```typescript
-+ import { heroResolver } from './hero-resolver';
++ import { heroResolver } from './hero-resolver';// [!code ++]
 
 const routes: Routes = [
-  // ...
-  {
-    path: 'detail/:id',
-    component: HeroDetailComponent,
-    // 🔽🔽🔽 resolve config added here 🔽🔽🔽
-+     resolve: { hero: heroResolver },
-  },
-  // ...
+	// ...
+	{
+		path: 'detail/:id',
+		component: HeroDetailComponent,
+		// 🔽🔽🔽 resolve config added here 🔽🔽🔽
++		resolve: { hero: heroResolver },// [!code ++]
+	},
+	// ...
 ];
 ```
+<!-- prettier-ignore-end -->
 
 And remove the data fetching logic from the `HeroDetailComponent`:
 
