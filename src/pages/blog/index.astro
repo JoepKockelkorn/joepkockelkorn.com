@@ -1,7 +1,7 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '@layouts/layout.astro';
-import { readingTimeKey } from '@utils/remark-reading-time';
+import { getReadingTimeFromRenderedContent } from '@utils/remark-reading-time';
+import { getCollection } from 'astro:content';
 
 const posts = await getCollection('blog');
 const filteredPosts = posts.filter((post) => import.meta.env.DEV || !post.data.draft);
@@ -12,7 +12,7 @@ const filteredPosts = posts.filter((post) => import.meta.env.DEV || !post.data.d
 	<div class="space-y-12">
 		{
 			filteredPosts.map(({ data: post, id: slug, rendered }) => {
-				const readingTime = (rendered?.metadata?.frontmatter as any)[readingTimeKey];
+				const readingTime = getReadingTimeFromRenderedContent(rendered);
 				return (
 					<article>
 						<a
