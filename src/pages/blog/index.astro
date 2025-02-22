@@ -3,15 +3,17 @@ import Layout from '@layouts/layout.astro';
 import { getFrontmatter } from '@utils/frontmatter';
 import { getCollection } from 'astro:content';
 
-const posts = await getCollection('blog');
-const filteredPosts = posts.filter((post) => import.meta.env.DEV || !post.data.draft);
+const allPosts = await getCollection('blog');
+const visiblePosts = allPosts
+	.filter((post) => import.meta.env.DEV || !post.data.draft) // show drafts in dev mode only
+	.toSorted((a, b) => new Date(b.data.date.raw).getTime() - new Date(a.data.date.raw).getTime());
 ---
 
 <Layout title="Blog">
 	<h2 class="leading-tight font-bold text-4xl mt-8 mb-12 text-gradient">My blog posts</h2>
 	<div class="space-y-12">
 		{
-			filteredPosts.map(({ data: post, id: slug, rendered }) => {
+			visiblePosts.map(({ data: post, id: slug, rendered }) => {
 				const { readingTime } = getFrontmatter(rendered);
 				return (
 					<article>
