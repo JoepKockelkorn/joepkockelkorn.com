@@ -3,7 +3,7 @@ import type { RenderedContent } from 'astro:content';
 import { z } from 'zod';
 
 export const frontmatterSchema = z.object({
-	readingTime: z.string().optional().default('0 min'),
+	readingTime: z.string(),
 });
 export type Frontmatter = z.infer<typeof frontmatterSchema>;
 
