@@ -1,13 +1,14 @@
 ---
 interface Props {
-	title: string;
-	description: string;
+	title?: string;
+	description?: string;
 }
 
 import Header from '../components/header.astro';
 import '../styles/fonts.css';
 
 const { title, description } = Astro.props;
+const safeTitle = `Joep Kockelkorn${title ? `| ${title}` : ''}`;
 ---
 
 <html lang="en">
@@ -21,8 +22,8 @@ const { title, description } = Astro.props;
 		<!-- Meta tags -->
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Joep Kockelkorn | {title}</title>
-		<meta name="description" content={description} />
+		<title>{safeTitle}</title>
+		{description && <meta name="description" content={description} />}
 
 		<!-- Partytown + analytics -->
 		<script is:inline async type="text/partytown" src="https://www.googletagmanager.com/gtag/js?id=G-BS603B8LYL"></script>
