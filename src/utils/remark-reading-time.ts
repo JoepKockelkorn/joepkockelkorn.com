@@ -1,9 +1,10 @@
 import getReadingTime from 'reading-time';
 import { toString } from 'mdast-util-to-string';
 import type { RemarkPlugin } from '@astrojs/markdown-remark';
-import { z, type RenderedContent } from 'astro:content';
 
-export const readingTimeKey = 'readingTime';
+// Don't import any real code from 'astro:content' here, as it will cause an issue: https://github.com/withastro/astro/issues/5711
+import type { RenderedContent } from 'astro:content';
+import { z } from 'zod';
 
 const frontmatterSchema = z.object({
 	readingTime: z.string(),
