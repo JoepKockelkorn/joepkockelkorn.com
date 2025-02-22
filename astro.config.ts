@@ -3,7 +3,8 @@ import vercelStatic from '@astrojs/vercel';
 import { transformerNotationDiff } from '@shikijs/transformers';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
-import rehypeAutolinkHeadings, { type Options } from 'rehype-autolink-headings';
+import rehypeExternalLinks, { type Options as ExternalLinksOptions } from 'rehype-external-links';
+import rehypeAutolinkHeadings, { type Options as AutolinkHeadingsOptions } from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
 import { remarkReadingTime } from './src/utils/remark-reading-time';
 
@@ -17,7 +18,20 @@ export default defineConfig({
 		remarkPlugins: [remarkReadingTime],
 		rehypePlugins: [
 			rehypeSlug,
-			[rehypeAutolinkHeadings, { behavior: 'wrap', headingProperties: { class: 'header-link' } } satisfies Options],
+			[
+				rehypeAutolinkHeadings,
+				{
+					behavior: 'wrap',
+					headingProperties: { class: 'header-link' },
+				} satisfies AutolinkHeadingsOptions,
+			],
+			[
+				rehypeExternalLinks,
+				{
+					rel: ['noreferrer', 'noopener', 'nofollow'],
+					target: '_blank',
+				} satisfies ExternalLinksOptions,
+			],
 		],
 		shikiConfig: {
 			theme: 'night-owl',
