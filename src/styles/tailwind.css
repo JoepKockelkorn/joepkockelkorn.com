@@ -30,7 +30,6 @@
 	:root {
 		color-scheme: light dark;
 		--icon-info: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>');
-		--admonition-color-info: 124 58 237;
 	}
 
 	html {
@@ -44,14 +43,10 @@
 	}
 
 	.admonition {
-		@apply text-base leading-8 border-2 px-6 rounded-md shadow-md my-10 border-[rgb(var(--admonition-color))];
-		&-info {
-			--admonition-color: var(--admonition-color-info);
-			--admonition-icon: var(--icon-info);
-		}
+		@apply text-base leading-8 border-2 px-6 rounded-md shadow-md my-10 border-adminition-info;
 
 		& > .admonition-title {
-			@apply -mx-6 py-2 pr-6 pl-16 my-0 rounded-t-xs border-b-2 border-[rgb(var(--admonition-color))] relative before:[mask-image:var(--admonition-icon)] before:absolute before:left-6 before:top-1/2 before:w-6 before:h-6 before:bg-[rgb(var(--admonition-color))] before:-translate-y-1/2;
+			@apply -mx-6 py-2 pr-6 pl-16 !my-0 rounded-t-xs border-b-2 border-adminition-info relative before:[mask-image:var(--icon-info)] before:absolute before:left-6 before:top-1/2 before:w-6 before:h-6 before:bg-adminition-info before:-translate-y-1/2;
 		}
 	}
 }

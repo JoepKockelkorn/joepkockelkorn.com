@@ -27,12 +27,12 @@ situations, you know what I'm talking about:
 
 So we want to standardize and enforce. The next chapters will go through each tool and how to configure them.
 
-!!! info Disclaimer
-
-Discuss and/or tweak the settings however you want, but whatever you do, use and enforce **a single standard**. Not everyone has to agree
-with it, but everyone must comply.
-
-!!!
+<!-- prettier-ignore-start -->
+<div class="admonition">
+	<p class="admonition-title">Disclaimer</p>
+	<p>Discuss and/or tweak the settings however you want, but whatever you do, use and enforce <strong>a single standard</strong>. Not everyone has to agree with it, but everyone must comply.</p>
+</div>
+<!-- prettier-ignore-end -->
 
 # gitattributes
 
@@ -131,13 +131,12 @@ Then, I set the following options:
 - trailingComma to `all`: This makes sure that there is a trailing comma wherever possible. This makes refactoring easier.
 - endOfLine to `auto`: This makes sure that the line endings are consistent the settings of the `.gitattributes` file.
 
-!!! info Prettier follows EditorConfig
-
-You might be missing the `printWidth`, `tabWidth` or `useTabs` options in my Prettier config. But I omitted them on purpose, because
-Prettier will respect the settings from EditorConfig. And because EditorConfig applies to more files it's better to have the settings in
-EditorConfig and let Prettier use them.
-
-!!!
+<!-- prettier-ignore-start -->
+<div class="admonition">
+	<p class="admonition-title">Prettier follows EditorConfig</p>
+	<p>You might be missing the <code>printWidth</code>, <code>tabWidth</code> or <code>useTabs</code> options in my Prettier config. But I omitted them on purpose, because Prettier will respect the settings from EditorConfig. And because EditorConfig applies to more files it's better to have the settings in EditorConfig and let Prettier use them.</p>
+</div>
+<!-- prettier-ignore-end -->
 
 # Editor integration
 

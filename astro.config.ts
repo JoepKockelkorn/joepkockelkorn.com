@@ -7,6 +7,8 @@ import rehypeExternalLinks, { type Options as ExternalLinksOptions } from 'rehyp
 import rehypeAutolinkHeadings, { type Options as AutolinkHeadingsOptions } from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
 import rehypeImageNativeLazyLoading from 'rehype-plugin-image-native-lazy-loading';
+import remarkDirective from 'remark-directive';
+import remarkDirectiveRehype from 'remark-directive-rehype';
 import { remarkReadingTime } from './src/utils/remark-reading-time';
 
 const logPartytown = import.meta.env.DEV;
@@ -16,7 +18,11 @@ export default defineConfig({
 	adapter: vercelStatic({}),
 	site: 'https://joepkockelkorn.com',
 	markdown: {
-		remarkPlugins: [remarkReadingTime],
+		remarkPlugins: [
+			remarkReadingTime,
+			remarkDirective,
+			remarkDirectiveRehype as any, // any needed due to type mismatch, works fine
+		],
 		rehypePlugins: [
 			rehypeSlug,
 			[
