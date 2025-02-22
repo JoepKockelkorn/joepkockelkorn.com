@@ -1,6 +1,7 @@
-import { defineConfig } from 'astro/config';
-import vercelStatic from '@astrojs/vercel';
 import partytown from '@astrojs/partytown';
+import vercelStatic from '@astrojs/vercel';
+import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'astro/config';
 import { remarkReadingTime } from './src/utils/remark-reading-time';
 
 const logPartytown = import.meta.env.DEV;
@@ -26,4 +27,7 @@ export default defineConfig({
 			},
 		}),
 	],
+	vite: {
+		plugins: [tailwindcss()],
+	},
 });

@@ -5,6 +5,7 @@ interface Props {
 }
 
 import Header from '@components/header.astro';
+import '@styles/tailwind.css';
 import '@styles/fonts.css';
 
 const { title, description } = Astro.props;
@@ -31,7 +32,7 @@ const safeTitle = `Joep Kockelkorn${title ? ` | ${title}` : ''}`;
 	</head>
 	<body class="h-full py-0 bg-background flex flex-col text-text overflow-auto scroll-smooth">
 		<Header />
-		<main class="isolate flex-grow flex-shrink z-0 mt-[3.75rem]">
+		<main class="isolate grow shrink z-0 mt-[3.75rem]">
 			<div class="h-full px-4 md:px-6 xl:px-8 max-w-3xl mx-auto flex flex-col">
 				<slot />
 			</div>

@@ -21,7 +21,7 @@
 @font-face {
 	font-family: 'Mukta';
 	font-style: normal;
-	font-display: swap;
+	font-display: block;
 	font-weight: 400;
 	src:
 		local('Mukta-Regular'),
@@ -32,7 +32,7 @@
 @font-face {
 	font-family: 'Mukta';
 	font-style: normal;
-	font-display: swap;
+	font-display: block;
 	font-weight: 500;
 	src:
 		local('Mukta-Medium'),
@@ -43,7 +43,7 @@
 @font-face {
 	font-family: 'Mukta';
 	font-style: normal;
-	font-display: swap;
+	font-display: block;
 	font-weight: 600;
 	src:
 		local('Mukta-SemiBold'),
@@ -54,7 +54,7 @@
 @font-face {
 	font-family: 'Mukta';
 	font-style: normal;
-	font-display: swap;
+	font-display: block;
 	font-weight: 700;
 	src:
 		local('Mukta-Bold'),
@@ -64,7 +64,7 @@
 @font-face {
 	font-family: 'DankMono';
 	font-style: normal;
-	font-display: swap;
+	font-display: block;
 	font-weight: 400;
 	src:
 		local('DankMono-Regular'),
@@ -73,7 +73,7 @@
 @font-face {
 	font-family: 'DankMono';
 	font-style: normal;
-	font-display: swap;
+	font-display: block;
 	font-weight: 700;
 	src:
 		local('DankMono-Bold'),
@@ -82,7 +82,7 @@
 @font-face {
 	font-family: 'DankMono';
 	font-style: italic;
-	font-display: swap;
+	font-display: block;
 	font-weight: 400;
 	src:
 		local('DankMono-Italic'),
