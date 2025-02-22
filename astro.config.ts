@@ -6,6 +6,7 @@ import { defineConfig } from 'astro/config';
 import rehypeExternalLinks, { type Options as ExternalLinksOptions } from 'rehype-external-links';
 import rehypeAutolinkHeadings, { type Options as AutolinkHeadingsOptions } from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
+import rehypeImageNativeLazyLoading from 'rehype-plugin-image-native-lazy-loading';
 import { remarkReadingTime } from './src/utils/remark-reading-time';
 
 const logPartytown = import.meta.env.DEV;
@@ -32,6 +33,7 @@ export default defineConfig({
 					target: '_blank',
 				} satisfies ExternalLinksOptions,
 			],
+			rehypeImageNativeLazyLoading as any, // any needed due to type mismatch, works fine
 		],
 		shikiConfig: {
 			theme: 'night-owl',
