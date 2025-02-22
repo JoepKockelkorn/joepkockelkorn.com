@@ -3,6 +3,8 @@ import vercelStatic from '@astrojs/vercel';
 import { transformerNotationDiff } from '@shikijs/transformers';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
+import rehypeAutolinkHeadings, { type Options } from 'rehype-autolink-headings';
+import rehypeSlug from 'rehype-slug';
 import { remarkReadingTime } from './src/utils/remark-reading-time';
 
 const logPartytown = import.meta.env.DEV;
@@ -13,6 +15,10 @@ export default defineConfig({
 	site: 'https://joepkockelkorn.com',
 	markdown: {
 		remarkPlugins: [remarkReadingTime],
+		rehypePlugins: [
+			rehypeSlug,
+			[rehypeAutolinkHeadings, { behavior: 'wrap', headingProperties: { class: 'header-link' } } satisfies Options],
+		],
 		shikiConfig: {
 			theme: 'night-owl',
 			wrap: false,

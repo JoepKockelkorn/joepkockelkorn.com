@@ -39,8 +39,8 @@
 }
 
 @layer components {
-	.header-link {
-		@apply no-underline inline-block relative after:absolute after:w-full after:h-[0.08em] after:bottom-[0.05em] after:left-0 after:origin-bottom-left after:transition-transform after:ease-out after:bg-primary-400 after:scale-x-0 hover:after:scale-x-100 focus-visible:after:scale-x-100 after:will-change-transform;
+	.header-link a {
+		@apply !no-underline inline-block relative after:absolute after:w-full after:h-[0.08em] after:bottom-[0.05em] after:left-0 after:origin-bottom-left after:transition-transform after:ease-out after:bg-primary-400 after:scale-x-0 hover:after:scale-x-100 focus-visible:after:scale-x-100 after:will-change-transform;
 	}
 
 	.admonition {
