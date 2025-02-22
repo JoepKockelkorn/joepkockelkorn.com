@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 import vercelStatic from '@astrojs/vercel';
 import partytown from '@astrojs/partytown';
-import { remarkReadingTime } from './src/util/remark-reading-time';
+import { remarkReadingTime } from './src/utils/remark-reading-time';
 
 const logPartytown = import.meta.env.DEV;
 

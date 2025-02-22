@@ -8,6 +8,13 @@
 			{
 				"name": "@astrojs/ts-plugin"
 			}
-		]
+		],
+		"baseUrl": ".",
+		"paths": {
+			"@layouts/*": ["src/layouts/*"],
+			"@components/*": ["src/components/*"],
+			"@utils/*": ["src/utils/*"],
+			"@styles/*": ["src/styles/*"]
+		}
 	}
 }

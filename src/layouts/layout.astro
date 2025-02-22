@@ -4,8 +4,8 @@ interface Props {
 	description?: string;
 }
 
-import Header from '../components/header.astro';
-import '../styles/fonts.css';
+import Header from '@components/header.astro';
+import '@styles/fonts.css';
 
 const { title, description } = Astro.props;
 const safeTitle = `Joep Kockelkorn${title ? ` | ${title}` : ''}`;
