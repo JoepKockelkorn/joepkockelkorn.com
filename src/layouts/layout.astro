@@ -15,6 +15,8 @@ import '@styles/tailwind.css';
 import '@styles/fonts.css';
 
 const { title, description, extraMeta } = Astro.props;
+const currentURL = new URL(Astro.url.pathname, Astro.site);
+const canonicalURL = currentURL.pathname.endsWith('/') ? currentURL.toString().slice(0, -1) : currentURL;
 const safeTitle = `Joep Kockelkorn${title ? ` | ${title}` : ''}`;
 ---
 
@@ -30,6 +32,7 @@ const safeTitle = `Joep Kockelkorn${title ? ` | ${title}` : ''}`;
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="sitemap" href="/sitemap-index.xml" />
+		<link rel="canonical" href={canonicalURL} />
 		<title>{safeTitle}</title>
 		{description && <meta name="description" content={description} />}
 		{extraMeta && extraMeta.map(({ name, content }) => <meta name={name} content={content} />)}

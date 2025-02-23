@@ -23,8 +23,7 @@ const { readingTime } = frontmatterSchema.parse(remarkPluginFrontmatter);
 
 const ogImageUrl = new URL('https://joepkockelkorn-com-og-image.vercel.app/og-image');
 ogImageUrl.searchParams.set('title', post.data.title);
-const host = 'https://joepkockelkorn.com'; // TODO: dynamic host?
-const ogUrl = new URL(`${host}/blog/${post.id}`);
+const ogUrl = new URL(`/blog/${post.id}`, Astro.site);
 const extraMeta: Meta[] = [
 	{ name: 'og:url', content: ogUrl.toString() },
 	{ name: 'og:title', content: post.data.title },
