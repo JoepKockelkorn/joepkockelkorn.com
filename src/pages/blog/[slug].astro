@@ -1,5 +1,5 @@
 ---
-import Layout from '@layouts/layout.astro';
+import Layout, { type Meta } from '@layouts/layout.astro';
 import { frontmatterSchema } from '@utils/frontmatter';
 import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
 import { getCollection, render } from 'astro:content';
@@ -20,9 +20,25 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { post } = Astro.props as Props;
 const { Content, remarkPluginFrontmatter } = await render(post);
 const { readingTime } = frontmatterSchema.parse(remarkPluginFrontmatter);
+
+const ogImageUrl = new URL('https://joepkockelkorn-com-og-image.vercel.app/og-image');
+ogImageUrl.searchParams.set('title', post.data.title);
+const host = 'https://joepkockelkorn.com'; // TODO: dynamic host?
+const ogUrl = new URL(`${host}/blog/${post.id}`);
+const extraMeta: Meta[] = [
+	{ name: 'og:url', content: ogUrl.toString() },
+	{ name: 'og:title', content: post.data.title },
+	{ name: 'og:description', content: post.data.description },
+	{ name: 'og:image', content: ogImageUrl.toString() },
+	{ name: 'twitter:title', content: post.data.title },
+	{ name: 'twitter:description', content: post.data.description },
+	{ name: 'twitter:image', content: ogImageUrl.toString() },
+	{ name: 'twitter:card', content: 'summary_large_image' },
+	{ name: 'twitter:creator', content: '@JoepKockelkorn' },
+];
 ---
 
-<Layout title={post.data.title} description={post.data.description}>
+<Layout title={post.data.title} description={post.data.description} extraMeta={extraMeta}>
 	<div class="flex flex-wrap mt-4 gap-1">
 		<time datetime={post.data.date.raw}>{post.data.date.formatted}</time>-<p>{readingTime}</p>
 	</div>

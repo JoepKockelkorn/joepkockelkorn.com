@@ -1,14 +1,20 @@
 ---
+export interface Meta {
+	name: string;
+	content: string;
+}
+
 interface Props {
 	title?: string;
 	description?: string;
+	extraMeta?: Meta[];
 }
 
 import Header from '@components/header.astro';
 import '@styles/tailwind.css';
 import '@styles/fonts.css';
 
-const { title, description } = Astro.props;
+const { title, description, extraMeta } = Astro.props;
 const safeTitle = `Joep Kockelkorn${title ? ` | ${title}` : ''}`;
 ---
 
@@ -26,6 +32,7 @@ const safeTitle = `Joep Kockelkorn${title ? ` | ${title}` : ''}`;
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<title>{safeTitle}</title>
 		{description && <meta name="description" content={description} />}
+		{extraMeta && extraMeta.map(({ name, content }) => <meta name={name} content={content} />)}
 
 		<!-- Partytown + analytics -->
 		<script is:inline async type="text/partytown" src="https://www.googletagmanager.com/gtag/js?id=G-BS603B8LYL"></script>
