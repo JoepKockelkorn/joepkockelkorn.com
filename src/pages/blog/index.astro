@@ -1,20 +1,26 @@
 ---
 import Layout from '@layouts/layout.astro';
-import { getFrontmatter } from '@utils/frontmatter';
-import { getCollection } from 'astro:content';
+import { frontmatterSchema } from '@utils/frontmatter';
+import { getCollection, render } from 'astro:content';
 
 const allPosts = await getCollection('blog');
-const visiblePosts = allPosts
-	.filter((post) => import.meta.env.DEV || !post.data.draft) // show drafts in dev mode only
-	.toSorted((a, b) => new Date(b.data.date.raw).getTime() - new Date(a.data.date.raw).getTime());
+const filteredPosts = allPosts.filter((post) => import.meta.env.DEV || !post.data.draft); // show drafts in dev mode only
+const renderedPosts = await Promise.all(
+	filteredPosts.map(async (post) => {
+		const { remarkPluginFrontmatter } = await render(post);
+		const frontmatter = frontmatterSchema.parse(remarkPluginFrontmatter);
+
+		return { ...post, frontmatter };
+	}),
+);
+const visiblePosts = renderedPosts.toSorted((a, b) => new Date(b.data.date.raw).getTime() - new Date(a.data.date.raw).getTime());
 ---
 
 <Layout title="Blog">
 	<h2 class="leading-tight font-bold text-4xl mt-8 mb-12 text-gradient">My blog posts</h2>
 	<div class="space-y-12">
 		{
-			visiblePosts.map(({ data: post, id: slug, rendered }) => {
-				const { readingTime } = getFrontmatter(rendered);
+			visiblePosts.map(({ data: post, id: slug, frontmatter: { readingTime } }) => {
 				return (
 					<article>
 						<a

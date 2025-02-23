@@ -5,6 +5,8 @@ draft: false
 description: 'Exploring the concept of Remix loaders in the Tour of Heroes and explain what would come closest to a loader in Angular.'
 ---
 
+import InfoCallout from '../../src/components/info-callout.astro';
+
 ## Data fetching in meta frameworks
 
 All frontend javascript meta frameworks have it these days: a mechanism for data fetching. They come in many forms, but mostly as a
@@ -275,15 +277,20 @@ Let's explain them:
 - [ResolveFn](https://angular.io/api/router/ResolveFn) is called before a route is activated. But this one is different than
   `CanActivateFn`, because it's purpose is exclusively for data fetching.
 
-<!-- prettier-ignore-start -->
-<div class="admonition">
-	<p class="admonition-title"><code>CanMatchFn</code> vs <code>CanLoadFn</code> vs <code>CanActivateFn</code></p>
-	<p>Since in Angular version 14.1 the <a href="https://angular.io/api/router/CanMatchFn">CanMatchFn</a> was added, the <code>CanLoadFn</code>, <code>CanActivateFn</code> and <code>CanActivateChildFn</code> seems to be less useful for data fetching, because with <code>CanMatchFn</code> you can prevent a route from being matched at all. And routes that are not going to be matched <strong>will not be loaded or activated</strong>. So <code>CanMatchFn</code> is more powerful than the <code>CanLoadFn</code> and <code>CanActivate(Child)Fn</code> because it's evaluated sooner.</p>
-	<p>But its downside is that the <code>route</code> parameter is not yet a fully qualified <code>ActivatedRouteSnapshot</code>, so getting url params is not easy (<a href="https://github.com/angular/angular/issues/49309#issuecomment-1453863052" rel="noreferrer noopener nofollow" target"_blank">see explanation</a>). So therefore, CanMatchFn is currently not a good fit for data fetching.
-	<p><code>CanLoadFn</code> is also not a good fit for data fetching, because it's only called for lazy loaded components or modules, not for <strong>every</strong> route.</p>
-	</div>
+<InfoCallout title="Match vs Load vs Activate">
+Since in Angular version 14.1 the [CanMatchFn](https://angular.io/api/router/CanMatchFn) was added, the `CanLoadFn`, `CanActivateFn` and
+`CanActivateChildFn` seems to be less useful for data fetching, because with `CanMatchFn` you can prevent a route from being matched at all.
+And routes that are not going to be matched **will not be loaded or activated**. So `CanMatchFn` is more powerful than the `CanLoadFn` and
+`CanActivate(Child)Fn` because it's evaluated sooner.
 
-<!-- prettier-ignore-end -->
+But its downside is that the `route` parameter is not yet a fully qualified `ActivatedRouteSnapshot`, so getting url params is not easy
+([see explanation](https://github.com/angular/angular/issues/49309#issuecomment-1453863052)). So therefore, `CanMatchFn` is currently not a
+good fit for data fetching.
+
+`CanLoadFn` is also not a good fit for data fetching, because it's only called for lazy loaded components or modules, not for **every**
+route.
+
+</InfoCallout>
 
 Let's look at the canActivate and resolve guards more in detail and how they could be used for data fetching.
 
@@ -337,7 +344,7 @@ Here we define a loader function which implements the `CanActivateFn` interface.
 
 Then, we use this function in the router config:
 
-<!-- prettier-ignore-start -->
+{/* prettier-ignore-start */}
 ```typescript
 + import { heroLoader } from './hero-loader';// [!code ++]
 
@@ -352,7 +359,7 @@ const routes: Routes = [
 	// ...
 ];
 ```
-<!-- prettier-ignore-end -->
+{/* prettier-ignore-end */}
 
 And remove the data fetching logic from the `HeroDetailComponent`:
 
@@ -449,7 +456,7 @@ Here we define a function which implements the `ResolveFn` interface. It mainly 
 
 Then, we use this function in the router config:
 
-<!-- prettier-ignore-start -->
+{/* prettier-ignore-start */}
 ```typescript
 + import { heroResolver } from './hero-resolver';// [!code ++]
 
@@ -464,7 +471,7 @@ const routes: Routes = [
 	// ...
 ];
 ```
-<!-- prettier-ignore-end -->
+{/* prettier-ignore-end */}
 
 And remove the data fetching logic from the `HeroDetailComponent`:
 
@@ -501,16 +508,20 @@ export class HeroDetailComponent {
 }
 ```
 
-<!-- prettier-ignore-start -->
-<div class="admonition">
-	<p class="admonition-title">Typecasting</p>
-	<p>Note we still have to pluck the hero from the route data. The plucking requires a type annotation or a typecast because by default any property on <code>Data</code> resolves to <code>any</code>:</p>
-	<pre class="astro-code night-owl" style="background-color:#011627;color:#d6deeb; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#C792EA">type</span><span style="color:#D6DEEB"> Data </span><span style="color:#C792EA">=</span><span style="color:#D6DEEB"> {</span></span>
-<span class="line"><span style="color:#D6DEEB">	[</span><span style="color:#D7DBE0">key</span><span style="color:#7FDBCA">:</span><span style="color:#C5E478"> string</span><span style="color:#7FDBCA"> |</span><span style="color:#C5E478"> symbol</span><span style="color:#D6DEEB">]</span><span style="color:#7FDBCA">:</span><span style="color:#C5E478"> any</span><span style="color:#D6DEEB">;</span></span>
-<span class="line"><span style="color:#D6DEEB">};</span></span></code></pre>
-	<p>This typecasting issue is also there in Remix. In Remix we also have to help typescript to infer the type of the loader using <code>useLoaderData&lt;typeof loader&gt;()</code>.</p>
-</div>
-<!-- prettier-ignore-end -->
+<InfoCallout title="Typecasting">
+Note we still have to pluck the hero from the route data. The plucking requires a type annotation or a typecast because by default any
+property on `Data` resolves to `any`:
+
+```typescript
+type Data = {
+	[key: string | symbol]: any;
+};
+```
+
+This typecasting issue is also there in Remix. In Remix we also have to help typescript to infer the type of the loader using
+`useLoaderData<typeof loader>()`.
+
+</InfoCallout>
 
 Now that the hero property is an `Observable<Hero>` instead of `Hero | undefined` we have to change the template a bit:
 
