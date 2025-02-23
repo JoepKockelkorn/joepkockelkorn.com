@@ -10,10 +10,13 @@ import rehypeImageNativeLazyLoading from 'rehype-plugin-image-native-lazy-loadin
 import rehypeSlug from 'rehype-slug';
 import { remarkReadingTime } from './src/utils/remark-reading-time';
 
+import sitemap from '@astrojs/sitemap';
+
 const logPartytown = import.meta.env.DEV;
 
 export default defineConfig({
 	output: 'static',
+	trailingSlash: 'never',
 	adapter: vercelStatic({}),
 	site: 'https://joepkockelkorn.com',
 	markdown: {
@@ -61,6 +64,7 @@ export default defineConfig({
 			},
 		}),
 		mdx(),
+		sitemap(),
 	],
 	vite: {
 		plugins: [tailwindcss()],
