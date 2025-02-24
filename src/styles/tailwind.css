@@ -1,0 +1,57 @@
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
+
+@theme {
+	--color-primary-200: rgb(254 215 170);
+	--color-primary-400: rgb(251 146 60);
+	--color-primary-700: rgb(194 65 12);
+	--color-adminition-info: rgb(124, 58, 237);
+	--color-text: light-dark(rgb(31 41 55), rgb(255 255 255));
+	--color-background: light-dark(rgb(243 244 246), rgb(31 41 55));
+	--color-code: light-dark(rgb(1 22 39 / 0.8), rgb(1 22 39));
+
+	--font-sans: 'Mukta', 'Adjusted Arial Fallback', 'sans-serif';
+	--font-mono: 'DankMono', 'Adjusted Courier New Fallback', 'monospace';
+
+	--animate-wiggle: wiggle 1s ease-in-out infinite;
+
+	@keyframes wiggle {
+		0%,
+		100% {
+			transform: rotate(-10deg);
+		}
+		50% {
+			transform: rotate(10deg);
+		}
+	}
+}
+
+@layer base {
+	:root {
+		color-scheme: light dark;
+		--icon-info: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>');
+	}
+
+	html {
+		@apply flex h-full scroll-pt-[4rem] flex-col scroll-smooth break-words hyphens-auto;
+	}
+}
+
+@layer components {
+	.header-link a {
+		@apply relative inline-block !no-underline after:absolute after:bottom-[0.05em] after:left-0 after:h-[0.08em] after:w-full after:origin-bottom-left after:scale-x-0 after:bg-primary-400 after:transition-transform after:ease-out after:will-change-transform hover:after:scale-x-100 focus-visible:after:scale-x-100;
+	}
+
+	.admonition {
+		@apply my-10 rounded-md border-2 border-adminition-info px-6 text-base leading-8 shadow-md;
+
+		& > .admonition-title {
+			@apply relative -mx-6 !my-0 rounded-t-xs border-b-2 border-adminition-info py-2 pr-6 pl-16 before:absolute before:top-1/2 before:left-6 before:h-6 before:w-6 before:-translate-y-1/2 before:bg-adminition-info before:[mask-image:var(--icon-info)];
+		}
+	}
+}
+
+@utility text-gradient {
+	@apply bg-gradient-to-r from-primary-700 to-primary-400 bg-clip-text dark:to-primary-200;
+	-webkit-text-fill-color: transparent;
+}

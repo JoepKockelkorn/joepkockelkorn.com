@@ -1,0 +1,55 @@
+---
+import Layout from '@layouts/layout.astro'
+import { frontmatterSchema } from '@utils/frontmatter'
+import { getCollection, render } from 'astro:content'
+
+const allPosts = await getCollection('blog')
+const filteredPosts = allPosts.filter(
+	(post) => import.meta.env.DEV || !post.data.draft,
+) // show drafts in dev mode only
+const renderedPosts = await Promise.all(
+	filteredPosts.map(async (post) => {
+		const { remarkPluginFrontmatter } = await render(post)
+		const frontmatter = frontmatterSchema.parse(remarkPluginFrontmatter)
+
+		return { ...post, frontmatter }
+	}),
+)
+const visiblePosts = renderedPosts.toSorted(
+	(a, b) =>
+		new Date(b.data.date.raw).getTime() - new Date(a.data.date.raw).getTime(),
+)
+---
+
+<Layout title="Blog">
+	<h2 class="mt-8 mb-12 text-gradient text-4xl leading-tight font-bold">
+		My blog posts
+	</h2>
+	<div class="space-y-12">
+		{
+			visiblePosts.map(
+				({ data: post, id: slug, frontmatter: { readingTime } }) => {
+					return (
+						<article>
+							<a
+								href={`/blog/${slug}`}
+								class="group block space-y-4 outline-0 focus-visible:shadow-[0px_0px_0px_2px_rgb(var(--color-primary-400))]"
+							>
+								<h2 class="text-2xl font-bold group-hover:text-primary-400 motion-safe:transition-colors">
+									{post.title}
+								</h2>
+								<p class="text-gray-500">
+									{post.date.formatted} - {readingTime}
+								</p>
+								<p>{post.description}</p>
+								<div class='font-bold after:opacity-0 after:content-["_→"] group-hover:after:opacity-100 motion-safe:after:transition-opacity'>
+									Read more
+								</div>
+							</a>
+						</article>
+					)
+				},
+			)
+		}
+	</div>
+</Layout>

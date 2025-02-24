@@ -1,0 +1,20 @@
+---
+interface Props {
+	to: string
+	extraClasses?: string
+	exact?: boolean
+}
+
+const { to, extraClasses, exact } = Astro.props
+const currentPath = new URL(Astro.request.url).pathname
+const isCurrent = exact ? currentPath === to : currentPath.startsWith(to)
+const classes = `text-lg p-4 group -outline-offset-2 ${extraClasses}`
+---
+
+<a class={classes} href={to} aria-current={isCurrent || undefined}>
+	<span
+		class={`relative after:absolute after:w-full after:h-[2px] after:bottom-0 after:left-0 after:origin-bottom-left after:transition-transform after:ease-out after:bg-primary-400 after:scale-x-0 group-hover:after:scale-x-100 group-focus-visible:after:scale-x-100 after:will-change-transform group-aria-[current]:after:scale-x-100`}
+	>
+		<slot />
+	</span>
+</a>

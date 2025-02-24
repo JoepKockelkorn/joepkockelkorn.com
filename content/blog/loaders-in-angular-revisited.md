@@ -20,7 +20,7 @@ const routes = [
 		loadComponent: () => import('./about'),
 		resolve: { contact: () => getContact() },
 	},
-];
+]
 ```
 
 Then you can use the `contact` data in the component:
@@ -38,7 +38,7 @@ The feature can be enabled by calling [`withComponentInputBinding()`](https://an
 
 ```ts
 // typically done in the main.ts file
-provideRouter(routes, withComponentInputBinding());
+provideRouter(routes, withComponentInputBinding())
 ```
 
 ### Less code needed
@@ -74,7 +74,7 @@ provideRouter(
 	routes,
 	withComponentInputBinding(),
 	withRouterConfig({ paramsInheritanceStrategy: 'always' }), // ⬅️ this
-);
+)
 ```
 
 ## Setting things straight
@@ -190,7 +190,7 @@ using `loadComponent` in the router config. So I've put the loader in a separate
 
 ```ts
 // books.loader.ts
-export const loader = () => inject(BooksService).getBooks();
+export const loader = () => inject(BooksService).getBooks()
 ```
 
 In the same way as in Remix, I've reused the type of the `loader` function when declaring the type of the `@Input()`. The `Resolved` type is
@@ -198,9 +198,9 @@ a small utility type that I've put in a separate file:
 
 ```ts
 // types.ts
-import { ResolveFn } from '@angular/router';
+import { ResolveFn } from '@angular/router'
 
-export type Resolved<T> = T extends ResolveFn<infer R> ? R : never;
+export type Resolved<T> = T extends ResolveFn<infer R> ? R : never
 ```
 
 It's basically returning the type of the data that the loader function loads.
@@ -208,7 +208,7 @@ It's basically returning the type of the data that the loader function loads.
 The router config looks like this:
 
 ```ts
-import { loader as booksLoader } from './books.loader';
+import { loader as booksLoader } from './books.loader'
 
 const routes = [
 	// ...other routes
@@ -217,7 +217,7 @@ const routes = [
 		loadComponent: () => import('./books.component'),
 		resolve: { books: booksLoader },
 	},
-];
+]
 ```
 
 The `booksLoader` is passed to the `resolve` property of the route config. There is some repetition in the router config and in the
@@ -246,7 +246,7 @@ For the details page, I've created a `BookDetailsComponent` and a `loader`. The 
 	`,
 })
 export default class BookDetailsComponent {
-	@Input() book!: Resolved<typeof loader>;
+	@Input() book!: Resolved<typeof loader>
 }
 ```
 
@@ -255,9 +255,9 @@ This is the loader:
 ```ts
 // book-details.loader.ts
 export const loader = (route: ActivatedRouteSnapshot) => {
-	const bookId = route.paramMap.get('bookId');
-	return from(inject(BooksService).getBook(bookId!)).pipe(filter(Boolean));
-};
+	const bookId = route.paramMap.get('bookId')
+	return from(inject(BooksService).getBook(bookId!)).pipe(filter(Boolean))
+}
 ```
 
 Here we get a book by id from the `BooksService`. We then transform the `Promise<Book>` to an `Observable<Book>` and filter out the
@@ -268,7 +268,7 @@ lead to a redirect to the 404 page because of the listener in the `AppComponent`
 The router config looks like this:
 
 ```ts
-import { loader as bookLoader } from './book-details.loader';
+import { loader as bookLoader } from './book-details.loader'
 
 const routes = [
 	// ...other routes
@@ -278,7 +278,7 @@ const routes = [
 		runGuardsAndResolvers: 'always',
 		resolve: { book: bookLoader },
 	},
-];
+]
 ```
 
 The `runGuardsAndResolvers` property is set to `'always'` to make sure the resolve is always called when switching tabs. This is needed
@@ -290,14 +290,14 @@ The admin tab should only be visible when the user is an admin of the book. This
 
 ```ts
 // book-details-admin.loader.ts
-import { loader as bookLoader } from './book-details.loader';
+import { loader as bookLoader } from './book-details.loader'
 
 export const loader = (route: ActivatedRouteSnapshot) => {
 	return of(route.parent?.data).pipe(
 		map((data) => (data!['book'] as Resolved<typeof bookLoader>).isAdmin ?? false),
 		filter(Boolean),
-	);
-};
+	)
+}
 ```
 
 To prevent refetching the book, we reuse the already fetched book from the parent route. We then check if the user is an admin of the book
@@ -308,8 +308,8 @@ will lead to a redirect to the 404 page because of the listener in the `AppCompo
 The router config looks like this:
 
 ```ts
-import { loader as bookLoader } from './book-details.loader';
-import { loader as adminLoader } from './book-details-admin.loader';
+import { loader as bookLoader } from './book-details.loader'
+import { loader as adminLoader } from './book-details-admin.loader'
 
 const routes = [
 	// ...other routes
@@ -325,7 +325,7 @@ const routes = [
 			{ path: '', redirectTo: 'general', pathMatch: 'full' },
 		],
 	},
-];
+]
 ```
 
 Here you can see the `adminLoader` is passed to the `resolve` property of the `admin` child route. Also, the default route is set to

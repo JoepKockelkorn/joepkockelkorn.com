@@ -1,0 +1,60 @@
+---
+import Layout, { type Meta } from '@layouts/layout.astro'
+import { frontmatterSchema } from '@utils/frontmatter'
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro'
+import { getCollection, render } from 'astro:content'
+
+export const getStaticPaths = (async () => {
+	const posts = await getCollection('blog')
+	return posts
+		.filter((post) => import.meta.env.DEV || !post.data.draft)
+		.map((post) => {
+			return {
+				params: { slug: post.id },
+				props: { post },
+			}
+		})
+}) satisfies GetStaticPaths
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
+const { post } = Astro.props as Props
+const { Content, remarkPluginFrontmatter } = await render(post)
+const { readingTime } = frontmatterSchema.parse(remarkPluginFrontmatter)
+
+const ogImageUrl = new URL(
+	'https://joepkockelkorn-com-og-image.vercel.app/og-image',
+)
+ogImageUrl.searchParams.set('title', post.data.title)
+const ogUrl = new URL(`/blog/${post.id}`, Astro.site)
+const extraMeta: Meta[] = [
+	{ name: 'og:url', content: ogUrl.toString() },
+	{ name: 'og:title', content: post.data.title },
+	{ name: 'og:description', content: post.data.description },
+	{ name: 'og:image', content: ogImageUrl.toString() },
+	{ name: 'twitter:title', content: post.data.title },
+	{ name: 'twitter:description', content: post.data.description },
+	{ name: 'twitter:image', content: ogImageUrl.toString() },
+	{ name: 'twitter:card', content: 'summary_large_image' },
+	{ name: 'twitter:creator', content: '@JoepKockelkorn' },
+]
+---
+
+<Layout
+	title={post.data.title}
+	description={post.data.description}
+	extraMeta={extraMeta}
+>
+	<div class="mt-4 flex flex-wrap gap-1">
+		<time datetime={post.data.date.raw}>{post.data.date.formatted}</time>-<p>
+			{readingTime}
+		</p>
+	</div>
+	<h2 class="mt-2 mb-12 text-gradient text-6xl leading-tight font-bold">
+		{post.data.title}
+	</h2>
+	<article
+		class="prose prose-lg max-w-none pb-[100px] dark:prose-invert prose-headings:font-medium prose-h1:leading-[1.4] prose-code:rounded-[4px] prose-code:hyphens-none prose-code:text-white prose-code:not-[pre]:bg-code prose-code:not-[pre]:px-1.5 prose-code:not-[pre]:py-1 prose-code:before:content-none prose-code:after:content-none prose-pre:bg-[#011627] prose-li:my-[0.25em] prose-code:[&_a]:underline"
+	>
+		<Content />
+	</article>
+</Layout>

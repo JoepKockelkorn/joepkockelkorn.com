@@ -3,6 +3,7 @@
 /lib
 /lib-types
 /server
+.astro/
 
 # Development
 node_modules

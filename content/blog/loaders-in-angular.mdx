@@ -5,17 +5,19 @@ draft: false
 description: 'Exploring the concept of Remix loaders in the Tour of Heroes and explain what would come closest to a loader in Angular.'
 ---
 
+import InfoCallout from '../../src/components/info-callout.astro'
+
 ## Data fetching in meta frameworks
 
 All frontend javascript meta frameworks have it these days: a mechanism for data fetching. They come in many forms, but mostly as a
 convention-based named `export`, for example [the loader export from Remix](https://remix.run/docs/en/1.15.0/route/loader):
 
 ```typescript
-import { json } from '@remix-run/node';
+import { json } from '@remix-run/node'
 
 export const loader = async () => {
-	return json({ myData: 'is the best' });
-};
+	return json({ myData: 'is the best' })
+}
 ```
 
 Loaders are executed on the server and fetch the data for a route, potentially in parallel, to make it available for the template of the
@@ -84,10 +86,10 @@ React Router uses the same mechanism for **using** the data as Remix, via the
 [`useLoaderData`](https://reactrouter.com/en/main/hooks/use-loader-data) hook:
 
 ```typescript
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom'
 
 export default function Team() {
-	const team = useLoaderData();
+	const team = useLoaderData()
 	// ...
 }
 ```
@@ -135,19 +137,19 @@ This shows a single hero. We can update the hero's name as well.
 The routing setup is pretty straightforward:
 
 ```typescript
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from '@angular/core'
+import { RouterModule, Routes } from '@angular/router'
 
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { HeroesComponent } from './heroes/heroes.component';
-import { HeroDetailComponent } from './hero-detail/hero-detail.component';
+import { DashboardComponent } from './dashboard/dashboard.component'
+import { HeroesComponent } from './heroes/heroes.component'
+import { HeroDetailComponent } from './hero-detail/hero-detail.component'
 
 const routes: Routes = [
 	{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },
 	{ path: 'dashboard', component: DashboardComponent },
 	{ path: 'heroes', component: HeroesComponent },
 	{ path: 'detail/:id', component: HeroDetailComponent },
-];
+]
 
 @NgModule({
 	imports: [RouterModule.forRoot(routes)],
@@ -163,11 +165,11 @@ No lazy loading, just one route config for the whole application. Can't get much
 The data is fetched in the component themselves. This is done similarly in all components. For example, this is the `HeroDetailComponent`:
 
 ```typescript
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
 
-import { Hero } from '../hero';
-import { HeroService } from '../hero.service';
+import { Hero } from '../hero'
+import { HeroService } from '../hero.service'
 
 @Component({
 	selector: 'app-hero-detail',
@@ -175,7 +177,7 @@ import { HeroService } from '../hero.service';
 	styleUrls: ['./hero-detail.component.css'],
 })
 export class HeroDetailComponent implements OnInit {
-	hero: Hero | undefined;
+	hero: Hero | undefined
 
 	constructor(
 		private route: ActivatedRoute,
@@ -183,13 +185,13 @@ export class HeroDetailComponent implements OnInit {
 	) {}
 
 	ngOnInit(): void {
-		this.getHero();
+		this.getHero()
 	}
 
 	// 🔽🔽🔽 data fetching done here 🔽🔽🔽
 	getHero(): void {
-		const id = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
-		this.heroService.getHero(id).subscribe((hero) => (this.hero = hero));
+		const id = parseInt(this.route.snapshot.paramMap.get('id')!, 10)
+		this.heroService.getHero(id).subscribe((hero) => (this.hero = hero))
 	}
 
 	// ...
@@ -275,8 +277,7 @@ Let's explain them:
 - [ResolveFn](https://angular.io/api/router/ResolveFn) is called before a route is activated. But this one is different than
   `CanActivateFn`, because it's purpose is exclusively for data fetching.
 
-!!! info `CanMatchFn` vs `CanLoadFn` vs `CanActivateFn`
-
+<InfoCallout title="Match vs Load vs Activate">
 Since in Angular version 14.1 the [CanMatchFn](https://angular.io/api/router/CanMatchFn) was added, the `CanLoadFn`, `CanActivateFn` and
 `CanActivateChildFn` seems to be less useful for data fetching, because with `CanMatchFn` you can prevent a route from being matched at all.
 And routes that are not going to be matched **will not be loaded or activated**. So `CanMatchFn` is more powerful than the `CanLoadFn` and
@@ -289,7 +290,7 @@ good fit for data fetching.
 `CanLoadFn` is also not a good fit for data fetching, because it's only called for lazy loaded components or modules, not for **every**
 route.
 
-!!!
+</InfoCallout>
 
 Let's look at the canActivate and resolve guards more in detail and how they could be used for data fetching.
 
@@ -308,31 +309,31 @@ Now that we've cleared that up, let's look at how we would solve the Tour of Her
 
 ```typescript
 // hero-loader.ts
-import { inject } from '@angular/core';
-import { Router, CanActivateFn } from '@angular/router';
-import { BehaviorSubject, map } from 'rxjs';
-import { Hero } from './hero';
+import { inject } from '@angular/core'
+import { Router, CanActivateFn } from '@angular/router'
+import { BehaviorSubject, map } from 'rxjs'
+import { Hero } from './hero'
 
-import { HeroService } from './hero.service';
+import { HeroService } from './hero.service'
 
 declare global {
-	var hero: BehaviorSubject<null | Hero>;
+	var hero: BehaviorSubject<null | Hero>
 }
 
-window.hero = new BehaviorSubject<Hero | null>(null);
+window.hero = new BehaviorSubject<Hero | null>(null)
 
 export const heroLoader: CanActivateFn = (route) => {
-	const id = Number(route.paramMap.get('id')!);
-	const router = inject(Router);
-	const heroService = inject(HeroService);
+	const id = Number(route.paramMap.get('id')!)
+	const router = inject(Router)
+	const heroService = inject(HeroService)
 
 	return heroService.getHero(id).pipe(
 		map((hero) => {
-			window.hero.next(hero);
-			return Boolean(hero) || router.createUrlTree(['/not-found']);
+			window.hero.next(hero)
+			return Boolean(hero) || router.createUrlTree(['/not-found'])
 		}),
-	);
-};
+	)
+}
 ```
 
 Here we define a loader function which implements the `CanActivateFn` interface. It mainly comprises of three parts:
@@ -343,29 +344,31 @@ Here we define a loader function which implements the `CanActivateFn` interface.
 
 Then, we use this function in the router config:
 
+{/* prettier-ignore-start */}
 ```typescript
-+ import { heroLoader } from './hero-loader';
++ import { heroLoader } from './hero-loader';// [!code ++]
 
 const routes: Routes = [
-  // ...
-  {
-    path: 'detail/:id',
-    component: HeroDetailComponent,
-    // 🔽🔽🔽 canActivate config added here 🔽🔽🔽
-+     canActivate: [heroLoader],
-  },
-  // ...
+	// ...
+	{
+		path: 'detail/:id',
+		component: HeroDetailComponent,
+		// 🔽🔽🔽 canActivate config added here 🔽🔽🔽
++		canActivate: [heroLoader],// [!code ++]
+	},
+	// ...
 ];
 ```
+{/* prettier-ignore-end */}
 
 And remove the data fetching logic from the `HeroDetailComponent`:
 
 ```typescript
-import { Component } from '@angular/core';
-import { Location } from '@angular/common';
+import { Component } from '@angular/core'
+import { Location } from '@angular/common'
 
-import { Hero } from '../hero';
-import { HeroService } from '../hero.service';
+import { Hero } from '../hero'
+import { HeroService } from '../hero.service'
 
 @Component({
 	selector: 'app-hero-detail',
@@ -373,7 +376,7 @@ import { HeroService } from '../hero.service';
 	styleUrls: ['./hero-detail.component.css'],
 })
 export class HeroDetailComponent {
-	hero$ = window.hero!;
+	hero$ = window.hero!
 
 	constructor(
 		private heroService: HeroService,
@@ -381,11 +384,11 @@ export class HeroDetailComponent {
 	) {}
 
 	goBack(): void {
-		this.location.back();
+		this.location.back()
 	}
 
 	save(hero: Hero): void {
-		this.heroService.updateHero(hero).subscribe(() => this.goBack());
+		this.heroService.updateHero(hero).subscribe(() => this.goBack())
 	}
 }
 ```
@@ -418,31 +421,33 @@ review how a resolve might solve our data fetching issues in the Tour of Heroes.
 
 ```typescript
 // hero-resolver.ts
-import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
-import { EMPTY, of } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { inject } from '@angular/core'
+import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router'
+import { EMPTY, of } from 'rxjs'
+import { mergeMap } from 'rxjs/operators'
 
-import { Hero } from './hero';
-import { HeroService } from './hero.service';
+import { Hero } from './hero'
+import { HeroService } from './hero.service'
 
-export const heroResolver: ResolveFn<Hero> = (route: ActivatedRouteSnapshot) => {
-	const id = Number(route.paramMap.get('id')!);
-	const router = inject(Router);
-	const heroService = inject(HeroService);
+export const heroResolver: ResolveFn<Hero> = (
+	route: ActivatedRouteSnapshot,
+) => {
+	const id = Number(route.paramMap.get('id')!)
+	const router = inject(Router)
+	const heroService = inject(HeroService)
 
 	return heroService.getHero(id).pipe(
 		mergeMap((hero) => {
 			if (hero) {
-				return of(hero);
+				return of(hero)
 			} else {
 				// hero not found
-				router.navigate(['/not-found']);
-				return EMPTY;
+				router.navigate(['/not-found'])
+				return EMPTY
 			}
 		}),
-	);
-};
+	)
+}
 ```
 
 Here we define a function which implements the `ResolveFn` interface. It mainly comprises of three parts:
@@ -453,31 +458,33 @@ Here we define a function which implements the `ResolveFn` interface. It mainly 
 
 Then, we use this function in the router config:
 
+{/* prettier-ignore-start */}
 ```typescript
-+ import { heroResolver } from './hero-resolver';
++ import { heroResolver } from './hero-resolver';// [!code ++]
 
 const routes: Routes = [
-  // ...
-  {
-    path: 'detail/:id',
-    component: HeroDetailComponent,
-    // 🔽🔽🔽 resolve config added here 🔽🔽🔽
-+     resolve: { hero: heroResolver },
-  },
-  // ...
+	// ...
+	{
+		path: 'detail/:id',
+		component: HeroDetailComponent,
+		// 🔽🔽🔽 resolve config added here 🔽🔽🔽
++		resolve: { hero: heroResolver },// [!code ++]
+	},
+	// ...
 ];
 ```
+{/* prettier-ignore-end */}
 
 And remove the data fetching logic from the `HeroDetailComponent`:
 
 ```typescript
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { Observable, map } from 'rxjs';
+import { Component } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
+import { Location } from '@angular/common'
+import { Observable, map } from 'rxjs'
 
-import { Hero } from '../hero';
-import { HeroService } from '../hero.service';
+import { Hero } from '../hero'
+import { HeroService } from '../hero.service'
 
 @Component({
 	selector: 'app-hero-detail',
@@ -485,7 +492,7 @@ import { HeroService } from '../hero.service';
 	styleUrls: ['./hero-detail.component.css'],
 })
 export class HeroDetailComponent {
-	hero$: Observable<Hero> = this.route.data.pipe(map((data) => data['hero']));
+	hero$: Observable<Hero> = this.route.data.pipe(map((data) => data['hero']))
 
 	constructor(
 		private route: ActivatedRoute,
@@ -494,30 +501,29 @@ export class HeroDetailComponent {
 	) {}
 
 	goBack(): void {
-		this.location.back();
+		this.location.back()
 	}
 
 	save(hero: Hero): void {
-		this.heroService.updateHero(hero).subscribe(() => this.goBack());
+		this.heroService.updateHero(hero).subscribe(() => this.goBack())
 	}
 }
 ```
 
-!!! info Typecasting
-
+<InfoCallout title="Typecasting">
 Note we still have to pluck the hero from the route data. The plucking requires a type annotation or a typecast because by default any
 property on `Data` resolves to `any`:
 
 ```typescript
 type Data = {
-	[key: string | symbol]: any;
-};
+	[key: string | symbol]: any
+}
 ```
 
 This typecasting issue is also there in Remix. In Remix we also have to help typescript to infer the type of the loader using
 `useLoaderData<typeof loader>()`.
 
-!!!
+</InfoCallout>
 
 Now that the hero property is an `Observable<Hero>` instead of `Hero | undefined` we have to change the template a bit:
 

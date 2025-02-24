@@ -40,13 +40,13 @@ Divider:
 
 ```tsx
 function Counter() {
-	const [count, setCount] = React.useState(0);
-	const increment = () => setCount((c) => c + 1);
-	return <button onClick={increment}>{count}</button>;
+	const [count, setCount] = React.useState(0)
+	const increment = () => setCount((c) => c + 1)
+	return <button onClick={increment}>{count}</button>
 }
 
 function App() {
-	return <Counter />;
+	return <Counter />
 }
 ```
 
@@ -96,4 +96,5 @@ Here is a simple footnote[^1].
 A footnote can also have multiple lines[^2].
 
 [^1]: My reference.
+
 [^2]: To add line breaks within a footnote, prefix new lines with 2 spaces. This is a second line.
