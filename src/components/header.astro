@@ -1,10 +1,16 @@
 ---
-import NavLink from './nav-link.astro';
+import NavLink from './nav-link.astro'
 ---
 
-<header class="w-full border-b dark:border-b-gray-700 bg-background flex flex-nowrap h-[3.75rem] fixed z-10 shrink-0">
-	<nav class="w-full max-w-3xl mx-auto flex justify-end">
-		<NavLink extraClasses="mr-auto p-4 md:px-6 xl:px-8 font-semibold text-xl" to="/" exact>
+<header
+	class="fixed z-10 flex h-[3.75rem] w-full shrink-0 flex-nowrap border-b bg-background dark:border-b-gray-700"
+>
+	<nav class="mx-auto flex w-full max-w-3xl justify-end">
+		<NavLink
+			extraClasses="mr-auto p-4 md:px-6 xl:px-8 font-semibold text-xl"
+			to="/"
+			exact
+		>
 			<h1>Joep Kockelkorn</h1>
 		</NavLink>
 		<NavLink to="/blog">Blog</NavLink>

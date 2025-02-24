@@ -1,17 +1,16 @@
 export default {
 	singleQuote: true,
-	useTabs: true,
-	tabWidth: 2,
-	proseWrap: 'always',
-	printWidth: 140,
+	semi: false,
+	bracketSpacing: true,
+	bracketSameLine: false,
 	trailingComma: 'all',
-	plugins: ['prettier-plugin-astro'],
-	overrides: [
-		{
-			files: '*.astro',
-			options: {
-				parser: 'astro',
-			},
-		},
+	endOfLine: 'auto',
+	experimentalTernaries: true,
+	plugins: [
+		'prettier-plugin-astro',
+		'prettier-plugin-organize-imports',
+		'prettier-plugin-tailwindcss',
 	],
-};
+	overrides: [{ files: '*.astro', options: { parser: 'astro' } }],
+	tailwindStylesheet: './src/styles/tailwind.css',
+}

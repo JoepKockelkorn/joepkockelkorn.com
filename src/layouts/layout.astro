@@ -1,23 +1,26 @@
 ---
 export interface Meta {
-	name: string;
-	content: string;
+	name: string
+	content: string
 }
 
 interface Props {
-	title?: string;
-	description?: string;
-	extraMeta?: Meta[];
+	title?: string
+	description?: string
+	extraMeta?: Meta[]
 }
 
-import Header from '@components/header.astro';
-import '@styles/tailwind.css';
-import '@styles/fonts.css';
+import Header from '@components/header.astro'
+import '@styles/tailwind.css'
+import '@styles/fonts.css'
 
-const { title, description, extraMeta } = Astro.props;
-const currentURL = new URL(Astro.url.pathname, Astro.site);
-const canonicalURL = currentURL.pathname.endsWith('/') ? currentURL.toString().slice(0, -1) : currentURL;
-const safeTitle = `Joep Kockelkorn${title ? ` | ${title}` : ''}`;
+const { title, description, extraMeta } = Astro.props
+const currentURL = new URL(Astro.url.pathname, Astro.site)
+const canonicalURL =
+	currentURL.pathname.endsWith('/') ?
+		currentURL.toString().slice(0, -1)
+	:	currentURL
+const safeTitle = `Joep Kockelkorn${title ? ` | ${title}` : ''}`
 ---
 
 <html lang="en">
@@ -35,16 +38,27 @@ const safeTitle = `Joep Kockelkorn${title ? ` | ${title}` : ''}`;
 		<link rel="canonical" href={canonicalURL} />
 		<title>{safeTitle}</title>
 		{description && <meta name="description" content={description} />}
-		{extraMeta && extraMeta.map(({ name, content }) => <meta name={name} content={content} />)}
+		{
+			extraMeta &&
+				extraMeta.map(({ name, content }) => (
+					<meta name={name} content={content} />
+				))
+		}
 
 		<!-- Partytown + analytics -->
-		<script is:inline async type="text/partytown" src="https://www.googletagmanager.com/gtag/js?id=G-BS603B8LYL"></script>
+		<script
+			is:inline
+			async
+			type="text/partytown"
+			src="https://www.googletagmanager.com/gtag/js?id=G-BS603B8LYL"></script>
 		<script is:inline type="text/partytown" src="/google-analytics.js"></script>
 	</head>
-	<body class="h-full py-0 bg-background flex flex-col text-text overflow-auto scroll-smooth">
+	<body
+		class="flex h-full flex-col overflow-auto scroll-smooth bg-background py-0 text-text"
+	>
 		<Header />
-		<main class="isolate grow shrink z-0 mt-[3.75rem]">
-			<div class="h-full px-4 md:px-6 xl:px-8 max-w-3xl mx-auto flex flex-col">
+		<main class="isolate z-0 mt-[3.75rem] shrink grow">
+			<div class="mx-auto flex h-full max-w-3xl flex-col px-4 md:px-6 xl:px-8">
 				<slot />
 			</div>
 		</main>

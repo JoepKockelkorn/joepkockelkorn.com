@@ -1,18 +1,22 @@
-import mdx from '@astrojs/mdx';
-import partytown from '@astrojs/partytown';
-import vercelStatic from '@astrojs/vercel';
-import { transformerNotationDiff } from '@shikijs/transformers';
-import tailwindcss from '@tailwindcss/vite';
-import { defineConfig } from 'astro/config';
-import rehypeAutolinkHeadings, { type Options as AutolinkHeadingsOptions } from 'rehype-autolink-headings';
-import rehypeExternalLinks, { type Options as ExternalLinksOptions } from 'rehype-external-links';
-import rehypeImageNativeLazyLoading from 'rehype-plugin-image-native-lazy-loading';
-import rehypeSlug from 'rehype-slug';
-import { remarkReadingTime } from './src/utils/remark-reading-time';
+import mdx from '@astrojs/mdx'
+import partytown from '@astrojs/partytown'
+import vercelStatic from '@astrojs/vercel'
+import { transformerNotationDiff } from '@shikijs/transformers'
+import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from 'astro/config'
+import rehypeAutolinkHeadings, {
+	type Options as AutolinkHeadingsOptions,
+} from 'rehype-autolink-headings'
+import rehypeExternalLinks, {
+	type Options as ExternalLinksOptions,
+} from 'rehype-external-links'
+import rehypeImageNativeLazyLoading from 'rehype-plugin-image-native-lazy-loading'
+import rehypeSlug from 'rehype-slug'
+import { remarkReadingTime } from './src/utils/remark-reading-time'
 
-import sitemap from '@astrojs/sitemap';
+import sitemap from '@astrojs/sitemap'
 
-const logPartytown = import.meta.env.DEV;
+const logPartytown = import.meta.env.DEV
 
 export default defineConfig({
 	output: 'static',
@@ -69,4 +73,4 @@ export default defineConfig({
 	vite: {
 		plugins: [tailwindcss()],
 	},
-});
+})
