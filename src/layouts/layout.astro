@@ -23,7 +23,7 @@ const canonicalURL =
 const safeTitle = `Joep Kockelkorn${title ? ` | ${title}` : ''}`
 ---
 
-<html lang="en">
+<html lang="en" class="[color-scheme:var(--color-scheme)]">
 	<head>
 		<!-- Favicon -->
 		<link rel="manifest" href="/manifest.json" />
@@ -54,7 +54,7 @@ const safeTitle = `Joep Kockelkorn${title ? ` | ${title}` : ''}`
 		<script is:inline type="text/partytown" src="/google-analytics.js"></script>
 	</head>
 	<body
-		class="flex h-full flex-col overflow-auto scroll-smooth bg-background py-0 text-text"
+		class="flex h-full flex-col overflow-auto scroll-smooth bg-background py-0 text-text motion-safe:transition-colors"
 	>
 		<Header />
 		<main class="isolate z-0 mt-[3.75rem] shrink grow">

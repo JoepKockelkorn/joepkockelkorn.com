@@ -28,7 +28,6 @@
 
 @layer base {
 	:root {
-		color-scheme: light dark;
 		--icon-info: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>');
 	}
 
@@ -52,6 +51,10 @@
 }
 
 @utility text-gradient {
-	@apply bg-gradient-to-r from-primary-700 to-primary-400 bg-clip-text dark:to-primary-200;
+	--color-gradient-to: light-dark(
+		var(--color-primary-400),
+		var(--color-primary-200)
+	);
+	@apply bg-gradient-to-r from-primary-700 to-(--color-gradient-to) bg-clip-text;
 	-webkit-text-fill-color: transparent;
 }
