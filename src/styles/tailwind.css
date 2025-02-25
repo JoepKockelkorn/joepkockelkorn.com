@@ -51,6 +51,10 @@
 }
 
 @utility text-gradient {
-	@apply bg-gradient-to-r from-primary-700 to-primary-400 bg-clip-text dark:to-primary-200;
+	--color-gradient-to: light-dark(
+		var(--color-primary-400),
+		var(--color-primary-200)
+	);
+	@apply bg-gradient-to-r from-primary-700 to-(--color-gradient-to) bg-clip-text;
 	-webkit-text-fill-color: transparent;
 }
