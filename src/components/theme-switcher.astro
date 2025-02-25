@@ -1,0 +1,63 @@
+---
+import Sun from '../icons/sun.svg'
+import Moon from '../icons/moon.svg'
+import Monitor from '../icons/monitor.svg'
+---
+
+<button
+	id="theme-switcher"
+	class="group grid cursor-pointer items-center p-4 text-text [grid-template-areas:'icon']"
+>
+	<Sun
+		class="hidden opacity-0 transition-[display,opacity] transition-discrete will-change-auto [grid-area:icon] group-data-[theme=light]:block group-data-[theme=light]:opacity-100 starting:opacity-0"
+	/>
+	<Moon
+		class="hidden opacity-0 transition-[display,opacity] transition-discrete will-change-auto [grid-area:icon] group-data-[theme=dark]:block group-data-[theme=dark]:opacity-100 starting:opacity-0"
+	/>
+	<Monitor
+		class="hidden opacity-0 transition-[display,opacity] transition-discrete will-change-auto [grid-area:icon] group-data-[theme=system]:block group-data-[theme=system]:opacity-100 starting:opacity-0"
+	/>
+</button>
+
+<script is:inline>
+	const themes = ['light', 'dark', 'system']
+	const themeSwitcher = document.getElementById('theme-switcher')
+	const storedTheme = localStorage.getItem('theme')
+	const currentTheme = themes.find((theme) => theme === storedTheme) || 'system'
+	const nextTheme = findNextTheme(currentTheme)
+	const themeToColorSchemeMapping = {
+		light: 'light',
+		dark: 'dark',
+		system: 'light dark',
+	}
+
+	// Initial theme setup
+	setTheme(currentTheme)
+
+	// Handle theme switching
+	themeSwitcher.addEventListener('click', () => {
+		const currentTheme = themeSwitcher.dataset.theme
+		const nextTheme = findNextTheme(currentTheme)
+		setTheme(nextTheme)
+	})
+
+	function findNextTheme(currentTheme) {
+		return themes[(themes.indexOf(currentTheme) + 1) % themes.length]
+	}
+
+	function setTheme(theme) {
+		if (theme === 'system') {
+			localStorage.removeItem('theme')
+		} else {
+			localStorage.setItem('theme', theme)
+		}
+		document.documentElement.style.setProperty(
+			'--color-scheme',
+			themeToColorSchemeMapping[theme],
+		)
+
+		themeSwitcher.dataset.theme = theme
+		const nextTheme = findNextTheme(theme)
+		themeSwitcher.ariaLabel = `Switch to ${nextTheme} theme`
+	}
+</script>
