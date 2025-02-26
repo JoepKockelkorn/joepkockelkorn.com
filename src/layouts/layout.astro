@@ -23,7 +23,10 @@ const canonicalURL =
 const safeTitle = `Joep Kockelkorn${title ? ` | ${title}` : ''}`
 ---
 
-<html lang="en" class="[color-scheme:var(--color-scheme)]">
+<html
+	lang="en"
+	class="relative flex h-full scroll-pt-[4rem] flex-col scroll-smooth break-words hyphens-auto [color-scheme:var(--color-scheme)] [scrollbar-gutter:stable]"
+>
 	<head>
 		<!-- Favicon -->
 		<link rel="manifest" href="/manifest.json" />
@@ -54,11 +57,13 @@ const safeTitle = `Joep Kockelkorn${title ? ` | ${title}` : ''}`
 		<script is:inline type="text/partytown" src="/google-analytics.js"></script>
 	</head>
 	<body
-		class="flex h-full flex-col overflow-auto scroll-smooth bg-background py-0 text-text motion-safe:transition-colors"
+		class="flex min-h-full flex-col bg-background text-text motion-safe:transition-colors"
 	>
 		<Header />
-		<main class="isolate z-0 mt-[3.75rem] shrink grow">
-			<div class="mx-auto flex h-full max-w-3xl flex-col px-4 md:px-6 xl:px-8">
+		<main class="isolate z-0 shrink grow">
+			<div
+				class="mx-auto mb-8 flex h-full max-w-3xl flex-col px-4 md:px-6 xl:px-8"
+			>
 				<slot />
 			</div>
 		</main>
