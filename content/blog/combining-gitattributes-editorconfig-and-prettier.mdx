@@ -82,6 +82,9 @@ max_line_length = 80
 [*.md]
 max_line_length = off
 trim_trailing_whitespace = false
+
+[*.{yml,yaml}]
+indent_style = space
 ```
 
 Let's go through it. At the top, I set `root = true`, which tells EditorConfig to stop looking for an `.editorconfig` file in parent
@@ -97,8 +100,10 @@ directories. Then, I set the baseline for all files (targeted by the `*`), which
 - max_line_length to `80`: This wraps most lines at 80 characters. This is a common convention, and it's also the default in many tools. It
   also improves readability, and also gives the writer a good indication when the code might be getting too long and should be split up.
 
-For markdown files I set some exceptions. Markdown files are often used for documentation, and therefore often go over 80 characters per
+For Markdown files I set some exceptions. Markdown files are often used for documentation, and therefore often go over 80 characters per
 line. Trailing whitespace could potentially be used for alignment/aesthetics.
+
+For YAML files I set an exception for the `indent_style`. YAML files do not support tabs, so I set it to `space`.
 
 # Prettier
 
@@ -108,18 +113,40 @@ types. Here is the config I use:
 
 ```json
 {
-	"plugins": ["@prettier/plugin-xml"],
+	"plugins": [
+		"@prettier/plugin-xml",
+		"prettier-plugin-organize-imports",
+		"prettier-plugin-tailwindcss" // if you use Tailwind
+	],
 	"singleQuote": true,
 	"semi": false,
 	"bracketSpacing": true,
 	"bracketSameLine": false,
 	"trailingComma": "all",
-	"endOfLine": "auto"
+	"endOfLine": "auto",
+	"experimentalTernaries": true,
+	"overrides": [
+		{
+			"files": "*.jsonc",
+			"options": {
+				"trailingComma": "none"
+			}
+		},
+		{
+			"files": "web.config",
+			"options": {
+				"xmlWhitespaceSensitivity": "ignore"
+			}
+		}
+	]
 }
 ```
 
-Let's go through it. First, I set the `plugins` to include `@prettier/plugin-xml`. This is because prettier does not format xml files out of
-the box. Make sure it is [installed as a dev dependency](https://www.npmjs.com/package/@prettier/plugin-xml).
+Let's go through it. First, I set the `plugins` option to include the following plugins:
+
+- [`@prettier/plugin-xml`](https://www.npmjs.com/package/@prettier/plugin-xml): Prettier does not format xml files out of the box.
+- [`prettier-plugin-organize-imports`](https://www.npmjs.com/package/prettier-plugin-organize-imports): This sorts, combines and removes unused imports. Because nobody likes a messy import section.
+- [`prettier-plugin-tailwindcss`](https://www.npmjs.com/package/prettier-plugin-tailwindcss): If you use Tailwind, this plugin will format the Tailwind classes in your HTML-like files.
 
 Then, I set the following options:
 
@@ -131,6 +158,10 @@ Then, I set the following options:
   [See an example here](https://prettier.io/docs/en/options.html#bracket-line).
 - trailingComma to `all`: This makes sure that there is a trailing comma wherever possible. This makes refactoring easier.
 - endOfLine to `auto`: This makes sure that the line endings are consistent the settings of the `.gitattributes` file.
+- experimentalTernaries to `true`: This makes sure that ternaries are formatted in a more readable way (and will probably become the default way to format ternaries).
+- overrides for specific files:
+  - For JSONC files I set `trailingComma` to `none` because I've ran into issues with those.
+  - For any `web.config` XML files (used in .NET development) I set `xmlWhitespaceSensitivity` to `ignore` so Prettier can format the whitespace.
 
 <InfoCallout title="Prettier follows EditorConfig">
 	You might be missing the `printWidth`, `tabWidth` or `useTabs` options in my
