@@ -20,32 +20,36 @@ import Monitor from '../icons/monitor.svg'
 </button>
 
 <script is:inline>
-	const themes = ['light', 'dark', 'system']
-	const themeSwitcher = document.getElementById('theme-switcher')
-	const storedTheme = localStorage.getItem('theme')
-	const currentTheme = themes.find((theme) => theme === storedTheme) || 'system'
-	const nextTheme = findNextTheme(currentTheme)
 	const themeToColorSchemeMapping = {
 		light: 'light',
 		dark: 'dark',
 		system: 'light dark',
 	}
+	const themes = ['light', 'dark', 'system']
+	const themeSwitcher = document.getElementById('theme-switcher')
 
+	// TODO: why is there a flicker on initial load?
 	// Initial theme setup
-	setTheme(currentTheme)
+	setTheme(document, getCurrentTheme())
 
-	// Handle theme switching
-	themeSwitcher.addEventListener('click', () => {
-		const currentTheme = themeSwitcher.dataset.theme
-		const nextTheme = findNextTheme(currentTheme)
-		setTheme(nextTheme)
+	document.addEventListener('astro:page-load', () => {
+		// Handle theme switching
+		themeSwitcher.addEventListener('click', () => {
+			const currentTheme = themeSwitcher.dataset.theme
+			const nextTheme = findNextTheme(currentTheme)
+			setTheme(document, nextTheme)
+		})
 	})
+	function getCurrentTheme() {
+		const storedTheme = localStorage.getItem('theme')
+		return themes.find((theme) => theme === storedTheme) || 'system'
+	}
 
 	function findNextTheme(currentTheme) {
 		return themes[(themes.indexOf(currentTheme) + 1) % themes.length]
 	}
 
-	function setTheme(theme) {
+	function setTheme(document, theme) {
 		if (theme === 'system') {
 			localStorage.removeItem('theme')
 		} else {
@@ -60,4 +64,7 @@ import Monitor from '../icons/monitor.svg'
 		const nextTheme = findNextTheme(theme)
 		themeSwitcher.ariaLabel = `Switch to ${nextTheme} theme`
 	}
+	document.addEventListener('astro:before-swap', (event) => {
+		setTheme(event.newDocument, getCurrentTheme())
+	})
 </script>
