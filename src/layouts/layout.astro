@@ -51,6 +51,42 @@ const safeTitle = `Joep Kockelkorn${title ? ` | ${title}` : ''}`
 				))
 		}
 
+		<script is:inline>
+			const themes = ['light', 'dark', 'system']
+			// Initial theme setup to prevent flicker
+			setTheme(document, getCurrentTheme())
+
+			function getCurrentTheme() {
+				const storedTheme = localStorage.getItem('theme')
+				return themes.find((theme) => theme === storedTheme) || 'system'
+			}
+
+			function findNextTheme(currentTheme) {
+				return themes[(themes.indexOf(currentTheme) + 1) % themes.length]
+			}
+
+			function setTheme(document, theme) {
+				if (theme === 'system') {
+					localStorage.removeItem('theme')
+				} else {
+					localStorage.setItem('theme', theme)
+				}
+				document.documentElement.style.setProperty(
+					'--color-scheme',
+					{
+						light: 'light',
+						dark: 'dark',
+						system: 'light dark',
+					}[theme],
+				)
+			}
+
+			// Prevent theme flicker on navigation
+			document.addEventListener('astro:before-swap', (event) => {
+				setTheme(event.newDocument, getCurrentTheme())
+			})
+		</script>
+
 		<!-- Partytown + analytics -->
 		<script
 			is:inline
