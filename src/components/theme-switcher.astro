@@ -20,44 +20,28 @@ import Monitor from '../icons/monitor.svg'
 </button>
 
 <script is:inline>
-	const themes = ['light', 'dark', 'system']
-	const themeSwitcher = document.getElementById('theme-switcher')
-	const storedTheme = localStorage.getItem('theme')
-	const currentTheme = themes.find((theme) => theme === storedTheme) || 'system'
-	const nextTheme = findNextTheme(currentTheme)
-	const themeToColorSchemeMapping = {
-		light: 'light',
-		dark: 'dark',
-		system: 'light dark',
+	function getThemeSwitcher() {
+		return document.getElementById('theme-switcher')
 	}
 
-	// Initial theme setup
-	setTheme(currentTheme)
-
-	// Handle theme switching
-	themeSwitcher.addEventListener('click', () => {
-		const currentTheme = themeSwitcher.dataset.theme
-		const nextTheme = findNextTheme(currentTheme)
-		setTheme(nextTheme)
-	})
-
-	function findNextTheme(currentTheme) {
-		return themes[(themes.indexOf(currentTheme) + 1) % themes.length]
-	}
-
-	function setTheme(theme) {
-		if (theme === 'system') {
-			localStorage.removeItem('theme')
-		} else {
-			localStorage.setItem('theme', theme)
-		}
-		document.documentElement.style.setProperty(
-			'--color-scheme',
-			themeToColorSchemeMapping[theme],
-		)
-
+	function setThemeSwitcherState(theme, nextTheme) {
+		const themeSwitcher = getThemeSwitcher()
 		themeSwitcher.dataset.theme = theme
-		const nextTheme = findNextTheme(theme)
 		themeSwitcher.ariaLabel = `Switch to ${nextTheme} theme`
 	}
+
+	document.addEventListener('astro:page-load', () => {
+		const currentTheme = getCurrentTheme()
+		const nextTheme = findNextTheme(currentTheme)
+		setThemeSwitcherState(currentTheme, nextTheme)
+
+		// Handle theme switching
+		const themeSwitcher = getThemeSwitcher()
+		themeSwitcher.addEventListener('click', () => {
+			const currentTheme = themeSwitcher.dataset.theme
+			const nextTheme = findNextTheme(currentTheme)
+			setTheme(document, nextTheme)
+			setThemeSwitcherState(nextTheme, findNextTheme(nextTheme))
+		})
+	})
 </script>
