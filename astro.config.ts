@@ -50,8 +50,8 @@ export default defineConfig({
 				transformerNotationDiff({
 					classLineAdd: 'bg-green-900',
 					classLineRemove: 'bg-red-900',
-				}) as any,
-			], // any needed due to type mismatch, works fine
+				}),
+			],
 		},
 	},
 	integrations: [
@@ -72,8 +72,5 @@ export default defineConfig({
 	],
 	vite: {
 		plugins: [tailwindcss()],
-	},
-	experimental: {
-		svg: true,
 	},
 })
